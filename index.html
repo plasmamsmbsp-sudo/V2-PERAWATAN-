@@ -14,7 +14,7 @@
   <!-- SPLASH SCREEN PEMBUKA & VOICEOVER -->
   <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-white via-[#F4F8F5] to-[#E8F1EC] flex flex-col items-center justify-between p-8 transition-all duration-700">
     <div class="w-full flex justify-end">
-      <button onclick="enterApp(false)" class="text-xs font-semibold text-slate-400 hover:text-[#056839] px-3 py-1.5 rounded-full border border-slate-200 bg-white/80 transition cursor-pointer">
+      <button type="button" onclick="enterApp(false)" class="text-xs font-semibold text-slate-400 hover:text-[#056839] px-3 py-1.5 rounded-full border border-slate-200 bg-white/80 transition cursor-pointer">
         Lewati Intro →
       </button>
     </div>
@@ -33,7 +33,7 @@
         <p class="text-xs text-slate-500 font-medium">Monitoring Harian, Material & Rekapitulasi Terpadu</p>
       </div>
 
-      <button id="btnStartVoice" onclick="enterApp(true)" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#056839] to-[#044E2B] hover:from-[#067A43] hover:to-[#056839] text-white font-bold text-sm shadow-lg shadow-[#056839]/25 flex items-center justify-center gap-2.5 transition transform active:scale-95 cursor-pointer">
+      <button type="button" id="btnStartVoice" onclick="enterApp(true)" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#056839] to-[#044E2B] hover:from-[#067A43] hover:to-[#056839] text-white font-bold text-sm shadow-lg shadow-[#056839]/25 flex items-center justify-center gap-2.5 transition transform active:scale-95 cursor-pointer">
         <span class="w-6 h-6 rounded-full bg-[#FFF200] text-[#056839] flex items-center justify-center text-xs font-black">▶</span>
         <span>Mulai Aplikasi & Suara</span>
       </button>
@@ -75,13 +75,13 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <button onclick="playKencanaVoice()" title="Putar Suara Semangat" class="p-2 rounded-xl bg-[#F4F8F5] hover:bg-[#E4EFE8] text-[#056839] border border-slate-200 text-xs font-bold transition cursor-pointer">
+        <button type="button" onclick="playKencanaVoice()" title="Putar Suara Semangat" class="p-2 rounded-xl bg-[#F4F8F5] hover:bg-[#E4EFE8] text-[#056839] border border-slate-200 text-xs font-bold transition cursor-pointer">
           🔊
         </button>
-        <button onclick="shareWhatsAppReport()" class="px-3 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
+        <button type="button" onclick="shareWhatsAppReport()" class="px-3 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
           <span>📲 WA</span>
         </button>
-        <button onclick="exportToExcel()" class="px-3 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
+        <button type="button" onclick="exportToExcel()" class="px-3 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
           <span>📥 Excel</span>
         </button>
       </div>
@@ -90,14 +90,14 @@
     <!-- MINIMALIST PILL NAVIGATION -->
     <nav class="bg-[#F9FBFA] border-t border-slate-100">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 py-2 flex gap-2 overflow-x-auto no-scrollbar">
-        <button id="tabBtn-input" onclick="switchTab('input')" class="nav-pill nav-pill-active px-4 py-2 rounded-xl text-xs whitespace-nowrap transition cursor-pointer">
+        <button type="button" id="tabBtn-input" onclick="switchTab('input')" class="nav-pill nav-pill-active px-4 py-2 rounded-xl text-xs whitespace-nowrap transition cursor-pointer">
           ✍️ Input Harian
         </button>
-        <button id="tabBtn-rekap" onclick="switchTab('rekap')" class="nav-pill px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-white whitespace-nowrap flex items-center gap-1.5 transition cursor-pointer">
+        <button type="button" id="tabBtn-rekap" onclick="switchTab('rekap')" class="nav-pill px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-white whitespace-nowrap flex items-center gap-1.5 transition cursor-pointer">
           <span>📊 Rekap Harian & Bulanan</span>
           <span id="badgeCount" class="px-1.5 py-0.5 text-[10px] font-extrabold rounded-md bg-[#056839]/10 text-[#056839]">0</span>
         </button>
-        <button id="tabBtn-master" onclick="switchTab('master')" class="nav-pill px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-white whitespace-nowrap transition cursor-pointer">
+        <button type="button" id="tabBtn-master" onclick="switchTab('master')" class="nav-pill px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-white whitespace-nowrap transition cursor-pointer">
           ⚙️ Database & Spreadsheet
         </button>
       </div>
@@ -106,8 +106,7 @@
 
   <!-- MAIN CONTENT -->
   <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 py-5 flex-1">
-
-    <!-- ==================== TAB 1: INPUT HARIAN ==================== -->
+        <!-- ==================== TAB 1: INPUT HARIAN ==================== -->
     <section id="tab-input" class="space-y-5">
       <!-- KPI Cards Minimalis -->
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -272,14 +271,13 @@
               <h3 class="font-bold text-slate-900 text-sm">Catatan Terakhir</h3>
               <p class="text-[11px] text-slate-400">Otomatis masuk ke rekap harian & bulanan</p>
             </div>
-            <button onclick="switchTab('rekap')" class="text-xs font-bold text-[#056839] hover:underline cursor-pointer">Lihat Rekap →</button>
+            <button type="button" onclick="switchTab('rekap')" class="text-xs font-bold text-[#056839] hover:underline cursor-pointer">Lihat Rekap →</button>
           </div>
           <div id="recentFeedList" class="p-4 space-y-2.5 overflow-y-auto max-h-[580px] flex-1"></div>
         </div>
       </div>
     </section>
-
-    <!-- ==================== TAB 2: REKAP HARIAN & BULANAN ==================== -->
+        <!-- ==================== TAB 2: REKAP HARIAN & BULANAN ==================== -->
     <section id="tab-rekap" class="hidden space-y-5">
       <!-- Bar Kontrol & Filter -->
       <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs space-y-4">
@@ -289,10 +287,10 @@
             <p class="text-xs text-slate-500">Filter berdasarkan Tanggal (Harian) atau Bulan untuk melihat akumulasi otomatis</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
-            <button onclick="syncAllToGoogleSheet()" id="btnSyncGsheet" class="px-3.5 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-2xs cursor-pointer">
+            <button type="button" onclick="syncAllToGoogleSheet()" id="btnSyncGsheet" class="px-3.5 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-2xs cursor-pointer">
               ☁️ Sync Google Sheet
             </button>
-            <button onclick="exportToExcel()" class="px-3.5 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-2xs cursor-pointer">
+            <button type="button" onclick="exportToExcel()" class="px-3.5 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-2xs cursor-pointer">
               📥 Export Excel (Harian & Bulanan)
             </button>
           </div>
@@ -329,7 +327,7 @@
             </select>
           </div>
           <div class="flex items-end">
-            <button onclick="resetFilters()" class="w-full py-2.5 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-600 cursor-pointer">
+            <button type="button" onclick="resetFilters()" class="w-full py-2.5 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-600 cursor-pointer">
               Reset Filter
             </button>
           </div>
@@ -407,8 +405,7 @@
         </div>
       </div>
     </section>
-
-    <!-- ==================== TAB 3: PENGATURAN DATABASE & SPREADSHEET ==================== -->
+        <!-- ==================== TAB 3: PENGATURAN DATABASE & SPREADSHEET ==================== -->
     <section id="tab-master" class="hidden space-y-5">
       <!-- Koneksi Google Sheets -->
       <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-4">
@@ -420,7 +417,7 @@
             </h3>
             <p class="text-xs text-slate-500 mt-0.5">Hubungkan Web App URL Google Apps Script agar data realisasi langsung masuk ke Google Sheet.</p>
           </div>
-          <button onclick="toggleScriptGuide()" class="px-3 py-1.5 rounded-xl bg-[#F4F8F5] text-[#056839] text-xs font-bold border border-[#056839]/20 cursor-pointer">
+          <button type="button" onclick="toggleScriptGuide()" class="px-3 py-1.5 rounded-xl bg-[#F4F8F5] text-[#056839] text-xs font-bold border border-[#056839]/20 cursor-pointer">
             📋 Lihat Kode Apps Script
           </button>
         </div>
@@ -468,14 +465,14 @@
           
           <div class="flex gap-2">
             <input type="text" id="newPtName" placeholder="Tambah Nama PT..." class="form-input text-xs" />
-            <button onclick="addPT()" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ PT</button>
+            <button type="button" onclick="addPT()" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ PT</button>
           </div>
 
           <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-2">
             <select id="mstSelectPtForAfd" class="form-input text-xs bg-white font-semibold"></select>
             <div class="flex gap-2">
               <input type="text" id="newAfdName" placeholder="Nama Afdeling (mis: Plasma BSP AFD 4)" class="form-input text-xs bg-white" />
-              <button onclick="addAfdeling()" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Afd</button>
+              <button type="button" onclick="addAfdeling()" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Afd</button>
             </div>
           </div>
 
@@ -486,7 +483,7 @@
               <input type="text" id="newBlokCode" placeholder="Kode Blok (D01/23)" class="form-input text-xs bg-white" />
               <input type="number" step="0.1" id="newBlokLuas" placeholder="Luas (Ha)" class="form-input text-xs bg-white" />
             </div>
-            <button onclick="addBlok()" class="w-full py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold cursor-pointer">+ Tambah Blok</button>
+            <button type="button" onclick="addBlok()" class="w-full py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold cursor-pointer">+ Tambah Blok</button>
           </div>
 
           <div id="masterOrgList" class="space-y-2.5 max-h-64 overflow-y-auto pr-1"></div>
@@ -500,13 +497,13 @@
             <input type="text" id="newJobName" placeholder="Nama Pekerjaan (mis: Pemupukan Manual)" class="form-input text-xs bg-white" />
             <div class="flex gap-2">
               <select id="newJobUnit" class="form-input text-xs bg-white font-bold"></select>
-              <button onclick="addJob()" class="px-4 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Simpan</button>
+              <button type="button" onclick="addJob()" class="px-4 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Simpan</button>
             </div>
           </div>
 
           <div class="flex gap-2">
             <input type="text" id="newUnitName" placeholder="Satuan baru (Ha / Pokok / Kg)" class="form-input text-xs" />
-            <button onclick="addUnit()" class="px-3 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold shrink-0 cursor-pointer">+ Unit</button>
+            <button type="button" onclick="addUnit()" class="px-3 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold shrink-0 cursor-pointer">+ Unit</button>
           </div>
           <div id="masterUnitList" class="flex flex-wrap gap-1.5"></div>
 
@@ -528,7 +525,7 @@
               </div>
               <div class="flex gap-2">
                 <input type="text" id="newMatName" placeholder="Nama Material (mis: NPK / Glyphosate)" class="form-input text-xs bg-white" />
-                <button onclick="addMaterial()" class="px-3.5 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Tambah</button>
+                <button type="button" onclick="addMaterial()" class="px-3.5 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Tambah</button>
               </div>
             </div>
             <div id="masterMaterialList" class="divide-y divide-slate-100 max-h-44 overflow-y-auto"></div>
@@ -540,13 +537,13 @@
             
             <div class="flex gap-2">
               <input type="text" id="newAsistenName" placeholder="Nama Asisten..." class="form-input text-xs" />
-              <button onclick="addPerson('asisten')" class="px-3 py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold shrink-0 cursor-pointer">+ Asisten</button>
+              <button type="button" onclick="addPerson('asisten')" class="px-3 py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold shrink-0 cursor-pointer">+ Asisten</button>
             </div>
             <div id="masterAsistenList" class="flex flex-wrap gap-1.5"></div>
 
             <div class="flex gap-2 pt-2 border-t border-slate-100">
               <input type="text" id="newMandorName" placeholder="Nama Mandor..." class="form-input text-xs" />
-              <button onclick="addPerson('mandor')" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Mandor</button>
+              <button type="button" onclick="addPerson('mandor')" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Mandor</button>
             </div>
             <div id="masterMandorList" class="flex flex-wrap gap-1.5"></div>
           </div>
@@ -555,7 +552,7 @@
       </div>
 
       <div class="flex justify-end">
-        <button onclick="resetMasterToDefault()" class="px-4 py-2 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 text-xs font-bold cursor-pointer">
+        <button type="button" onclick="resetMasterToDefault()" class="px-4 py-2 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 text-xs font-bold cursor-pointer">
           Reset Semua Master Data ke Default
         </button>
       </div>
@@ -574,6 +571,42 @@
     <span id="toastMsg">Tersimpan</span>
   </div>
 
+  <!-- PENGAMAN SPLASH SCREEN ANTI-STUCK DI ANDROID WEBVIEW -->
+  <script>
+    window.enterApp = function(withSound) {
+      var splash = document.getElementById("splashScreen");
+      if (withSound) {
+        var pill = document.getElementById("voiceStatusPill");
+        if (pill) {
+          pill.classList.remove("hidden");
+          pill.classList.add("inline-flex");
+        }
+        try {
+          if (typeof playKencanaVoice === "function") {
+            playKencanaVoice();
+          } else if ("speechSynthesis" in window) {
+            window.speechSynthesis.cancel();
+            var u = new SpeechSynthesisUtterance("Kencana, Pasti Bisa!");
+            u.lang = "id-ID";
+            window.speechSynthesis.speak(u);
+          }
+        } catch (e) {}
+        setTimeout(function() {
+          if (splash) {
+            splash.style.opacity = "0";
+            splash.style.pointerEvents = "none";
+            setTimeout(function() { splash.style.display = "none"; }, 500);
+          }
+        }, 1200);
+      } else {
+        if (splash) {
+          splash.style.opacity = "0";
+          splash.style.pointerEvents = "none";
+          setTimeout(function() { splash.style.display = "none"; }, 300);
+        }
+      }
+    };
+  </script>
   <script src="app.js"></script>
 </body>
 </html>
