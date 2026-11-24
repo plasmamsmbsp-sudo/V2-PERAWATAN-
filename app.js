@@ -91,7 +91,7 @@ function playKencanaVoice() {
   } catch (e) {}
 }
 
-// ==================== INIT ====================
+// ==================== INIT & NAVIGASI ====================
 function initApp() {
   const now = new Date();
   const today = now.toISOString().split("T")[0];
@@ -438,8 +438,8 @@ function renderRecentFeed() {
       <button type="button" onclick="editRecord('${r.id}')" class="text-xs px-2 py-1 rounded-lg hover:bg-slate-100 text-slate-500 cursor-pointer">✏️</button>
     </div>
   `).join("");
-      }
-// ==================== REKAP HARIAN & BULANAN ====================
+    }
+// ==================== REKAP HARIAN, BULANAN & OUTPUT PER TK ====================
 function onFilterModeChange() {
   const mode = document.getElementById("fltMode").value;
   document.getElementById("wrapFltTanggal").classList.toggle("hidden", mode !== "harian");
@@ -481,10 +481,14 @@ function renderRekapAll() {
 
   document.getElementById("lblPeriodeBadge1").textContent = label;
   document.getElementById("lblPeriodeBadge2").textContent = label;
+  if (document.getElementById("lblPeriodeBadge3")) {
+    document.getElementById("lblPeriodeBadge3").textContent = label;
+  }
 
   const list = getFilteredRecords();
   document.getElementById("tblRowCount").textContent = `${list.length} Baris`;
 
+  // 1. Rekap per Pekerjaan
   const jobMap = {};
   list.forEach(r => {
     const key = `${r.pekerjaan}|||${r.satuan}`;
@@ -501,10 +505,11 @@ function renderRekapAll() {
           <td class="py-2.5 px-4 text-right font-extrabold text-[#056839]">${j.hasil.toLocaleString("id-ID")}</td>
           <td class="py-2.5 px-4 font-bold text-[#A6891B]">${j.satuan}</td>
           <td class="py-2.5 px-4 text-right font-bold">${j.hk.toLocaleString("id-ID")}</td>
-          <td class="py-2.5 px-4 text-right text-slate-500">${j.hk > 0 ? (j.hasil / j.hk).toFixed(2) : "0.00"}</td>
+          <td class="py-2.5 px-4 text-right font-extrabold text-slate-700">${j.hk > 0 ? (j.hasil / j.hk).toFixed(2) : "0.00"}</td>
         </tr>`).join("")
     : `<tr><td colspan="5" class="py-6 text-center text-slate-400">Tidak ada data pada periode ini</td></tr>`;
 
+  // 2. Rekap per Material
   const matMap = {};
   list.forEach(r => {
     [
@@ -532,6 +537,35 @@ function renderRekapAll() {
         </tr>`).join("")
     : `<tr><td colspan="4" class="py-6 text-center text-slate-400">Belum ada pemakaian material</td></tr>`;
 
+  // 3. Rekap Output per TK (Mandor / Regu TK)
+  const tkBody = document.getElementById("rekapTkBody");
+  if (tkBody) {
+    const tkMap = {};
+    list.forEach(r => {
+      const key = `${r.mandor}|||${r.pekerjaan}|||${r.satuan}`;
+      if (!tkMap[key]) tkMap[key] = { mandor: r.mandor, pekerjaan: r.pekerjaan, satuan: r.satuan, hasil: 0, hk: 0 };
+      tkMap[key].hasil += Number(r.hasil || 0);
+      tkMap[key].hk += Number(r.hk || 0);
+    });
+
+    const tkRows = Object.values(tkMap);
+    tkBody.innerHTML = tkRows.length
+      ? tkRows.map(t => {
+          const outPerTk = t.hk > 0 ? (t.hasil / t.hk).toFixed(2) : "0.00";
+          return `
+            <tr>
+              <td class="py-2.5 px-4 font-extrabold text-slate-900">${t.mandor}</td>
+              <td class="py-2.5 px-4 font-medium text-slate-700">${t.pekerjaan}</td>
+              <td class="py-2.5 px-4 text-right font-bold text-[#056839]">${t.hasil.toLocaleString("id-ID")}</td>
+              <td class="py-2.5 px-4 font-bold text-[#A6891B]">${t.satuan}</td>
+              <td class="py-2.5 px-4 text-right font-bold">${t.hk.toLocaleString("id-ID")} HK</td>
+              <td class="py-2.5 px-4 text-right font-extrabold bg-[#F4F8F5] text-[#056839]">${outPerTk} ${t.satuan}/TK</td>
+            </tr>`;
+        }).join("")
+      : `<tr><td colspan="6" class="py-6 text-center text-slate-400">Belum ada data output per TK</td></tr>`;
+  }
+
+  // 4. Tabel Rincian
   const tbody = document.getElementById("sheetTableBody");
   const tfoot = document.getElementById("sheetTableFoot");
   if (!list.length) {
@@ -572,8 +606,7 @@ function renderRekapAll() {
       <td class="py-3 px-3.5 text-right text-sm">${totalHK.toLocaleString("id-ID")} HK</td>
       <td colspan="3"></td>
     </tr>`;
-}
-
+    }
 // ==================== MASTER DATABASE CRUD ====================
 function renderMasterUI() {
   refreshAllDropdowns();
@@ -746,11 +779,12 @@ function shareWhatsAppReport() {
   const lines = list.map((r, i) => {
     totalHK += Number(r.hk || 0);
     const mat = formatMatBadge(r);
-    return `${i + 1}. *${r.afdeling}* | Blok *${r.blok}*\n   • ${r.pekerjaan}: *${Number(r.hasil).toLocaleString("id-ID")} ${r.satuan}* (${r.hk} HK)\n   • Material: ${mat}\n   • Mandor: ${r.mandor} (Ast: ${r.asisten})`;
+    const outTk = r.hk > 0 ? (r.hasil / r.hk).toFixed(2) : "0.00";
+    return `${i + 1}. *${r.afdeling}* | Blok *${r.blok}*\n   • ${r.pekerjaan}: *${Number(r.hasil).toLocaleString("id-ID")} ${r.satuan}* (${r.hk} HK | Out/TK: ${outTk})\n   • Material: ${mat}\n   • Mandor: ${r.mandor} (Ast: ${r.asisten})`;
   });
 
   const text =
-    `*LAPORAN REALISASI PERAWATAN HARIAN*\n` +
+    `*LAPORAN REALISASI RAWAT HARIAN*\n` +
     `*PT KENCANA AGRI — PLASMA WANGGARASI*\n` +
     `Tanggal: *${tgl}*\n` +
     `------------------------------------\n` +
@@ -768,19 +802,38 @@ function exportToExcel() {
   if (typeof XLSX === "undefined") return showToast("Library Excel butuh koneksi internet!", "⚠️");
 
   const wb = XLSX.utils.book_new();
+
   const wsHarian = XLSX.utils.json_to_sheet(records.map((r, i) => ({
     "No": i + 1, "Tanggal": r.tanggal, "Bulan": r.tanggal.substring(0, 7),
     "PT": r.pt, "Afdeling": r.afdeling, "Blok": r.blok, "Jenis Pekerjaan": r.pekerjaan,
     "Realisasi": Number(r.hasil), "Satuan": r.satuan, "HK": Number(r.hk),
-    "Output/HK": r.hk > 0 ? Number((r.hasil / r.hk).toFixed(2)) : 0,
+    "Output/TK": r.hk > 0 ? Number((r.hasil / r.hk).toFixed(2)) : 0,
     "Material 1": r.mat1Nama, "Jumlah Mat 1": r.mat1Qty, "Satuan Mat 1": r.mat1Unit,
     "Material 2": r.mat2Nama, "Jumlah Mat 2": r.mat2Qty, "Satuan Mat 2": r.mat2Unit,
     "Mandor": r.mandor, "Asisten": r.asisten, "Keterangan": r.keterangan
   })));
   XLSX.utils.book_append_sheet(wb, wsHarian, "Realisasi_Harian");
 
+  const tkMap = {};
+  records.forEach(r => {
+    const k = `${r.mandor}|||${r.pekerjaan}|||${r.satuan}`;
+    if (!tkMap[k]) tkMap[k] = { Mandor: r.mandor, Pekerjaan: r.pekerjaan, Satuan: r.satuan, Hasil: 0, HK: 0 };
+    tkMap[k].Hasil += Number(r.hasil || 0);
+    tkMap[k].HK += Number(r.hk || 0);
+  });
+  const wsTk = XLSX.utils.json_to_sheet(Object.values(tkMap).map((t, i) => ({
+    "No": i + 1,
+    "Mandor / Regu TK": t.Mandor,
+    "Jenis Pekerjaan": t.Pekerjaan,
+    "Total Hasil": t.Hasil,
+    "Satuan": t.Satuan,
+    "Total TK (HK)": t.HK,
+    "Output per TK": t.HK > 0 ? Number((t.Hasil / t.HK).toFixed(2)) : 0
+  })));
+  XLSX.utils.book_append_sheet(wb, wsTk, "Rekap_Output_per_TK");
+
   const tgl = new Date().toISOString().split("T")[0];
-  XLSX.writeFile(wb, `Realisasi_Perawatan_Kencana_Wanggarasi_${tgl}.xlsx`);
+  XLSX.writeFile(wb, `REALISASI_RAWAT_Kencana_${tgl}.xlsx`);
   showToast("Excel berhasil didownload!", "📥");
 }
 
@@ -797,15 +850,18 @@ function toggleScriptGuide() {
 }
 
 async function postRecordToWebhook(rec) {
-  if (!sheetConfig.url) return;
+  if (!sheetConfig.url) return false;
   try {
     await fetch(sheetConfig.url, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(rec)
     });
-  } catch (err) {}
+    return true;
+  } catch (err) {
+    return false;
+  }
 }
 
 async function syncAllToGoogleSheet() {
@@ -813,18 +869,24 @@ async function syncAllToGoogleSheet() {
     switchTab("master");
     return showToast("Masukkan URL Web App Google Script terlebih dahulu!", "⚠️");
   }
+  if (!sheetConfig.url.includes("/exec")) {
+    return showToast("Pastikan URL berakhiran /exec (bukan /dev)!", "⚠️");
+  }
   if (!records.length) return showToast("Belum ada data untuk dikirim!", "⚠️");
 
   const btn = document.getElementById("btnSyncGsheet");
   btn.disabled = true;
-  btn.textContent = `⏳ Mengirim ${records.length}...`;
+  let terkirim = 0;
 
-  for (const r of records) {
-    await postRecordToWebhook(r);
+  for (let i = 0; i < records.length; i++) {
+    btn.textContent = `⏳ Mengirim ${i + 1}/${records.length}...`;
+    const ok = await postRecordToWebhook(records[i]);
+    if (ok) terkirim++;
+    await new Promise(res => setTimeout(res, 250));
   }
 
   btn.disabled = false;
   btn.textContent = "☁️ Sync Google Sheet";
-  showToast(`${records.length} data terkirim ke Google Sheet!`, "☁️");
-      }
+  showToast(`${terkirim} data berhasil disinkronkan ke Google Sheet!`, "☁️");
+}
   
