@@ -51,12 +51,16 @@ const DEFAULT_MASTER = {
   mandors: ["Meti", "Pak Ramin", "Pak Budi", "Bang Candra", "Bang Edi"]
 };
 
+function cloneObj(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
 // ==================== STATE ====================
-let masterData = JSON.parse(localStorage.getItem("kencana_master_v3")) || structuredClone(DEFAULT_MASTER);
+let masterData = JSON.parse(localStorage.getItem("kencana_master_v3")) || cloneObj(DEFAULT_MASTER);
 let records = JSON.parse(localStorage.getItem("kencana_records_v3")) || [];
 let sheetConfig = JSON.parse(localStorage.getItem("kencana_gsheet_cfg_v3")) || { url: "", autoSync: false };
 
-// ==================== SPLASH SCREEN & SUARA WANITA SEMANGAT ====================
+// ==================== SUARA PEMBUKA ====================
 function playKencanaVoice() {
   try {
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -76,71 +80,41 @@ function playKencanaVoice() {
         osc.stop(ctx.currentTime + i * 0.11 + 0.45);
       });
     }
-
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       const utter = new SpeechSynthesisUtterance("Kencana, Pasti Bisa!");
       utter.lang = "id-ID";
       utter.pitch = 1.25;
       utter.rate = 1.05;
-      utter.volume = 1.0;
-
-      const voices = window.speechSynthesis.getVoices();
-      const femaleIdVoice = voices.find(v =>
-        v.lang.toLowerCase().includes("id") &&
-        (v.name.toLowerCase().includes("female") ||
-         v.name.toLowerCase().includes("gadis") ||
-         v.name.toLowerCase().includes("damayanti") ||
-         v.name.toLowerCase().includes("google"))
-      ) || voices.find(v => v.lang.toLowerCase().includes("id"));
-
-      if (femaleIdVoice) utter.voice = femaleIdVoice;
       window.speechSynthesis.speak(utter);
     }
-  } catch (e) {
-    console.warn("Audio tidak didukung:", e);
-  }
-}
-
-function enterApp(withSound) {
-  const splash = document.getElementById("splashScreen");
-  if (withSound) {
-    document.getElementById("voiceStatusPill").classList.remove("hidden");
-    document.getElementById("voiceStatusPill").classList.add("inline-flex");
-    playKencanaVoice();
-    setTimeout(() => {
-      splash.classList.add("opacity-0", "pointer-events-none");
-      setTimeout(() => splash.remove(), 650);
-    }, 1700);
-  } else {
-    splash.classList.add("opacity-0", "pointer-events-none");
-    setTimeout(() => splash.remove(), 400);
-  }
-}
-
-if ("speechSynthesis" in window) {
-  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  } catch (e) {}
 }
 
 // ==================== INIT ====================
-document.addEventListener("DOMContentLoaded", () => {
+function initApp() {
   const now = new Date();
   const today = now.toISOString().split("T")[0];
   const thisMonth = today.substring(0, 7);
 
-  document.getElementById("inpTanggal").value = today;
-  document.getElementById("fltTanggal").value = today;
-  document.getElementById("fltBulan").value = thisMonth;
+  if (document.getElementById("inpTanggal")) document.getElementById("inpTanggal").value = today;
+  if (document.getElementById("fltTanggal")) document.getElementById("fltTanggal").value = today;
+  if (document.getElementById("fltBulan")) document.getElementById("fltBulan").value = thisMonth;
 
-  document.getElementById("gsheetWebhookUrl").value = sheetConfig.url || "";
-  document.getElementById("autoSyncCheck").checked = !!sheetConfig.autoSync;
+  if (document.getElementById("gsheetWebhookUrl")) document.getElementById("gsheetWebhookUrl").value = sheetConfig.url || "";
+  if (document.getElementById("autoSyncCheck")) document.getElementById("autoSyncCheck").checked = !!sheetConfig.autoSync;
 
   refreshAllDropdowns();
   renderMasterUI();
   renderRecentFeed();
   renderRekapAll();
   updateDashboardKPI();
-});
+}
+
+document.addEventListener("DOMContentLoaded", initApp);
+if (document.readyState === "complete" || document.readyState === "interactive") {
+  setTimeout(initApp, 100);
+}
 
 function saveStorage() {
   localStorage.setItem("kencana_master_v3", JSON.stringify(masterData));
@@ -149,6 +123,7 @@ function saveStorage() {
 
 function showToast(msg, icon = "✅") {
   const t = document.getElementById("toast");
+  if (!t) return;
   document.getElementById("toastMsg").textContent = msg;
   document.getElementById("toastIcon").textContent = icon;
   t.classList.remove("translate-y-24", "opacity-0");
@@ -157,68 +132,79 @@ function showToast(msg, icon = "✅") {
 
 function switchTab(name) {
   ["input", "rekap", "master"].forEach(t => {
-    document.getElementById(`tab-${t}`).classList.add("hidden");
-    document.getElementById(`tabBtn-${t}`).classList.remove("nav-pill-active");
+    const sec = document.getElementById(`tab-${t}`);
+    const btn = document.getElementById(`tabBtn-${t}`);
+    if (sec) sec.classList.add("hidden");
+    if (btn) btn.classList.remove("nav-pill-active");
   });
-  document.getElementById(`tab-${name}`).classList.remove("hidden");
-  document.getElementById(`tabBtn-${name}`).classList.add("nav-pill-active");
+  const activeSec = document.getElementById(`tab-${name}`);
+  const activeBtn = document.getElementById(`tabBtn-${name}`);
+  if (activeSec) activeSec.classList.remove("hidden");
+  if (activeBtn) activeBtn.classList.add("nav-pill-active");
 
   if (name === "rekap") renderRekapAll();
   if (name === "master") renderMasterUI();
 }
-
 // ==================== DROPDOWN POPULATION ====================
 function refreshAllDropdowns() {
-  const ptNames = Object.keys(masterData.orgs);
+  const ptNames = Object.keys(masterData.orgs || {});
   const inpPT = document.getElementById("inpPT");
   const mstPt = document.getElementById("mstSelectPtForAfd");
+  if (!inpPT) return;
   const prevPT = inpPT.value;
 
   inpPT.innerHTML = `<option value="">-- Pilih PT --</option>`;
-  mstPt.innerHTML = "";
+  if (mstPt) mstPt.innerHTML = "";
   ptNames.forEach(pt => {
     inpPT.innerHTML += `<option value="${pt}">${pt}</option>`;
-    mstPt.innerHTML += `<option value="${pt}">${pt}</option>`;
+    if (mstPt) mstPt.innerHTML += `<option value="${pt}">${pt}</option>`;
   });
   inpPT.value = ptNames.includes(prevPT) ? prevPT : (ptNames[0] || "");
   onPTChange();
 
   const fltAfd = document.getElementById("fltAfdeling");
   const mstAfd = document.getElementById("mstSelectAfdForBlok");
-  fltAfd.innerHTML = `<option value="">Semua Afdeling</option>`;
-  mstAfd.innerHTML = "";
-  Object.entries(masterData.orgs).forEach(([pt, afds]) => {
+  if (fltAfd) fltAfd.innerHTML = `<option value="">Semua Afdeling</option>`;
+  if (mstAfd) mstAfd.innerHTML = "";
+  Object.entries(masterData.orgs || {}).forEach(([pt, afds]) => {
     Object.keys(afds).forEach(afd => {
-      fltAfd.innerHTML += `<option value="${afd}">${afd}</option>`;
-      mstAfd.innerHTML += `<option value="${pt}|||${afd}">${pt} — ${afd}</option>`;
+      if (fltAfd) fltAfd.innerHTML += `<option value="${afd}">${afd}</option>`;
+      if (mstAfd) mstAfd.innerHTML += `<option value="${pt}|||${afd}">${pt} — ${afd}</option>`;
     });
   });
 
   const inpAsisten = document.getElementById("inpAsisten");
   const inpMandor = document.getElementById("inpMandor");
-  inpAsisten.innerHTML = `<option value="">-- Pilih Asisten --</option>` +
-    masterData.asistens.map(a => `<option value="${a}">${a}</option>`).join("");
-  if (masterData.asistens.length) inpAsisten.value = masterData.asistens[0];
-
-  inpMandor.innerHTML = `<option value="">-- Pilih Mandor --</option>` +
-    masterData.mandors.map(m => `<option value="${m}">${m}</option>`).join("");
+  if (inpAsisten) {
+    inpAsisten.innerHTML = `<option value="">-- Pilih Asisten --</option>` +
+      masterData.asistens.map(a => `<option value="${a}">${a}</option>`).join("");
+    if (masterData.asistens.length) inpAsisten.value = masterData.asistens[0];
+  }
+  if (inpMandor) {
+    inpMandor.innerHTML = `<option value="">-- Pilih Mandor --</option>` +
+      masterData.mandors.map(m => `<option value="${m}">${m}</option>`).join("");
+  }
 
   const inpJob = document.getElementById("inpPekerjaan");
   const fltJob = document.getElementById("fltPekerjaan");
-  inpJob.innerHTML = `<option value="">-- Pilih Jenis Pekerjaan --</option>` +
-    masterData.jobs.map(j => `<option value="${j.nama}" data-unit="${j.unit}">${j.nama} (${j.unit})</option>`).join("");
-  fltJob.innerHTML = `<option value="">Semua Pekerjaan</option>` +
-    masterData.jobs.map(j => `<option value="${j.nama}">${j.nama}</option>`).join("");
+  if (inpJob) {
+    inpJob.innerHTML = `<option value="">-- Pilih Jenis Pekerjaan --</option>` +
+      masterData.jobs.map(j => `<option value="${j.nama}" data-unit="${j.unit}">${j.nama} (${j.unit})</option>`).join("");
+  }
+  if (fltJob) {
+    fltJob.innerHTML = `<option value="">Semua Pekerjaan</option>` +
+      masterData.jobs.map(j => `<option value="${j.nama}">${j.nama}</option>`).join("");
+  }
 
   const inpUnit = document.getElementById("inpSatuan");
   const mstUnit = document.getElementById("newJobUnit");
-  inpUnit.innerHTML = masterData.units.map(u => `<option value="${u}">${u}</option>`).join("");
-  mstUnit.innerHTML = masterData.units.map(u => `<option value="${u}">${u}</option>`).join("");
+  if (inpUnit) inpUnit.innerHTML = masterData.units.map(u => `<option value="${u}">${u}</option>`).join("");
+  if (mstUnit) mstUnit.innerHTML = masterData.units.map(u => `<option value="${u}">${u}</option>`).join("");
 
   const matOptions = `<option value="">-- Tidak Pakai Material --</option>` +
     masterData.materials.map((m, idx) => `<option value="${idx}" data-nama="${m.nama}" data-jenis="${m.jenis}" data-unit="${m.unit}">[${m.jenis}] ${m.nama}</option>`).join("");
-  document.getElementById("inpMat1").innerHTML = matOptions;
-  document.getElementById("inpMat2").innerHTML = matOptions;
+  if (document.getElementById("inpMat1")) document.getElementById("inpMat1").innerHTML = matOptions;
+  if (document.getElementById("inpMat2")) document.getElementById("inpMat2").innerHTML = matOptions;
 }
 
 function onPTChange() {
@@ -397,7 +383,6 @@ function deleteRecord(id) {
   showToast("Data dihapus", "🗑️");
 }
 
-// ==================== KPI & RECENT FEED ====================
 function updateDashboardKPI() {
   const selDate = document.getElementById("inpTanggal").value;
   const selMonth = selDate ? selDate.substring(0, 7) : "";
@@ -430,6 +415,7 @@ function formatMatBadge(r) {
 
 function renderRecentFeed() {
   const box = document.getElementById("recentFeedList");
+  if (!box) return;
   if (!records.length) {
     box.innerHTML = `<div class="text-center py-12 text-slate-400 text-xs">Belum ada realisasi yang diinput hari ini.</div>`;
     return;
@@ -449,11 +435,10 @@ function renderRecentFeed() {
         </p>
         <p class="text-[11px] text-slate-500">🧪 ${formatMatBadge(r)} • Mandor: ${r.mandor}</p>
       </div>
-      <button onclick="editRecord('${r.id}')" class="text-xs px-2 py-1 rounded-lg hover:bg-slate-100 text-slate-500 cursor-pointer">✏️</button>
+      <button type="button" onclick="editRecord('${r.id}')" class="text-xs px-2 py-1 rounded-lg hover:bg-slate-100 text-slate-500 cursor-pointer">✏️</button>
     </div>
   `).join("");
-}
-
+      }
 // ==================== REKAP HARIAN & BULANAN ====================
 function onFilterModeChange() {
   const mode = document.getElementById("fltMode").value;
@@ -575,8 +560,8 @@ function renderRekapAll() {
           <div class="text-slate-400">Ast: ${r.asisten}</div>
         </td>
         <td class="py-2.5 px-3.5 text-center whitespace-nowrap">
-          <button onclick="editRecord('${r.id}')" class="text-[#056839] font-bold mr-2 hover:underline cursor-pointer">Edit</button>
-          <button onclick="deleteRecord('${r.id}')" class="text-red-500 font-bold hover:underline cursor-pointer">Hapus</button>
+          <button type="button" onclick="editRecord('${r.id}')" class="text-[#056839] font-bold mr-2 hover:underline cursor-pointer">Edit</button>
+          <button type="button" onclick="deleteRecord('${r.id}')" class="text-red-500 font-bold hover:underline cursor-pointer">Hapus</button>
         </td>
       </tr>`;
   }).join("");
@@ -594,23 +579,24 @@ function renderMasterUI() {
   refreshAllDropdowns();
 
   const orgBox = document.getElementById("masterOrgList");
-  orgBox.innerHTML = Object.entries(masterData.orgs).map(([pt, afds]) => `
+  if (!orgBox) return;
+  orgBox.innerHTML = Object.entries(masterData.orgs || {}).map(([pt, afds]) => `
     <div class="p-3 rounded-2xl border border-slate-200 bg-slate-50/70 space-y-2">
       <div class="flex items-center justify-between">
         <span class="text-xs font-extrabold text-[#056839]">${pt}</span>
-        <button onclick="deletePT('${pt}')" class="text-[10px] text-red-500 font-bold cursor-pointer">Hapus PT</button>
+        <button type="button" onclick="deletePT('${pt}')" class="text-[10px] text-red-500 font-bold cursor-pointer">Hapus PT</button>
       </div>
       ${Object.entries(afds).map(([afd, bloks]) => `
         <div class="pl-2.5 border-l-2 border-[#A6891B] space-y-1">
           <div class="flex items-center justify-between">
             <span class="text-[11px] font-bold text-slate-700">${afd}</span>
-            <button onclick="deleteAfdeling('${pt}','${afd}')" class="text-[10px] text-red-400 cursor-pointer">× Afd</button>
+            <button type="button" onclick="deleteAfdeling('${pt}','${afd}')" class="text-[10px] text-red-400 cursor-pointer">× Afd</button>
           </div>
           <div class="flex flex-wrap gap-1">
             ${bloks.map((b, i) => `
               <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-white border border-slate-200 text-[10px] font-semibold">
                 ${b.kode} (${b.luas}Ha)
-                <button onclick="deleteBlok('${pt}','${afd}',${i})" class="text-red-500 font-bold cursor-pointer">×</button>
+                <button type="button" onclick="deleteBlok('${pt}','${afd}',${i})" class="text-red-500 font-bold cursor-pointer">×</button>
               </span>
             `).join("")}
           </div>
@@ -621,7 +607,7 @@ function renderMasterUI() {
 
   document.getElementById("masterUnitList").innerHTML = masterData.units.map((u, i) => `
     <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#F4F8F5] border border-[#056839]/20 text-[#056839] text-[11px] font-bold">
-      ${u} <button onclick="deleteUnit(${i})" class="text-red-500 cursor-pointer">×</button>
+      ${u} <button type="button" onclick="deleteUnit(${i})" class="text-red-500 cursor-pointer">×</button>
     </span>
   `).join("");
 
@@ -631,7 +617,7 @@ function renderMasterUI() {
         <span class="font-bold text-slate-800">${j.nama}</span>
         <span class="ml-1.5 px-1.5 py-0.5 rounded bg-[#FFF200]/60 text-[#056839] text-[10px] font-extrabold">${j.unit}</span>
       </div>
-      <button onclick="deleteJob(${i})" class="text-red-500 text-[11px] font-bold cursor-pointer">Hapus</button>
+      <button type="button" onclick="deleteJob(${i})" class="text-red-500 text-[11px] font-bold cursor-pointer">Hapus</button>
     </div>
   `).join("");
 
@@ -642,19 +628,19 @@ function renderMasterUI() {
         <span class="font-bold text-slate-800">${m.nama}</span>
         <span class="text-slate-400 text-[11px]">(${m.unit})</span>
       </div>
-      <button onclick="deleteMaterial(${i})" class="text-red-500 text-[11px] font-bold cursor-pointer">Hapus</button>
+      <button type="button" onclick="deleteMaterial(${i})" class="text-red-500 text-[11px] font-bold cursor-pointer">Hapus</button>
     </div>
   `).join("");
 
   document.getElementById("masterAsistenList").innerHTML = masterData.asistens.map((a, i) => `
     <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#FFFDF2] border border-[#A6891B]/30 text-[#A6891B] text-[11px] font-bold">
-      ${a} <button onclick="deletePerson('asisten', ${i})" class="text-red-500 cursor-pointer">×</button>
+      ${a} <button type="button" onclick="deletePerson('asisten', ${i})" class="text-red-500 cursor-pointer">×</button>
     </span>
   `).join("");
 
   document.getElementById("masterMandorList").innerHTML = masterData.mandors.map((m, i) => `
     <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#F4F8F5] border border-[#056839]/20 text-[#056839] text-[11px] font-bold">
-      ${m} <button onclick="deletePerson('mandor', ${i})" class="text-red-500 cursor-pointer">×</button>
+      ${m} <button type="button" onclick="deletePerson('mandor', ${i})" class="text-red-500 cursor-pointer">×</button>
     </span>
   `).join("");
 }
@@ -746,11 +732,11 @@ function deletePerson(role, i) {
 
 function resetMasterToDefault() {
   if (!confirm("Kembalikan semua pengaturan database ke default?")) return;
-  masterData = structuredClone(DEFAULT_MASTER);
+  masterData = cloneObj(DEFAULT_MASTER);
   saveStorage(); renderMasterUI(); showToast("Database direset ke default");
 }
 
-// ==================== WHATSAPP REPORT ====================
+// ==================== WHATSAPP, EXCEL & GOOGLE SHEETS ====================
 function shareWhatsAppReport() {
   const tgl = document.getElementById("inpTanggal").value;
   const list = records.filter(r => r.tanggal === tgl);
@@ -760,103 +746,44 @@ function shareWhatsAppReport() {
   const lines = list.map((r, i) => {
     totalHK += Number(r.hk || 0);
     const mat = formatMatBadge(r);
-    return `${i + 1}. *${r.afdeling}* | Blok *${r.blok}*
-   • ${r.pekerjaan}: *${Number(r.hasil).toLocaleString("id-ID")} ${r.satuan}* (${r.hk} HK)
-   • Material: ${mat}
-   • Mandor: ${r.mandor} (Ast: ${r.asisten})`;
+    return `${i + 1}. *${r.afdeling}* | Blok *${r.blok}*\n   • ${r.pekerjaan}: *${Number(r.hasil).toLocaleString("id-ID")} ${r.satuan}* (${r.hk} HK)\n   • Material: ${mat}\n   • Mandor: ${r.mandor} (Ast: ${r.asisten})`;
   });
 
   const text =
-    `*LAPORAN REALISASI PERAWATAN HARIAN*
-` +
-    `*PT KENCANA AGRI — PLASMA WANGGARASI*
-` +
-    `Tanggal: *${tgl}*
-` +
-    `------------------------------------
-` +
-    lines.join("
-
-") +
-    `
-------------------------------------
-` +
-    `*Total Aktivitas:* ${list.length} Item
-` +
-    `*Total HK:* ${totalHK.toLocaleString("id-ID")} HK
-` +
+    `*LAPORAN REALISASI PERAWATAN HARIAN*\n` +
+    `*PT KENCANA AGRI — PLASMA WANGGARASI*\n` +
+    `Tanggal: *${tgl}*\n` +
+    `------------------------------------\n` +
+    lines.join("\n\n") +
+    `\n------------------------------------\n` +
+    `*Total Aktivitas:* ${list.length} Item\n` +
+    `*Total HK:* ${totalHK.toLocaleString("id-ID")} HK\n` +
     `_KENCANA PASTI BISA!_`;
 
   window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
 }
 
-// ==================== EXPORT EXCEL (HARIAN & BULANAN) ====================
 function exportToExcel() {
   if (!records.length) return showToast("Belum ada data realisasi!", "⚠️");
+  if (typeof XLSX === "undefined") return showToast("Library Excel butuh koneksi internet!", "⚠️");
 
   const wb = XLSX.utils.book_new();
-
   const wsHarian = XLSX.utils.json_to_sheet(records.map((r, i) => ({
-    "No": i + 1,
-    "Tanggal": r.tanggal,
-    "Bulan": r.tanggal.substring(0, 7),
-    "PT": r.pt,
-    "Afdeling": r.afdeling,
-    "Blok": r.blok,
-    "Jenis Pekerjaan": r.pekerjaan,
-    "Realisasi": Number(r.hasil),
-    "Satuan": r.satuan,
-    "HK": Number(r.hk),
+    "No": i + 1, "Tanggal": r.tanggal, "Bulan": r.tanggal.substring(0, 7),
+    "PT": r.pt, "Afdeling": r.afdeling, "Blok": r.blok, "Jenis Pekerjaan": r.pekerjaan,
+    "Realisasi": Number(r.hasil), "Satuan": r.satuan, "HK": Number(r.hk),
     "Output/HK": r.hk > 0 ? Number((r.hasil / r.hk).toFixed(2)) : 0,
-    "Material 1": r.mat1Nama,
-    "Jumlah Mat 1": r.mat1Qty,
-    "Satuan Mat 1": r.mat1Unit,
-    "Material 2": r.mat2Nama,
-    "Jumlah Mat 2": r.mat2Qty,
-    "Satuan Mat 2": r.mat2Unit,
-    "Mandor": r.mandor,
-    "Asisten": r.asisten,
-    "Keterangan": r.keterangan
+    "Material 1": r.mat1Nama, "Jumlah Mat 1": r.mat1Qty, "Satuan Mat 1": r.mat1Unit,
+    "Material 2": r.mat2Nama, "Jumlah Mat 2": r.mat2Qty, "Satuan Mat 2": r.mat2Unit,
+    "Mandor": r.mandor, "Asisten": r.asisten, "Keterangan": r.keterangan
   })));
   XLSX.utils.book_append_sheet(wb, wsHarian, "Realisasi_Harian");
 
-  const blnMap = {};
-  records.forEach(r => {
-    const bln = r.tanggal.substring(0, 7);
-    const key = `${bln}|||${r.afdeling}|||${r.pekerjaan}|||${r.satuan}`;
-    if (!blnMap[key]) blnMap[key] = { "Bulan": bln, "Afdeling": r.afdeling, "Jenis Pekerjaan": r.pekerjaan, "Satuan": r.satuan, "Total Realisasi": 0, "Total HK": 0 };
-    blnMap[key]["Total Realisasi"] += Number(r.hasil || 0);
-    blnMap[key]["Total HK"] += Number(r.hk || 0);
-  });
-  const wsBulanan = XLSX.utils.json_to_sheet(Object.values(blnMap).map(x => ({
-    ...x,
-    "Rata-rata Out/HK": x["Total HK"] > 0 ? Number((x["Total Realisasi"] / x["Total HK"]).toFixed(2)) : 0
-  })));
-  XLSX.utils.book_append_sheet(wb, wsBulanan, "Rekap_Bulanan_Pekerjaan");
-
-  const matBlnMap = {};
-  records.forEach(r => {
-    const bln = r.tanggal.substring(0, 7);
-    [
-      { nama: r.mat1Nama, jenis: r.mat1Jenis, qty: Number(r.mat1Qty || 0), unit: r.mat1Unit },
-      { nama: r.mat2Nama, jenis: r.mat2Jenis, qty: Number(r.mat2Qty || 0), unit: r.mat2Unit }
-    ].forEach(m => {
-      if (m.nama && m.nama !== "-" && m.qty > 0) {
-        const key = `${bln}|||${m.nama}|||${m.unit}`;
-        if (!matBlnMap[key]) matBlnMap[key] = { "Bulan": bln, "Kategori": m.jenis, "Nama Material": m.nama, "Total Pemakaian": 0, "Satuan": m.unit };
-        matBlnMap[key]["Total Pemakaian"] += m.qty;
-      }
-    });
-  });
-  const wsMatBulanan = XLSX.utils.json_to_sheet(Object.values(matBlnMap));
-  XLSX.utils.book_append_sheet(wb, wsMatBulanan, "Rekap_Material_Bulanan");
-
   const tgl = new Date().toISOString().split("T")[0];
   XLSX.writeFile(wb, `Realisasi_Perawatan_Kencana_Wanggarasi_${tgl}.xlsx`);
-  showToast("Excel Harian & Bulanan berhasil didownload!", "📥");
+  showToast("Excel berhasil didownload!", "📥");
 }
 
-// ==================== GOOGLE SHEETS SYNC ====================
 function saveWebhookUrl() {
   sheetConfig.url = document.getElementById("gsheetWebhookUrl").value.trim();
   sheetConfig.autoSync = document.getElementById("autoSyncCheck").checked;
@@ -878,9 +805,7 @@ async function postRecordToWebhook(rec) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rec)
     });
-  } catch (err) {
-    console.error("Sync error:", err);
-  }
+  } catch (err) {}
 }
 
 async function syncAllToGoogleSheet() {
@@ -901,4 +826,5 @@ async function syncAllToGoogleSheet() {
   btn.disabled = false;
   btn.textContent = "☁️ Sync Google Sheet";
   showToast(`${records.length} data terkirim ke Google Sheet!`, "☁️");
-}
+      }
+  
