@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>REALISASI RAWAT — PT Kencana Agri</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -78,8 +78,8 @@
         <button type="button" onclick="playKencanaVoice()" title="Putar Suara Semangat" class="p-2 rounded-xl bg-[#F4F8F5] hover:bg-[#E4EFE8] text-[#056839] border border-slate-200 text-xs font-bold transition cursor-pointer">
           🔊
         </button>
-        <button type="button" onclick="shareWhatsAppReport()" class="px-3 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
-          <span>📲 WA</span>
+        <button type="button" onclick="shareWhatsAppReport()" title="Laporan Crash Program (Pruning & Tebas Gawangan)" class="px-3 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
+          <span>📲 WA Crash</span>
         </button>
         <button type="button" onclick="exportToExcel()" class="px-3 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
           <span>📥 Excel</span>
@@ -284,14 +284,20 @@
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 class="text-base font-extrabold text-slate-900">Rekapitulasi Realisasi & Prestasi Output per TK</h2>
-            <p class="text-xs text-slate-500">Filter berdasarkan Tanggal (Harian) atau Bulan untuk melihat akumulasi & kirim ke Google Sheet</p>
+            <p class="text-xs text-slate-500">Filter periode, export Excel horizontal berwarna, atau reset catatan rekapan</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <button type="button" onclick="syncAllToGoogleSheet()" id="btnSyncGsheet" class="px-3.5 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-2xs cursor-pointer">
-              ☁️ Sync Google Sheet
+              ☁️ Sync Spreadsheet
             </button>
             <button type="button" onclick="exportToExcel()" class="px-3.5 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-2xs cursor-pointer">
-              📥 Export Excel (Harian & Output TK)
+              📥 Export Excel Elegan
+            </button>
+            <button type="button" onclick="resetFilteredRecords()" class="px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold cursor-pointer">
+              🧹 Reset Periode Ini
+            </button>
+            <button type="button" onclick="resetAllRecords()" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold cursor-pointer">
+              🗑️ Hapus Semua Rekapan
             </button>
           </div>
         </div>
@@ -428,17 +434,17 @@
         </div>
       </div>
     </section>
-       <!-- ==================== TAB 3: PENGATURAN DATABASE & SPREADSHEET ==================== -->
+        <!-- ==================== TAB 3: PENGATURAN DATABASE & SPREADSHEET ==================== -->
     <section id="tab-master" class="hidden space-y-5">
-      <!-- Koneksi Google Sheets -->
+      <!-- Koneksi Google Sheets / Realtime -->
       <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
             <h3 class="font-extrabold text-sm text-slate-900 flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-[#056839]"></span>
-              Integrasi Google Spreadsheets (Otomatis Anti-Duplikat)
+              Integrasi Google Spreadsheets / Realtime Cloud
             </h3>
-            <p class="text-xs text-slate-500 mt-0.5">Tempel URL Web App Google Apps Script berakhiran /exec agar data langsung masuk ke Google Sheet.</p>
+            <p class="text-xs text-slate-500 mt-0.5">Tempel URL Web App Google Script (/exec) atau URL Firebase Realtime Database (.firebasedatabase.app).</p>
           </div>
           <button type="button" onclick="toggleScriptGuide()" class="px-3 py-1.5 rounded-xl bg-[#F4F8F5] text-[#056839] text-xs font-bold border border-[#056839]/20 cursor-pointer">
             📋 Lihat Kode Apps Script
@@ -446,36 +452,26 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
-          <div class="md:col-span-8">
-            <input type="url" id="gsheetWebhookUrl" onchange="saveWebhookUrl()" placeholder="Tempel URL Web App Google Script: https://script.google.com/macros/s/.../exec" class="form-input text-xs font-mono" />
+          <div class="md:col-span-7">
+            <input type="url" id="gsheetWebhookUrl" onchange="saveWebhookUrl()" placeholder="Tempel URL Web App (/exec) atau Firebase (.firebasedatabase.app)" class="form-input text-xs font-mono" />
           </div>
-          <div class="md:col-span-4 flex items-center justify-between gap-3 bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-200">
-            <label class="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+          <div class="md:col-span-5 flex items-center justify-between gap-2 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
+            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 cursor-pointer">
               <input type="checkbox" id="autoSyncCheck" onchange="saveWebhookUrl()" class="rounded text-[#056839]" />
-              <span>Auto-Sync saat Simpan</span>
+              <span>Auto-Sync</span>
             </label>
+            <button type="button" onclick="testGoogleSheetConnection()" class="px-3 py-1.5 rounded-lg bg-[#056839] text-white text-[11px] font-bold cursor-pointer">
+              🔌 Tes Koneksi
+            </button>
           </div>
         </div>
 
         <div id="appsScriptGuide" class="hidden p-4 bg-slate-900 text-emerald-300 rounded-2xl text-[11px] font-mono overflow-x-auto space-y-2">
           <p class="text-slate-400">// Tempel di Google Spreadsheet -> Ekstensi -> Apps Script -> Deploy Web App (Akses: Anyone):</p>
-<pre>function doPost(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var data = JSON.parse(e.postData.contents);
-  var sheetHarian = ss.getSheetByName("Realisasi_Harian") || ss.insertSheet("Realisasi_Harian");
-  if (sheetHarian.getLastRow() === 0) {
-    sheetHarian.appendRow(["ID","Tanggal","Bulan","PT","Afdeling","Blok","Pekerjaan","Hasil","Satuan","HK","Output_per_TK","Material_1","Qty_1","Unit_1","Material_2","Qty_2","Unit_2","Mandor","Asisten","Keterangan"]);
-  }
-  var bulan = data.tanggal ? String(data.tanggal).substring(0, 7) : "";
-  var outTk = Number(data.hk) > 0 ? Number((Number(data.hasil) / Number(data.hk)).toFixed(2)) : 0;
-  sheetHarian.appendRow([
-    data.id, data.tanggal, bulan, data.pt, data.afdeling, data.blok,
-    data.pekerjaan, Number(data.hasil), data.satuan, Number(data.hk), outTk,
-    data.mat1Nama, Number(data.mat1Qty), data.mat1Unit,
-    data.mat2Nama, Number(data.mat2Qty), data.mat2Unit,
-    data.mandor, data.asisten, data.keterangan
-  ]);
-  return ContentService.createTextOutput(JSON.stringify({status:"ok"})).setMimeType(ContentService.MimeType.JSON);
+<pre>function doPost(e) { return simpanElegan(e.postData ? e.postData.contents : "{}"); }
+function doGet(e) {
+  if (e && e.parameter && e.parameter.payload) return simpanElegan(e.parameter.payload);
+  return ContentService.createTextOutput(JSON.stringify({status:"ready"})).setMimeType(ContentService.MimeType.JSON);
 }</pre>
         </div>
       </div>
