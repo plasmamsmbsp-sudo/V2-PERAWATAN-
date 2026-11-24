@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Realisasi Perawatan Kebun — PT Kencana Agri</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-[#F6F8F7] text-slate-800 min-h-screen flex flex-col antialiased selection:bg-[#056839] selection:text-white">
+
+  <!-- SPLASH SCREEN PEMBUKA & VOICEOVER -->
+  <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-white via-[#F4F8F5] to-[#E8F1EC] flex flex-col items-center justify-between p-8 transition-all duration-700">
+    <div class="w-full flex justify-end">
+      <button onclick="enterApp(false)" class="text-xs font-semibold text-slate-400 hover:text-[#056839] px-3 py-1.5 rounded-full border border-slate-200 bg-white/80 transition cursor-pointer">
+        Lewati Intro →
+      </button>
+    </div>
+
+    <div class="flex flex-col items-center text-center max-w-sm space-y-6 my-auto">
+      <div class="relative">
+        <div class="absolute -inset-3 rounded-3xl bg-gradient-to-tr from-[#056839]/20 via-[#FFF200]/30 to-[#A6891B]/20 blur-xl animate-pulse"></div>
+        <div class="relative w-36 h-36 rounded-3xl bg-white shadow-xl border border-slate-100 p-3 flex items-center justify-center splash-logo-anim">
+          <img src="logo-kencana.png" alt="Logo Kencana" class="w-full h-full object-contain" />
+        </div>
+      </div>
+
+      <div class="space-y-1.5">
+        <p class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#A6891B]">Sistem Operasional Kebun</p>
+        <h1 class="text-2xl font-extrabold tracking-tight text-[#056839]">Realisasi Perawatan</h1>
+        <p class="text-xs text-slate-500 font-medium">Monitoring Harian, Material & Rekapitulasi Terpadu</p>
+      </div>
+
+      <button id="btnStartVoice" onclick="enterApp(true)" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#056839] to-[#044E2B] hover:from-[#067A43] hover:to-[#056839] text-white font-bold text-sm shadow-lg shadow-[#056839]/25 flex items-center justify-center gap-2.5 transition transform active:scale-95 cursor-pointer">
+        <span class="w-6 h-6 rounded-full bg-[#FFF200] text-[#056839] flex items-center justify-center text-xs font-black">▶</span>
+        <span>Mulai Aplikasi & Suara</span>
+      </button>
+
+      <div id="voiceStatusPill" class="hidden items-center gap-2 px-4 py-2 rounded-full bg-[#056839]/10 border border-[#056839]/20 text-[#056839] text-xs font-bold">
+        <span class="flex gap-1">
+          <span class="w-1 h-3 bg-[#056839] rounded-full animate-bounce"></span>
+          <span class="w-1 h-4 bg-[#A6891B] rounded-full animate-bounce" style="animation-delay:0.15s"></span>
+          <span class="w-1 h-3 bg-[#056839] rounded-full animate-bounce" style="animation-delay:0.3s"></span>
+        </span>
+        <span>"KENCANA PASTI BISA!"</span>
+      </div>
+    </div>
+
+    <div class="text-center space-y-1">
+      <p class="text-[11px] font-bold tracking-[0.2em] uppercase text-slate-400">Powered BY</p>
+      <p class="text-sm font-extrabold tracking-wider text-[#056839]">Plasma Wanggarasi</p>
+      <div class="w-12 h-1 bg-gradient-to-r from-[#056839] via-[#FFF200] to-[#A6891B] rounded-full mx-auto mt-1"></div>
+    </div>
+  </div>
+
+  <!-- HEADER MINIMALIS & ELEGAN -->
+  <header class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#F4F8F5] border border-slate-200/80 p-1 flex items-center justify-center shrink-0">
+          <img src="logo-kencana.png" alt="Logo Kencana" class="w-full h-full object-contain" />
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span id="hdrPtBadge" class="text-[10px] font-extrabold tracking-widest uppercase text-[#A6891B]">PT KENCANA AGRI</span>
+            <span class="text-slate-300">•</span>
+            <span id="hdrAfdBadge" class="text-[10px] font-bold text-[#056839]">Plasma BSP AFD 4</span>
+          </div>
+          <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight tracking-tight">
+            Realisasi Perawatan
+          </h1>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="playKencanaVoice()" title="Putar Suara Semangat" class="p-2 rounded-xl bg-[#F4F8F5] hover:bg-[#E4EFE8] text-[#056839] border border-slate-200 text-xs font-bold transition cursor-pointer">
+          🔊
+        </button>
+        <button onclick="shareWhatsAppReport()" class="px-3 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
+          <span>📲 WA</span>
+        </button>
+        <button onclick="exportToExcel()" class="px-3 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
+          <span>📥 Excel</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MINIMALIST PILL NAVIGATION -->
+    <nav class="bg-[#F9FBFA] border-t border-slate-100">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-2 flex gap-2 overflow-x-auto no-scrollbar">
+        <button id="tabBtn-input" onclick="switchTab('input')" class="nav-pill nav-pill-active px-4 py-2 rounded-xl text-xs whitespace-nowrap transition cursor-pointer">
+          ✍️ Input Harian
+        </button>
+        <button id="tabBtn-rekap" onclick="switchTab('rekap')" class="nav-pill px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-white whitespace-nowrap flex items-center gap-1.5 transition cursor-pointer">
+          <span>📊 Rekap Harian & Bulanan</span>
+          <span id="badgeCount" class="px-1.5 py-0.5 text-[10px] font-extrabold rounded-md bg-[#056839]/10 text-[#056839]">0</span>
+        </button>
+        <button id="tabBtn-master" onclick="switchTab('master')" class="nav-pill px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-white whitespace-nowrap transition cursor-pointer">
+          ⚙️ Database & Spreadsheet
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 py-5 flex-1">
+
+    <!-- ==================== TAB 1: INPUT HARIAN ==================== -->
+    <section id="tab-input" class="space-y-5">
+      <!-- KPI Cards Minimalis -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/70 shadow-2xs">
+          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Aktivitas Hari Ini</p>
+          <p id="kpiTanggalCount" class="text-xl font-extrabold text-[#056839] mt-1">0 Item</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/70 shadow-2xs">
+          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Tenaga Kerja (HK)</p>
+          <p id="kpiTotalHK" class="text-xl font-extrabold text-[#A6891B] mt-1">0 HK</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/70 shadow-2xs">
+          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Bulan Berjalan</p>
+          <p id="kpiBulanCount" class="text-xl font-extrabold text-slate-800 mt-1">0 Data</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200/70 shadow-2xs">
+          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Status Cloud Sheet</p>
+          <p id="kpiCloudStatus" class="text-xs font-bold text-slate-500 mt-2 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span> Lokal (Offline Ready)
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- FORM INPUT REALISASI -->
+        <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+          <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-[#056839] to-[#04522D] text-white">
+            <div>
+              <h2 class="font-bold text-sm tracking-wide">Input Realisasi Perawatan</h2>
+              <p class="text-[11px] text-emerald-100/80">Pilih PT, Afdeling, Blok & Material dari database</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-lg bg-[#FFF200] text-[#056839] text-[10px] font-extrabold uppercase tracking-wider">Kencana</span>
+          </div>
+
+          <form id="realisasiForm" onsubmit="handleFormSubmit(event)" class="p-5 sm:p-6 space-y-4">
+            <input type="hidden" id="editId" value="" />
+
+            <!-- Baris 1: Tanggal & PT -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label class="form-label">Tanggal Realisasi *</label>
+                <input type="date" id="inpTanggal" required onchange="updateDashboardKPI()" class="form-input" />
+              </div>
+              <div>
+                <label class="form-label">Perusahaan (PT) *</label>
+                <select id="inpPT" required onchange="onPTChange()" class="form-input font-semibold text-[#056839]"></select>
+              </div>
+            </div>
+
+            <!-- Baris 2: Afdeling & Blok -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label class="form-label">Afdeling *</label>
+                <select id="inpAfdeling" required onchange="onAfdelingChange()" class="form-input font-semibold"></select>
+              </div>
+              <div>
+                <label class="form-label">
+                  Blok * <span id="infoLuasBlok" class="text-[#056839] font-bold normal-case ml-1"></span>
+                </label>
+                <select id="inpBlok" required onchange="onBlokChange()" class="form-input font-semibold"></select>
+              </div>
+            </div>
+
+            <!-- Baris 3: Asisten & Mandor -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div>
+                <label class="form-label">Asisten Afdeling *</label>
+                <select id="inpAsisten" required class="form-input font-medium"></select>
+              </div>
+              <div>
+                <label class="form-label">Mandor Lapangan *</label>
+                <select id="inpMandor" required class="form-input font-medium"></select>
+              </div>
+            </div>
+
+            <!-- Baris 4: Jenis Pekerjaan & Satuan -->
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3.5">
+              <div class="sm:col-span-8">
+                <label class="form-label">Jenis Pekerjaan Perawatan *</label>
+                <select id="inpPekerjaan" required onchange="onPekerjaanChange()" class="form-input font-semibold text-slate-900"></select>
+              </div>
+              <div class="sm:col-span-4">
+                <label class="form-label">Satuan Item *</label>
+                <select id="inpSatuan" required class="form-input font-bold text-[#A6891B] bg-[#FFFDF2]"></select>
+              </div>
+            </div>
+
+            <!-- Baris 5: Volume Hasil & Jumlah HK -->
+            <div class="grid grid-cols-2 gap-3.5">
+              <div>
+                <label class="form-label">Volume / Realisasi Hasil *</label>
+                <input type="number" step="0.01" min="0" id="inpHasil" required placeholder="0.00" class="form-input font-extrabold text-[#056839] text-base" />
+              </div>
+              <div>
+                <label class="form-label">Jumlah Tenaga (HK) *</label>
+                <input type="number" step="0.5" min="0" id="inpHK" required placeholder="0" class="form-input font-extrabold text-slate-900 text-base" />
+              </div>
+            </div>
+
+            <!-- Baris 6: MATERIAL 1 & MATERIAL 2 (RACUN / PUPUK) -->
+            <div class="p-4 rounded-2xl bg-[#F6F9F7] border border-slate-200/80 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-extrabold uppercase tracking-wider text-[#056839]">Pemakaian Material (Pupuk / Racun)</span>
+                <span class="text-[10px] text-slate-400">Opsional sesuai pekerjaan</span>
+              </div>
+
+              <!-- Material 1 -->
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+                <div class="sm:col-span-7">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Material 1 (Pupuk / Racun)</label>
+                  <select id="inpMat1" onchange="onMaterialSelect(1)" class="form-input text-xs bg-white"></select>
+                </div>
+                <div class="sm:col-span-3">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Dosis / Jumlah</label>
+                  <input type="number" step="0.01" min="0" id="inpMat1Qty" placeholder="0.00" class="form-input text-xs bg-white font-bold" />
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Satuan</label>
+                  <input type="text" id="inpMat1Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold text-slate-600" />
+                </div>
+              </div>
+
+              <!-- Material 2 -->
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end pt-1 border-t border-slate-200/60">
+                <div class="sm:col-span-7">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Material 2 (Campuran / Tambahan)</label>
+                  <select id="inpMat2" onchange="onMaterialSelect(2)" class="form-input text-xs bg-white"></select>
+                </div>
+                <div class="sm:col-span-3">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Dosis / Jumlah</label>
+                  <input type="number" step="0.01" min="0" id="inpMat2Qty" placeholder="0.00" class="form-input text-xs bg-white font-bold" />
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Satuan</label>
+                  <input type="text" id="inpMat2Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold text-slate-600" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Keterangan -->
+            <div>
+              <label class="form-label">Catatan / Keterangan Lapangan</label>
+              <input type="text" id="inpKeterangan" placeholder="Contoh: Rotasi 2, cuaca cerah, kondisi ancak bersih" class="form-input" />
+            </div>
+
+            <!-- Tombol Submit -->
+            <div class="pt-2 flex flex-wrap items-center gap-2.5">
+              <button type="submit" id="btnSubmitForm" class="flex-1 bg-[#056839] hover:bg-[#044E2B] text-white font-bold py-3.5 px-6 rounded-2xl shadow-md shadow-[#056839]/20 transition flex items-center justify-center gap-2 text-sm cursor-pointer">
+                <span>✓ Simpan Realisasi</span>
+              </button>
+              <button type="button" id="btnCancelEdit" onclick="resetForm()" class="hidden px-4 py-3.5 rounded-2xl border border-slate-300 text-slate-600 hover:bg-slate-100 font-bold text-xs cursor-pointer">
+                Batal
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- PANEL LOG TERBARU -->
+        <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200/80 shadow-xs flex flex-col overflow-hidden">
+          <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-slate-900 text-sm">Catatan Terakhir</h3>
+              <p class="text-[11px] text-slate-400">Otomatis masuk ke rekap harian & bulanan</p>
+            </div>
+            <button onclick="switchTab('rekap')" class="text-xs font-bold text-[#056839] hover:underline cursor-pointer">Lihat Rekap →</button>
+          </div>
+          <div id="recentFeedList" class="p-4 space-y-2.5 overflow-y-auto max-h-[580px] flex-1"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: REKAP HARIAN & BULANAN ==================== -->
+    <section id="tab-rekap" class="hidden space-y-5">
+      <!-- Bar Kontrol & Filter -->
+      <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base font-extrabold text-slate-900">Rekapitulasi Realisasi Harian & Bulanan</h2>
+            <p class="text-xs text-slate-500">Filter berdasarkan Tanggal (Harian) atau Bulan untuk melihat akumulasi otomatis</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="syncAllToGoogleSheet()" id="btnSyncGsheet" class="px-3.5 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-2xs cursor-pointer">
+              ☁️ Sync Google Sheet
+            </button>
+            <button onclick="exportToExcel()" class="px-3.5 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-2xs cursor-pointer">
+              📥 Export Excel (Harian & Bulanan)
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode Rekap & Filter -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-100">
+          <div>
+            <label class="form-label">Mode Periode</label>
+            <select id="fltMode" onchange="onFilterModeChange()" class="form-input text-xs font-bold text-[#056839]">
+              <option value="harian">Per Hari (Tanggal)</option>
+              <option value="bulanan">Per Bulan (Rekap Bulanan)</option>
+              <option value="semua">Semua Data</option>
+            </select>
+          </div>
+          <div id="wrapFltTanggal">
+            <label class="form-label">Pilih Tanggal</label>
+            <input type="date" id="fltTanggal" onchange="renderRekapAll()" class="form-input text-xs" />
+          </div>
+          <div id="wrapFltBulan" class="hidden">
+            <label class="form-label">Pilih Bulan</label>
+            <input type="month" id="fltBulan" onchange="renderRekapAll()" class="form-input text-xs" />
+          </div>
+          <div>
+            <label class="form-label">Filter PT / Afdeling</label>
+            <select id="fltAfdeling" onchange="renderRekapAll()" class="form-input text-xs">
+              <option value="">Semua Afdeling</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Filter Pekerjaan</label>
+            <select id="fltPekerjaan" onchange="renderRekapAll()" class="form-input text-xs">
+              <option value="">Semua Pekerjaan</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button onclick="resetFilters()" class="w-full py-2.5 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-600 cursor-pointer">
+              Reset Filter
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ringkasan Rekap Per Jenis Pekerjaan & Pemakaian Material -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+          <div class="px-5 py-3.5 bg-[#056839] text-white flex items-center justify-between">
+            <h3 class="font-bold text-xs uppercase tracking-wider">Rekap Output & Prestasi per Pekerjaan</h3>
+            <span id="lblPeriodeBadge1" class="text-[10px] bg-white/20 px-2 py-0.5 rounded font-semibold">Harian</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
+                <tr>
+                  <th class="py-2.5 px-4">Jenis Pekerjaan</th>
+                  <th class="py-2.5 px-4 text-right">Total Hasil</th>
+                  <th class="py-2.5 px-4">Unit</th>
+                  <th class="py-2.5 px-4 text-right">Total HK</th>
+                  <th class="py-2.5 px-4 text-right">Out/HK</th>
+                </tr>
+              </thead>
+              <tbody id="rekapPekerjaanBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+          <div class="px-5 py-3.5 bg-[#A6891B] text-white flex items-center justify-between">
+            <h3 class="font-bold text-xs uppercase tracking-wider">Rekap Pemakaian Material (Pupuk & Racun)</h3>
+            <span id="lblPeriodeBadge2" class="text-[10px] bg-white/20 px-2 py-0.5 rounded font-semibold">Harian</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
+                <tr>
+                  <th class="py-2.5 px-4">Nama Material</th>
+                  <th class="py-2.5 px-4">Kategori</th>
+                  <th class="py-2.5 px-4 text-right">Total Pemakaian</th>
+                  <th class="py-2.5 px-4">Satuan</th>
+                </tr>
+              </thead>
+              <tbody id="rekapMaterialBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabel Rincian Transaksi -->
+      <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="font-bold text-sm text-slate-800">Rincian Data Realisasi</h3>
+          <span id="tblRowCount" class="text-xs font-bold text-[#056839]">0 Baris</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-900 text-white text-[11px] uppercase tracking-wider">
+                <th class="py-3 px-3.5">Tanggal</th>
+                <th class="py-3 px-3.5">PT / Afdeling</th>
+                <th class="py-3 px-3.5">Blok</th>
+                <th class="py-3 px-3.5">Pekerjaan</th>
+                <th class="py-3 px-3.5 text-right">Realisasi</th>
+                <th class="py-3 px-3.5 text-right">HK</th>
+                <th class="py-3 px-3.5">Material 1 & 2</th>
+                <th class="py-3 px-3.5">Mandor / Asisten</th>
+                <th class="py-3 px-3.5 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="sheetTableBody" class="divide-y divide-slate-100"></tbody>
+            <tfoot id="sheetTableFoot" class="bg-[#F4F8F5] font-bold text-[#056839] border-t border-slate-200"></tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: PENGATURAN DATABASE & SPREADSHEET ==================== -->
+    <section id="tab-master" class="hidden space-y-5">
+      <!-- Koneksi Google Sheets -->
+      <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="font-extrabold text-sm text-slate-900 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#056839]"></span>
+              Integrasi Google Spreadsheets (Rekap Harian & Bulanan Otomatis)
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Hubungkan Web App URL Google Apps Script agar data realisasi langsung masuk ke Google Sheet.</p>
+          </div>
+          <button onclick="toggleScriptGuide()" class="px-3 py-1.5 rounded-xl bg-[#F4F8F5] text-[#056839] text-xs font-bold border border-[#056839]/20 cursor-pointer">
+            📋 Lihat Kode Apps Script
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+          <div class="md:col-span-8">
+            <input type="url" id="gsheetWebhookUrl" onchange="saveWebhookUrl()" placeholder="Tempel URL Web App Google Script: https://script.google.com/macros/s/.../exec" class="form-input text-xs font-mono" />
+          </div>
+          <div class="md:col-span-4 flex items-center justify-between gap-3 bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-200">
+            <label class="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+              <input type="checkbox" id="autoSyncCheck" onchange="saveWebhookUrl()" class="rounded text-[#056839]" />
+              <span>Auto-Sync saat Simpan</span>
+            </label>
+          </div>
+        </div>
+
+        <div id="appsScriptGuide" class="hidden p-4 bg-slate-900 text-emerald-300 rounded-2xl text-[11px] font-mono overflow-x-auto space-y-2">
+          <p class="text-slate-400">// Tempel di Google Spreadsheet -> Ekstensi -> Apps Script -> Deploy Web App (Akses: Anyone):</p>
+<pre>function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var data = JSON.parse(e.postData.contents);
+  var sheetHarian = ss.getSheetByName("Realisasi_Harian") || ss.insertSheet("Realisasi_Harian");
+  if (sheetHarian.getLastRow() === 0) {
+    sheetHarian.appendRow(["ID","Tanggal","Bulan","PT","Afdeling","Blok","Pekerjaan","Hasil","Satuan","HK","Material_1","Qty_1","Unit_1","Material_2","Qty_2","Unit_2","Mandor","Asisten","Keterangan"]);
+  }
+  var bulan = data.tanggal ? data.tanggal.substring(0, 7) : "";
+  sheetHarian.appendRow([
+    data.id, data.tanggal, bulan, data.pt, data.afdeling, data.blok,
+    data.pekerjaan, data.hasil, data.satuan, data.hk,
+    data.mat1Nama, data.mat1Qty, data.mat1Unit,
+    data.mat2Nama, data.mat2Qty, data.mat2Unit,
+    data.mandor, data.asisten, data.keterangan
+  ]);
+  return ContentService.createTextOutput(JSON.stringify({status:"ok"})).setMimeType(ContentService.MimeType.JSON);
+}</pre>
+        </div>
+      </div>
+
+      <!-- Grid Pengaturan Master Database -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <!-- 1. Master PT, Afdeling & Blok -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 space-y-3.5">
+          <h3 class="font-extrabold text-sm text-[#056839] border-b border-slate-100 pb-2.5">1. Database PT, Afdeling & Blok</h3>
+          
+          <div class="flex gap-2">
+            <input type="text" id="newPtName" placeholder="Tambah Nama PT..." class="form-input text-xs" />
+            <button onclick="addPT()" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ PT</button>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-2">
+            <select id="mstSelectPtForAfd" class="form-input text-xs bg-white font-semibold"></select>
+            <div class="flex gap-2">
+              <input type="text" id="newAfdName" placeholder="Nama Afdeling (mis: Plasma BSP AFD 4)" class="form-input text-xs bg-white" />
+              <button onclick="addAfdeling()" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Afd</button>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-[#FFFDF2] border border-[#A6891B]/30 space-y-2">
+            <p class="text-[10px] font-extrabold uppercase text-[#A6891B]">Tambah Blok ke Afdeling:</p>
+            <select id="mstSelectAfdForBlok" class="form-input text-xs bg-white font-semibold"></select>
+            <div class="grid grid-cols-2 gap-2">
+              <input type="text" id="newBlokCode" placeholder="Kode Blok (D01/23)" class="form-input text-xs bg-white" />
+              <input type="number" step="0.1" id="newBlokLuas" placeholder="Luas (Ha)" class="form-input text-xs bg-white" />
+            </div>
+            <button onclick="addBlok()" class="w-full py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold cursor-pointer">+ Tambah Blok</button>
+          </div>
+
+          <div id="masterOrgList" class="space-y-2.5 max-h-64 overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- 2. Master Jenis Pekerjaan & Satuan Item -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 space-y-3.5">
+          <h3 class="font-extrabold text-sm text-[#056839] border-b border-slate-100 pb-2.5">2. Jenis Pekerjaan & Satuan Item</h3>
+          
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-2">
+            <input type="text" id="newJobName" placeholder="Nama Pekerjaan (mis: Pemupukan Manual)" class="form-input text-xs bg-white" />
+            <div class="flex gap-2">
+              <select id="newJobUnit" class="form-input text-xs bg-white font-bold"></select>
+              <button onclick="addJob()" class="px-4 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Simpan</button>
+            </div>
+          </div>
+
+          <div class="flex gap-2">
+            <input type="text" id="newUnitName" placeholder="Satuan baru (Ha / Pokok / Kg)" class="form-input text-xs" />
+            <button onclick="addUnit()" class="px-3 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold shrink-0 cursor-pointer">+ Unit</button>
+          </div>
+          <div id="masterUnitList" class="flex flex-wrap gap-1.5"></div>
+
+          <div id="masterJobList" class="divide-y divide-slate-100 max-h-64 overflow-y-auto pt-1"></div>
+        </div>
+
+        <!-- 3. Master Material (Pupuk & Racun) + Asisten & Mandor -->
+        <div class="space-y-5">
+          <!-- Database Material Pupuk & Racun -->
+          <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 space-y-3">
+            <h3 class="font-extrabold text-sm text-[#056839] border-b border-slate-100 pb-2">3. Database Material (Pupuk & Racun)</h3>
+            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-2">
+              <div class="grid grid-cols-2 gap-2">
+                <select id="newMatType" class="form-input text-xs bg-white font-bold">
+                  <option value="Pupuk">Jenis: Pupuk</option>
+                  <option value="Racun">Jenis: Racun / Herbisida</option>
+                </select>
+                <input type="text" id="newMatUnit" placeholder="Satuan (Kg / Liter)" class="form-input text-xs bg-white font-bold" />
+              </div>
+              <div class="flex gap-2">
+                <input type="text" id="newMatName" placeholder="Nama Material (mis: NPK / Glyphosate)" class="form-input text-xs bg-white" />
+                <button onclick="addMaterial()" class="px-3.5 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Tambah</button>
+              </div>
+            </div>
+            <div id="masterMaterialList" class="divide-y divide-slate-100 max-h-44 overflow-y-auto"></div>
+          </div>
+
+          <!-- Database Asisten & Mandor -->
+          <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 space-y-3">
+            <h3 class="font-extrabold text-sm text-[#056839] border-b border-slate-100 pb-2">4. Database Asisten & Mandor</h3>
+            
+            <div class="flex gap-2">
+              <input type="text" id="newAsistenName" placeholder="Nama Asisten..." class="form-input text-xs" />
+              <button onclick="addPerson('asisten')" class="px-3 py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold shrink-0 cursor-pointer">+ Asisten</button>
+            </div>
+            <div id="masterAsistenList" class="flex flex-wrap gap-1.5"></div>
+
+            <div class="flex gap-2 pt-2 border-t border-slate-100">
+              <input type="text" id="newMandorName" placeholder="Nama Mandor..." class="form-input text-xs" />
+              <button onclick="addPerson('mandor')" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Mandor</button>
+            </div>
+            <div id="masterMandorList" class="flex flex-wrap gap-1.5"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flex justify-end">
+        <button onclick="resetMasterToDefault()" class="px-4 py-2 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 text-xs font-bold cursor-pointer">
+          Reset Semua Master Data ke Default
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="py-5 text-center text-xs text-slate-400">
+    <p>Powered BY <strong class="text-[#056839]">Plasma Wanggarasi</strong> • PT Kencana Agri</p>
+  </footer>
+
+  <!-- TOAST -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl text-xs font-bold flex items-center gap-2">
+    <span id="toastIcon">✅</span>
+    <span id="toastMsg">Tersimpan</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

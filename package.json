@@ -1,0 +1,13 @@
+{
+  "name": "realisasi-perawatan-kencana-wanggarasi",
+  "version": "2.0.0",
+  "description": "Aplikasi Realisasi Perawatan Kebun - PT Kencana Agri (Powered BY Plasma Wanggarasi)",
+  "scripts": {
+    "build": "mkdir -p www && cp index.html style.css app.js logo-kencana.png www/"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/cli": "^6.1.2",
+    "@capacitor/core": "^6.1.2"
+  }
+}
