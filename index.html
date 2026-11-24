@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Realisasi Perawatan Kebun — PT Kencana Agri</title>
+  <title>REALISASI RAWAT — PT Kencana Agri</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -29,7 +29,7 @@
 
       <div class="space-y-1.5">
         <p class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#A6891B]">Sistem Operasional Kebun</p>
-        <h1 class="text-2xl font-extrabold tracking-tight text-[#056839]">Realisasi Perawatan</h1>
+        <h1 class="text-2xl font-extrabold tracking-tight text-[#056839]">REALISASI RAWAT</h1>
         <p class="text-xs text-slate-500 font-medium">Monitoring Harian, Material & Rekapitulasi Terpadu</p>
       </div>
 
@@ -69,7 +69,7 @@
             <span id="hdrAfdBadge" class="text-[10px] font-bold text-[#056839]">Plasma BSP AFD 4</span>
           </div>
           <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight tracking-tight">
-            Realisasi Perawatan
+            REALISASI RAWAT
           </h1>
         </div>
       </div>
@@ -94,7 +94,7 @@
           ✍️ Input Harian
         </button>
         <button type="button" id="tabBtn-rekap" onclick="switchTab('rekap')" class="nav-pill px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-white whitespace-nowrap flex items-center gap-1.5 transition cursor-pointer">
-          <span>📊 Rekap Harian & Bulanan</span>
+          <span>📊 Rekap & Output TK</span>
           <span id="badgeCount" class="px-1.5 py-0.5 text-[10px] font-extrabold rounded-md bg-[#056839]/10 text-[#056839]">0</span>
         </button>
         <button type="button" id="tabBtn-master" onclick="switchTab('master')" class="nav-pill px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-white whitespace-nowrap transition cursor-pointer">
@@ -135,7 +135,7 @@
         <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
           <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-[#056839] to-[#04522D] text-white">
             <div>
-              <h2 class="font-bold text-sm tracking-wide">Input Realisasi Perawatan</h2>
+              <h2 class="font-bold text-sm tracking-wide">Input Realisasi Rawat</h2>
               <p class="text-[11px] text-emerald-100/80">Pilih PT, Afdeling, Blok & Material dari database</p>
             </div>
             <span class="px-2.5 py-1 rounded-lg bg-[#FFF200] text-[#056839] text-[10px] font-extrabold uppercase tracking-wider">Kencana</span>
@@ -177,7 +177,7 @@
                 <select id="inpAsisten" required class="form-input font-medium"></select>
               </div>
               <div>
-                <label class="form-label">Mandor Lapangan *</label>
+                <label class="form-label">Mandor / Regu TK *</label>
                 <select id="inpMandor" required class="form-input font-medium"></select>
               </div>
             </div>
@@ -269,7 +269,7 @@
           <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
             <div>
               <h3 class="font-bold text-slate-900 text-sm">Catatan Terakhir</h3>
-              <p class="text-[11px] text-slate-400">Otomatis masuk ke rekap harian & bulanan</p>
+              <p class="text-[11px] text-slate-400">Otomatis masuk ke rekap harian, bulanan & output TK</p>
             </div>
             <button type="button" onclick="switchTab('rekap')" class="text-xs font-bold text-[#056839] hover:underline cursor-pointer">Lihat Rekap →</button>
           </div>
@@ -277,21 +277,21 @@
         </div>
       </div>
     </section>
-        <!-- ==================== TAB 2: REKAP HARIAN & BULANAN ==================== -->
+        <!-- ==================== TAB 2: REKAP HARIAN, BULANAN & OUTPUT TK ==================== -->
     <section id="tab-rekap" class="hidden space-y-5">
       <!-- Bar Kontrol & Filter -->
       <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 class="text-base font-extrabold text-slate-900">Rekapitulasi Realisasi Harian & Bulanan</h2>
-            <p class="text-xs text-slate-500">Filter berdasarkan Tanggal (Harian) atau Bulan untuk melihat akumulasi otomatis</p>
+            <h2 class="text-base font-extrabold text-slate-900">Rekapitulasi Realisasi & Prestasi Output per TK</h2>
+            <p class="text-xs text-slate-500">Filter berdasarkan Tanggal (Harian) atau Bulan untuk melihat akumulasi & kirim ke Google Sheet</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <button type="button" onclick="syncAllToGoogleSheet()" id="btnSyncGsheet" class="px-3.5 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-2xs cursor-pointer">
               ☁️ Sync Google Sheet
             </button>
             <button type="button" onclick="exportToExcel()" class="px-3.5 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-2xs cursor-pointer">
-              📥 Export Excel (Harian & Bulanan)
+              📥 Export Excel (Harian & Output TK)
             </button>
           </div>
         </div>
@@ -378,6 +378,29 @@
         </div>
       </div>
 
+      <!-- Ringkasan Rekap Output per TK (Mandor / Regu TK) -->
+      <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+        <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between">
+          <h3 class="font-bold text-xs uppercase tracking-wider">👷 Rekap Output & Prestasi per TK (Mandor / Regu)</h3>
+          <span id="lblPeriodeBadge3" class="text-[10px] bg-[#FFF200] text-[#056839] px-2 py-0.5 rounded font-extrabold">Harian</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
+              <tr>
+                <th class="py-2.5 px-4">Mandor / Regu TK</th>
+                <th class="py-2.5 px-4">Jenis Pekerjaan</th>
+                <th class="py-2.5 px-4 text-right">Total Hasil</th>
+                <th class="py-2.5 px-4">Satuan</th>
+                <th class="py-2.5 px-4 text-right">Total TK (HK)</th>
+                <th class="py-2.5 px-4 text-right bg-[#F4F8F5] text-[#056839]">Output / TK</th>
+              </tr>
+            </thead>
+            <tbody id="rekapTkBody" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+
       <!-- Tabel Rincian Transaksi -->
       <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
         <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
@@ -405,7 +428,7 @@
         </div>
       </div>
     </section>
-        <!-- ==================== TAB 3: PENGATURAN DATABASE & SPREADSHEET ==================== -->
+       <!-- ==================== TAB 3: PENGATURAN DATABASE & SPREADSHEET ==================== -->
     <section id="tab-master" class="hidden space-y-5">
       <!-- Koneksi Google Sheets -->
       <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-4">
@@ -413,9 +436,9 @@
           <div>
             <h3 class="font-extrabold text-sm text-slate-900 flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-[#056839]"></span>
-              Integrasi Google Spreadsheets (Rekap Harian & Bulanan Otomatis)
+              Integrasi Google Spreadsheets (Otomatis Anti-Duplikat)
             </h3>
-            <p class="text-xs text-slate-500 mt-0.5">Hubungkan Web App URL Google Apps Script agar data realisasi langsung masuk ke Google Sheet.</p>
+            <p class="text-xs text-slate-500 mt-0.5">Tempel URL Web App Google Apps Script berakhiran /exec agar data langsung masuk ke Google Sheet.</p>
           </div>
           <button type="button" onclick="toggleScriptGuide()" class="px-3 py-1.5 rounded-xl bg-[#F4F8F5] text-[#056839] text-xs font-bold border border-[#056839]/20 cursor-pointer">
             📋 Lihat Kode Apps Script
@@ -441,14 +464,15 @@
   var data = JSON.parse(e.postData.contents);
   var sheetHarian = ss.getSheetByName("Realisasi_Harian") || ss.insertSheet("Realisasi_Harian");
   if (sheetHarian.getLastRow() === 0) {
-    sheetHarian.appendRow(["ID","Tanggal","Bulan","PT","Afdeling","Blok","Pekerjaan","Hasil","Satuan","HK","Material_1","Qty_1","Unit_1","Material_2","Qty_2","Unit_2","Mandor","Asisten","Keterangan"]);
+    sheetHarian.appendRow(["ID","Tanggal","Bulan","PT","Afdeling","Blok","Pekerjaan","Hasil","Satuan","HK","Output_per_TK","Material_1","Qty_1","Unit_1","Material_2","Qty_2","Unit_2","Mandor","Asisten","Keterangan"]);
   }
-  var bulan = data.tanggal ? data.tanggal.substring(0, 7) : "";
+  var bulan = data.tanggal ? String(data.tanggal).substring(0, 7) : "";
+  var outTk = Number(data.hk) > 0 ? Number((Number(data.hasil) / Number(data.hk)).toFixed(2)) : 0;
   sheetHarian.appendRow([
     data.id, data.tanggal, bulan, data.pt, data.afdeling, data.blok,
-    data.pekerjaan, data.hasil, data.satuan, data.hk,
-    data.mat1Nama, data.mat1Qty, data.mat1Unit,
-    data.mat2Nama, data.mat2Qty, data.mat2Unit,
+    data.pekerjaan, Number(data.hasil), data.satuan, Number(data.hk), outTk,
+    data.mat1Nama, Number(data.mat1Qty), data.mat1Unit,
+    data.mat2Nama, Number(data.mat2Qty), data.mat2Unit,
     data.mandor, data.asisten, data.keterangan
   ]);
   return ContentService.createTextOutput(JSON.stringify({status:"ok"})).setMimeType(ContentService.MimeType.JSON);
