@@ -6,198 +6,145 @@
   <title>REALISASI RAWAT — PT Kencana Agri</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+    .form-label { display: block; font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+    .form-input { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid #CBD5E1; font-size: 13px; background: #FFFFFF; color: #0F172A; outline: none; }
+    .form-input:focus { border-color: #056839; box-shadow: 0 0 0 3px rgba(5, 104, 57, 0.12); }
+    .nav-pill-active { background: #056839 !important; color: #FFFFFF !important; font-weight: 700 !important; box-shadow: 0 2px 6px rgba(5,104,57,0.25); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+  </style>
 </head>
-<body class="bg-[#F6F8F7] text-slate-800 min-h-screen flex flex-col antialiased selection:bg-[#056839] selection:text-white">
+<body class="bg-[#F6F8F7] text-slate-800 min-h-screen flex flex-col antialiased">
 
-  <!-- SPLASH SCREEN PEMBUKA & VOICEOVER -->
-  <div id="splashScreen" class="fixed inset-0 z-50 bg-gradient-to-b from-white via-[#F4F8F5] to-[#E8F1EC] flex flex-col items-center justify-between p-8 transition-all duration-700">
-    <div class="w-full flex justify-end">
-      <button type="button" onclick="enterApp(false)" class="text-xs font-semibold text-slate-400 hover:text-[#056839] px-3 py-1.5 rounded-full border border-slate-200 bg-white/80 transition cursor-pointer">
-        Lewati Intro →
-      </button>
-    </div>
-
-    <div class="flex flex-col items-center text-center max-w-sm space-y-6 my-auto">
-      <div class="relative">
-        <div class="absolute -inset-3 rounded-3xl bg-gradient-to-tr from-[#056839]/20 via-[#FFF200]/30 to-[#A6891B]/20 blur-xl animate-pulse"></div>
-        <div class="relative w-36 h-36 rounded-3xl bg-white shadow-xl border border-slate-100 p-3 flex items-center justify-center splash-logo-anim">
-          <img src="logo-kencana.png" alt="Logo Kencana" class="w-full h-full object-contain" />
-        </div>
-      </div>
-
-      <div class="space-y-1.5">
-        <p class="text-[11px] font-bold tracking-[0.25em] uppercase text-[#A6891B]">Sistem Operasional Kebun</p>
-        <h1 class="text-2xl font-extrabold tracking-tight text-[#056839]">REALISASI RAWAT</h1>
-        <p class="text-xs text-slate-500 font-medium">Monitoring Harian, Material & Rekapitulasi Terpadu</p>
-      </div>
-
-      <button type="button" id="btnStartVoice" onclick="enterApp(true)" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#056839] to-[#044E2B] hover:from-[#067A43] hover:to-[#056839] text-white font-bold text-sm shadow-lg shadow-[#056839]/25 flex items-center justify-center gap-2.5 transition transform active:scale-95 cursor-pointer">
-        <span class="w-6 h-6 rounded-full bg-[#FFF200] text-[#056839] flex items-center justify-center text-xs font-black">▶</span>
-        <span>Mulai Aplikasi & Suara</span>
-      </button>
-
-      <div id="voiceStatusPill" class="hidden items-center gap-2 px-4 py-2 rounded-full bg-[#056839]/10 border border-[#056839]/20 text-[#056839] text-xs font-bold">
-        <span class="flex gap-1">
-          <span class="w-1 h-3 bg-[#056839] rounded-full animate-bounce"></span>
-          <span class="w-1 h-4 bg-[#A6891B] rounded-full animate-bounce" style="animation-delay:0.15s"></span>
-          <span class="w-1 h-3 bg-[#056839] rounded-full animate-bounce" style="animation-delay:0.3s"></span>
-        </span>
-        <span>"KENCANA PASTI BISA!"</span>
-      </div>
-    </div>
-
-    <div class="text-center space-y-1">
-      <p class="text-[11px] font-bold tracking-[0.2em] uppercase text-slate-400">Powered BY</p>
-      <p class="text-sm font-extrabold tracking-wider text-[#056839]">Plasma Wanggarasi</p>
-      <div class="w-12 h-1 bg-gradient-to-r from-[#056839] via-[#FFF200] to-[#A6891B] rounded-full mx-auto mt-1"></div>
-    </div>
-  </div>
-
-  <!-- HEADER MINIMALIS & ELEGAN -->
-  <header class="bg-white/95 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-[#F4F8F5] border border-slate-200/80 p-1 flex items-center justify-center shrink-0">
-          <img src="logo-kencana.png" alt="Logo Kencana" class="w-full h-full object-contain" />
+  <!-- HEADER -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl bg-[#F4F8F5] border border-slate-200 p-1 flex items-center justify-center shrink-0">
+          <img src="logo-kencana.png" onerror="this.style.display='none'" alt="Logo" class="w-full h-full object-contain" />
         </div>
         <div>
           <div class="flex items-center gap-1.5">
-            <span id="hdrPtBadge" class="text-[10px] font-extrabold tracking-widest uppercase text-[#A6891B]">PT KENCANA AGRI</span>
+            <span id="hdrPtBadge" class="text-[10px] font-extrabold uppercase text-[#A6891B]">PT KENCANA AGRI</span>
             <span class="text-slate-300">•</span>
             <span id="hdrAfdBadge" class="text-[10px] font-bold text-[#056839]">Plasma BSP AFD 4</span>
           </div>
-          <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight tracking-tight">
-            REALISASI RAWAT
-          </h1>
+          <h1 class="text-base font-extrabold text-slate-900 leading-tight">REALISASI RAWAT</h1>
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
-        <button type="button" onclick="playKencanaVoice()" title="Putar Suara Semangat" class="p-2 rounded-xl bg-[#F4F8F5] hover:bg-[#E4EFE8] text-[#056839] border border-slate-200 text-xs font-bold transition cursor-pointer">
-          🔊
+      <div class="flex items-center gap-1.5">
+        <button type="button" id="btnWaTop" class="px-3 py-2 rounded-xl bg-[#056839] active:bg-[#044E2B] text-white text-xs font-bold shadow-xs">
+          📲 WA Crash
         </button>
-        <button type="button" onclick="shareWhatsAppReport()" title="Laporan Crash Program (Pruning & Tebas Gawangan)" class="px-3 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
-          <span>📲 WA Crash</span>
-        </button>
-        <button type="button" onclick="exportToExcel()" class="px-3 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition cursor-pointer">
-          <span>📥 Excel</span>
+        <button type="button" id="btnExcelTop" class="px-3 py-2 rounded-xl bg-[#A6891B] active:bg-[#8E7415] text-white text-xs font-bold shadow-xs">
+          📥 Excel
         </button>
       </div>
     </div>
 
-    <!-- MINIMALIST PILL NAVIGATION -->
+    <!-- MENU TAB UTAMA -->
     <nav class="bg-[#F9FBFA] border-t border-slate-100">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-2 flex gap-2 overflow-x-auto no-scrollbar">
-        <button type="button" id="tabBtn-input" onclick="switchTab('input')" class="nav-pill nav-pill-active px-4 py-2 rounded-xl text-xs whitespace-nowrap transition cursor-pointer">
+      <div class="max-w-6xl mx-auto px-4 py-2 flex gap-2 overflow-x-auto no-scrollbar">
+        <button type="button" data-tab="input" class="tab-trigger nav-pill-active px-4 py-2.5 rounded-xl text-xs whitespace-nowrap">
           ✍️ Input Harian
         </button>
-        <button type="button" id="tabBtn-rekap" onclick="switchTab('rekap')" class="nav-pill px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-white whitespace-nowrap flex items-center gap-1.5 transition cursor-pointer">
+        <button type="button" data-tab="rekap" class="tab-trigger px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 bg-white border border-slate-200 whitespace-nowrap flex items-center gap-1.5">
           <span>📊 Rekap & Output TK</span>
-          <span id="badgeCount" class="px-1.5 py-0.5 text-[10px] font-extrabold rounded-md bg-[#056839]/10 text-[#056839]">0</span>
+          <span id="badgeCount" class="px-1.5 py-0.5 text-[10px] font-extrabold rounded-md bg-[#FFF200] text-[#056839]">0</span>
         </button>
-        <button type="button" id="tabBtn-master" onclick="switchTab('master')" class="nav-pill px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-white whitespace-nowrap transition cursor-pointer">
+        <button type="button" data-tab="master" class="tab-trigger px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 bg-white border border-slate-200 whitespace-nowrap">
           ⚙️ Database & Spreadsheet
         </button>
       </div>
     </nav>
   </header>
 
-  <!-- MAIN CONTENT -->
-  <main class="max-w-6xl w-full mx-auto px-4 sm:px-6 py-5 flex-1">
-        <!-- ==================== TAB 1: INPUT HARIAN ==================== -->
-    <section id="tab-input" class="space-y-5">
-      <!-- KPI Cards Minimalis -->
+  <main class="max-w-6xl w-full mx-auto px-4 py-5 flex-1">
+
+    <!-- ==================== TAB 1: INPUT HARIAN ==================== -->
+    <section id="tab-input" class="tab-section space-y-5">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div class="bg-white p-4 rounded-2xl border border-slate-200/70 shadow-2xs">
-          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Aktivitas Hari Ini</p>
-          <p id="kpiTanggalCount" class="text-xl font-extrabold text-[#056839] mt-1">0 Item</p>
+        <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
+          <p class="text-[10px] font-bold text-slate-400 uppercase">Aktivitas Hari Ini</p>
+          <p id="kpiTanggalCount" class="text-lg font-extrabold text-[#056839] mt-0.5">0 Item</p>
         </div>
-        <div class="bg-white p-4 rounded-2xl border border-slate-200/70 shadow-2xs">
-          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Tenaga Kerja (HK)</p>
-          <p id="kpiTotalHK" class="text-xl font-extrabold text-[#A6891B] mt-1">0 HK</p>
+        <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
+          <p class="text-[10px] font-bold text-slate-400 uppercase">Tenaga Kerja (HK)</p>
+          <p id="kpiTotalHK" class="text-lg font-extrabold text-[#A6891B] mt-0.5">0 HK</p>
         </div>
-        <div class="bg-white p-4 rounded-2xl border border-slate-200/70 shadow-2xs">
-          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Bulan Berjalan</p>
-          <p id="kpiBulanCount" class="text-xl font-extrabold text-slate-800 mt-1">0 Data</p>
+        <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
+          <p class="text-[10px] font-bold text-slate-400 uppercase">Bulan Berjalan</p>
+          <p id="kpiBulanCount" class="text-lg font-extrabold text-slate-800 mt-0.5">0 Data</p>
         </div>
-        <div class="bg-white p-4 rounded-2xl border border-slate-200/70 shadow-2xs">
-          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Status Cloud Sheet</p>
-          <p id="kpiCloudStatus" class="text-xs font-bold text-slate-500 mt-2 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-amber-400"></span> Lokal (Offline Ready)
-          </p>
+        <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
+          <p class="text-[10px] font-bold text-slate-400 uppercase">Status Cloud</p>
+          <p id="kpiCloudStatus" class="text-xs font-bold text-slate-500 mt-1.5">Lokal (Offline Ready)</p>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <!-- FORM INPUT REALISASI -->
-        <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-          <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-[#056839] to-[#04522D] text-white">
+        <!-- FORM INPUT -->
+        <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="px-5 py-3.5 bg-[#056839] text-white flex items-center justify-between">
             <div>
-              <h2 class="font-bold text-sm tracking-wide">Input Realisasi Rawat</h2>
-              <p class="text-[11px] text-emerald-100/80">Pilih PT, Afdeling, Blok & Material dari database</p>
+              <h2 class="font-bold text-sm">Input Realisasi Rawat</h2>
+              <p class="text-[11px] text-emerald-100">Isi data realisasi pekerjaan harian kebun</p>
             </div>
-            <span class="px-2.5 py-1 rounded-lg bg-[#FFF200] text-[#056839] text-[10px] font-extrabold uppercase tracking-wider">Kencana</span>
+            <span class="px-2 py-0.5 rounded bg-[#FFF200] text-[#056839] text-[10px] font-extrabold">KENCANA</span>
           </div>
 
-          <form id="realisasiForm" onsubmit="handleFormSubmit(event)" class="p-5 sm:p-6 space-y-4">
+          <form id="realisasiForm" class="p-5 space-y-3.5">
             <input type="hidden" id="editId" value="" />
 
-            <!-- Baris 1: Tanggal & PT -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label class="form-label">Tanggal Realisasi *</label>
-                <input type="date" id="inpTanggal" required onchange="updateDashboardKPI()" class="form-input" />
+                <input type="date" id="inpTanggal" required class="form-input" />
               </div>
               <div>
                 <label class="form-label">Perusahaan (PT) *</label>
-                <select id="inpPT" required onchange="onPTChange()" class="form-input font-semibold text-[#056839]"></select>
+                <select id="inpPT" required class="form-input font-semibold text-[#056839]"></select>
               </div>
             </div>
 
-            <!-- Baris 2: Afdeling & Blok -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label class="form-label">Afdeling *</label>
-                <select id="inpAfdeling" required onchange="onAfdelingChange()" class="form-input font-semibold"></select>
+                <select id="inpAfdeling" required class="form-input font-semibold"></select>
               </div>
               <div>
-                <label class="form-label">
-                  Blok * <span id="infoLuasBlok" class="text-[#056839] font-bold normal-case ml-1"></span>
-                </label>
-                <select id="inpBlok" required onchange="onBlokChange()" class="form-input font-semibold"></select>
+                <label class="form-label">Blok * <span id="infoLuasBlok" class="text-[#056839] font-bold"></span></label>
+                <select id="inpBlok" required class="form-input font-semibold"></select>
               </div>
             </div>
 
-            <!-- Baris 3: Asisten & Mandor -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label class="form-label">Asisten Afdeling *</label>
-                <select id="inpAsisten" required class="form-input font-medium"></select>
+                <select id="inpAsisten" required class="form-input"></select>
               </div>
               <div>
                 <label class="form-label">Mandor / Regu TK *</label>
-                <select id="inpMandor" required class="form-input font-medium"></select>
+                <select id="inpMandor" required class="form-input"></select>
               </div>
             </div>
 
-            <!-- Baris 4: Jenis Pekerjaan & Satuan -->
-            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3.5">
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
               <div class="sm:col-span-8">
                 <label class="form-label">Jenis Pekerjaan Perawatan *</label>
-                <select id="inpPekerjaan" required onchange="onPekerjaanChange()" class="form-input font-semibold text-slate-900"></select>
+                <select id="inpPekerjaan" required class="form-input font-semibold"></select>
               </div>
               <div class="sm:col-span-4">
-                <label class="form-label">Satuan Item *</label>
+                <label class="form-label">Satuan *</label>
                 <select id="inpSatuan" required class="form-input font-bold text-[#A6891B] bg-[#FFFDF2]"></select>
               </div>
             </div>
 
-            <!-- Baris 5: Volume Hasil & Jumlah HK -->
-            <div class="grid grid-cols-2 gap-3.5">
+            <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="form-label">Volume / Realisasi Hasil *</label>
+                <label class="form-label">Realisasi Hasil *</label>
                 <input type="number" step="0.01" min="0" id="inpHasil" required placeholder="0.00" class="form-input font-extrabold text-[#056839] text-base" />
               </div>
               <div>
@@ -206,107 +153,89 @@
               </div>
             </div>
 
-            <!-- Baris 6: MATERIAL 1 & MATERIAL 2 (RACUN / PUPUK) -->
-            <div class="p-4 rounded-2xl bg-[#F6F9F7] border border-slate-200/80 space-y-3">
-              <div class="flex items-center justify-between">
-                <span class="text-[11px] font-extrabold uppercase tracking-wider text-[#056839]">Pemakaian Material (Pupuk / Racun)</span>
-                <span class="text-[10px] text-slate-400">Opsional sesuai pekerjaan</span>
-              </div>
-
-              <!-- Material 1 -->
-              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
-                <div class="sm:col-span-7">
-                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Material 1 (Pupuk / Racun)</label>
-                  <select id="inpMat1" onchange="onMaterialSelect(1)" class="form-input text-xs bg-white"></select>
+            <div class="p-3.5 rounded-2xl bg-[#F6F9F7] border border-slate-200 space-y-2.5">
+              <span class="text-[11px] font-extrabold uppercase text-[#056839] block">Pemakaian Material (Pupuk / Racun — Opsional)</span>
+              <div class="grid grid-cols-12 gap-2">
+                <div class="col-span-6">
+                  <select id="inpMat1" class="form-input text-xs"></select>
                 </div>
-                <div class="sm:col-span-3">
-                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Dosis / Jumlah</label>
-                  <input type="number" step="0.01" min="0" id="inpMat1Qty" placeholder="0.00" class="form-input text-xs bg-white font-bold" />
+                <div class="col-span-3">
+                  <input type="number" step="0.01" min="0" id="inpMat1Qty" placeholder="Qty 1" class="form-input text-xs font-bold" />
                 </div>
-                <div class="sm:col-span-2">
-                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Satuan</label>
-                  <input type="text" id="inpMat1Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold text-slate-600" />
+                <div class="col-span-3">
+                  <input type="text" id="inpMat1Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold" />
                 </div>
               </div>
-
-              <!-- Material 2 -->
-              <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end pt-1 border-t border-slate-200/60">
-                <div class="sm:col-span-7">
-                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Material 2 (Campuran / Tambahan)</label>
-                  <select id="inpMat2" onchange="onMaterialSelect(2)" class="form-input text-xs bg-white"></select>
+              <div class="grid grid-cols-12 gap-2">
+                <div class="col-span-6">
+                  <select id="inpMat2" class="form-input text-xs"></select>
                 </div>
-                <div class="sm:col-span-3">
-                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Dosis / Jumlah</label>
-                  <input type="number" step="0.01" min="0" id="inpMat2Qty" placeholder="0.00" class="form-input text-xs bg-white font-bold" />
+                <div class="col-span-3">
+                  <input type="number" step="0.01" min="0" id="inpMat2Qty" placeholder="Qty 2" class="form-input text-xs font-bold" />
                 </div>
-                <div class="sm:col-span-2">
-                  <label class="block text-[11px] font-semibold text-slate-600 mb-1">Satuan</label>
-                  <input type="text" id="inpMat2Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold text-slate-600" />
+                <div class="col-span-3">
+                  <input type="text" id="inpMat2Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold" />
                 </div>
               </div>
             </div>
 
-            <!-- Keterangan -->
             <div>
-              <label class="form-label">Catatan / Keterangan Lapangan</label>
-              <input type="text" id="inpKeterangan" placeholder="Contoh: Rotasi 2, cuaca cerah, kondisi ancak bersih" class="form-input" />
+              <label class="form-label">Catatan Lapangan</label>
+              <input type="text" id="inpKeterangan" placeholder="Contoh: Rotasi 2, cuaca cerah" class="form-input" />
             </div>
 
-            <!-- Tombol Submit -->
-            <div class="pt-2 flex flex-wrap items-center gap-2.5">
-              <button type="submit" id="btnSubmitForm" class="flex-1 bg-[#056839] hover:bg-[#044E2B] text-white font-bold py-3.5 px-6 rounded-2xl shadow-md shadow-[#056839]/20 transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                <span>✓ Simpan Realisasi</span>
+            <div class="pt-1 flex gap-2">
+              <button type="submit" id="btnSubmitForm" class="flex-1 bg-[#056839] active:bg-[#044E2B] text-white font-bold py-3.5 px-5 rounded-2xl shadow-md text-sm">
+                ✓ Simpan Realisasi
               </button>
-              <button type="button" id="btnCancelEdit" onclick="resetForm()" class="hidden px-4 py-3.5 rounded-2xl border border-slate-300 text-slate-600 hover:bg-slate-100 font-bold text-xs cursor-pointer">
+              <button type="button" id="btnCancelEdit" class="hidden px-4 py-3.5 rounded-2xl border border-slate-300 text-slate-600 font-bold text-xs">
                 Batal
               </button>
             </div>
           </form>
         </div>
 
-        <!-- PANEL LOG TERBARU -->
-        <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200/80 shadow-xs flex flex-col overflow-hidden">
-          <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+        <!-- PANEL CATATAN TERAKHIR (ADA TOMBOL EDIT & HAPUS LANGSUNG) -->
+        <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200 shadow-xs flex flex-col overflow-hidden">
+          <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
             <div>
               <h3 class="font-bold text-slate-900 text-sm">Catatan Terakhir</h3>
-              <p class="text-[11px] text-slate-400">Otomatis masuk ke rekap harian, bulanan & output TK</p>
+              <p class="text-[11px] text-slate-400">Tekan ✏️ Edit atau 🗑️ Hapus jika salah input</p>
             </div>
-            <button type="button" onclick="switchTab('rekap')" class="text-xs font-bold text-[#056839] hover:underline cursor-pointer">Lihat Rekap →</button>
+            <button type="button" data-tab="rekap" class="tab-trigger text-xs font-bold text-[#056839]">Lihat Rekap →</button>
           </div>
-          <div id="recentFeedList" class="p-4 space-y-2.5 overflow-y-auto max-h-[580px] flex-1"></div>
+          <div id="recentFeedList" class="p-4 space-y-2.5 overflow-y-auto max-h-[540px] flex-1"></div>
         </div>
       </div>
     </section>
-        <!-- ==================== TAB 2: REKAP HARIAN, BULANAN & OUTPUT TK ==================== -->
-    <section id="tab-rekap" class="hidden space-y-5">
-      <!-- Bar Kontrol & Filter -->
-      <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- ==================== TAB 2: REKAP & OUTPUT PER TK ==================== -->
+    <section id="tab-rekap" class="tab-section hidden space-y-5">
+      <div class="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 class="text-base font-extrabold text-slate-900">Rekapitulasi Realisasi & Prestasi Output per TK</h2>
-            <p class="text-xs text-slate-500">Filter periode, export Excel horizontal berwarna, atau reset catatan rekapan</p>
+            <h2 class="text-base font-extrabold text-slate-900">Rekapitulasi & Output per TK</h2>
+            <p class="text-xs text-slate-500">Reset rekap harian atau hapus item jika terjadi kesalahan pengisian</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
-            <button type="button" onclick="syncAllToGoogleSheet()" id="btnSyncGsheet" class="px-3.5 py-2 rounded-xl bg-[#056839] hover:bg-[#044E2B] text-white text-xs font-bold shadow-2xs cursor-pointer">
+            <button type="button" id="btnSyncGsheet" class="px-3.5 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold">
               ☁️ Sync Spreadsheet
             </button>
-            <button type="button" onclick="exportToExcel()" class="px-3.5 py-2 rounded-xl bg-[#A6891B] hover:bg-[#8E7415] text-white text-xs font-bold shadow-2xs cursor-pointer">
+            <button type="button" id="btnExcelRekap" class="px-3.5 py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold">
               📥 Export Excel Elegan
             </button>
-            <button type="button" onclick="resetFilteredRecords()" class="px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold cursor-pointer">
-              🧹 Reset Periode Ini
+            <button type="button" id="btnResetPeriode" class="px-3.5 py-2 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold">
+              🧹 Reset Rekap Harian / Periode
             </button>
-            <button type="button" onclick="resetAllRecords()" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold cursor-pointer">
-              🗑️ Hapus Semua Rekapan
+            <button type="button" id="btnResetSemua" class="px-3.5 py-2 rounded-xl bg-red-100 text-red-700 border border-red-200 text-xs font-bold">
+              🗑️ Hapus Semua Data
             </button>
           </div>
         </div>
 
-        <!-- Mode Rekap & Filter -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-100">
           <div>
             <label class="form-label">Mode Periode</label>
-            <select id="fltMode" onchange="onFilterModeChange()" class="form-input text-xs font-bold text-[#056839]">
+            <select id="fltMode" class="form-input text-xs font-bold text-[#056839]">
               <option value="harian">Per Hari (Tanggal)</option>
               <option value="bulanan">Per Bulan (Rekap Bulanan)</option>
               <option value="semua">Semua Data</option>
@@ -314,81 +243,32 @@
           </div>
           <div id="wrapFltTanggal">
             <label class="form-label">Pilih Tanggal</label>
-            <input type="date" id="fltTanggal" onchange="renderRekapAll()" class="form-input text-xs" />
+            <input type="date" id="fltTanggal" class="form-input text-xs" />
           </div>
           <div id="wrapFltBulan" class="hidden">
             <label class="form-label">Pilih Bulan</label>
-            <input type="month" id="fltBulan" onchange="renderRekapAll()" class="form-input text-xs" />
+            <input type="month" id="fltBulan" class="form-input text-xs" />
           </div>
           <div>
-            <label class="form-label">Filter PT / Afdeling</label>
-            <select id="fltAfdeling" onchange="renderRekapAll()" class="form-input text-xs">
+            <label class="form-label">Filter Afdeling</label>
+            <select id="fltAfdeling" class="form-input text-xs">
               <option value="">Semua Afdeling</option>
             </select>
           </div>
           <div>
             <label class="form-label">Filter Pekerjaan</label>
-            <select id="fltPekerjaan" onchange="renderRekapAll()" class="form-input text-xs">
+            <select id="fltPekerjaan" class="form-input text-xs">
               <option value="">Semua Pekerjaan</option>
             </select>
           </div>
-          <div class="flex items-end">
-            <button type="button" onclick="resetFilters()" class="w-full py-2.5 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-600 cursor-pointer">
-              Reset Filter
-            </button>
-          </div>
         </div>
       </div>
 
-      <!-- Ringkasan Rekap Per Jenis Pekerjaan & Pemakaian Material -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-          <div class="px-5 py-3.5 bg-[#056839] text-white flex items-center justify-between">
-            <h3 class="font-bold text-xs uppercase tracking-wider">Rekap Output & Prestasi per Pekerjaan</h3>
-            <span id="lblPeriodeBadge1" class="text-[10px] bg-white/20 px-2 py-0.5 rounded font-semibold">Harian</span>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-xs text-left">
-              <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
-                <tr>
-                  <th class="py-2.5 px-4">Jenis Pekerjaan</th>
-                  <th class="py-2.5 px-4 text-right">Total Hasil</th>
-                  <th class="py-2.5 px-4">Unit</th>
-                  <th class="py-2.5 px-4 text-right">Total HK</th>
-                  <th class="py-2.5 px-4 text-right">Out/HK</th>
-                </tr>
-              </thead>
-              <tbody id="rekapPekerjaanBody" class="divide-y divide-slate-100"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-          <div class="px-5 py-3.5 bg-[#A6891B] text-white flex items-center justify-between">
-            <h3 class="font-bold text-xs uppercase tracking-wider">Rekap Pemakaian Material (Pupuk & Racun)</h3>
-            <span id="lblPeriodeBadge2" class="text-[10px] bg-white/20 px-2 py-0.5 rounded font-semibold">Harian</span>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-xs text-left">
-              <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
-                <tr>
-                  <th class="py-2.5 px-4">Nama Material</th>
-                  <th class="py-2.5 px-4">Kategori</th>
-                  <th class="py-2.5 px-4 text-right">Total Pemakaian</th>
-                  <th class="py-2.5 px-4">Satuan</th>
-                </tr>
-              </thead>
-              <tbody id="rekapMaterialBody" class="divide-y divide-slate-100"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ringkasan Rekap Output per TK (Mandor / Regu TK) -->
-      <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-        <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between">
+      <!-- Rekap Output per TK (Mandor / Regu TK) -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+        <div class="px-5 py-3 bg-slate-900 text-white flex items-center justify-between">
           <h3 class="font-bold text-xs uppercase tracking-wider">👷 Rekap Output & Prestasi per TK (Mandor / Regu)</h3>
-          <span id="lblPeriodeBadge3" class="text-[10px] bg-[#FFF200] text-[#056839] px-2 py-0.5 rounded font-extrabold">Harian</span>
+          <span id="lblPeriodeTk" class="text-[10px] bg-[#FFF200] text-[#056839] px-2 py-0.5 rounded font-extrabold">Harian</span>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-xs text-left">
@@ -407,226 +287,779 @@
         </div>
       </div>
 
-      <!-- Tabel Rincian Transaksi -->
-      <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
-          <h3 class="font-bold text-sm text-slate-800">Rincian Data Realisasi</h3>
+      <!-- Rekap per Pekerjaan & Material -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="px-5 py-3 bg-[#056839] text-white">
+            <h3 class="font-bold text-xs uppercase">Rekap Prestasi per Pekerjaan</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
+                <tr>
+                  <th class="py-2 px-4">Pekerjaan</th>
+                  <th class="py-2 px-4 text-right">Hasil</th>
+                  <th class="py-2 px-4">Unit</th>
+                  <th class="py-2 px-4 text-right">HK</th>
+                  <th class="py-2 px-4 text-right">Out/HK</th>
+                </tr>
+              </thead>
+              <tbody id="rekapPekerjaanBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="px-5 py-3 bg-[#A6891B] text-white">
+            <h3 class="font-bold text-xs uppercase">Rekap Pemakaian Material</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left">
+              <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
+                <tr>
+                  <th class="py-2 px-4">Material</th>
+                  <th class="py-2 px-4">Jenis</th>
+                  <th class="py-2 px-4 text-right">Jumlah</th>
+                  <th class="py-2 px-4">Unit</th>
+                </tr>
+              </thead>
+              <tbody id="rekapMaterialBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabel Rincian Data -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="font-bold text-sm text-slate-800">Rincian Catatan Realisasi</h3>
           <span id="tblRowCount" class="text-xs font-bold text-[#056839]">0 Baris</span>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="bg-slate-900 text-white text-[11px] uppercase tracking-wider">
-                <th class="py-3 px-3.5">Tanggal</th>
-                <th class="py-3 px-3.5">PT / Afdeling</th>
-                <th class="py-3 px-3.5">Blok</th>
-                <th class="py-3 px-3.5">Pekerjaan</th>
-                <th class="py-3 px-3.5 text-right">Realisasi</th>
-                <th class="py-3 px-3.5 text-right">HK</th>
-                <th class="py-3 px-3.5">Material 1 & 2</th>
-                <th class="py-3 px-3.5">Mandor / Asisten</th>
-                <th class="py-3 px-3.5 text-center">Aksi</th>
+              <tr class="bg-slate-900 text-white text-[10px] uppercase">
+                <th class="py-2.5 px-3">Tanggal</th>
+                <th class="py-2.5 px-3">Afdeling</th>
+                <th class="py-2.5 px-3">Blok</th>
+                <th class="py-2.5 px-3">Pekerjaan</th>
+                <th class="py-2.5 px-3 text-right">Hasil</th>
+                <th class="py-2.5 px-3 text-right">HK</th>
+                <th class="py-2.5 px-3">Material</th>
+                <th class="py-2.5 px-3">Mandor</th>
+                <th class="py-2.5 px-3 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody id="sheetTableBody" class="divide-y divide-slate-100"></tbody>
-            <tfoot id="sheetTableFoot" class="bg-[#F4F8F5] font-bold text-[#056839] border-t border-slate-200"></tfoot>
+            <tfoot id="sheetTableFoot" class="bg-[#F4F8F5] font-bold text-[#056839]"></tfoot>
           </table>
         </div>
       </div>
     </section>
-        <!-- ==================== TAB 3: PENGATURAN DATABASE & SPREADSHEET ==================== -->
-    <section id="tab-master" class="hidden space-y-5">
-      <!-- Koneksi Google Sheets / Realtime -->
-      <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-6 space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h3 class="font-extrabold text-sm text-slate-900 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#056839]"></span>
-              Integrasi Google Spreadsheets / Realtime Cloud
-            </h3>
-            <p class="text-xs text-slate-500 mt-0.5">Tempel URL Web App Google Script (/exec) atau URL Firebase Realtime Database (.firebasedatabase.app).</p>
-          </div>
-          <button type="button" onclick="toggleScriptGuide()" class="px-3 py-1.5 rounded-xl bg-[#F4F8F5] text-[#056839] text-xs font-bold border border-[#056839]/20 cursor-pointer">
-            📋 Lihat Kode Apps Script
-          </button>
-        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+    <!-- ==================== TAB 3: DATABASE & SPREADSHEET ==================== -->
+    <section id="tab-master" class="tab-section hidden space-y-5">
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-5 space-y-3">
+        <h3 class="font-extrabold text-sm text-[#056839]">☁️ Integrasi Google Spreadsheets / Firebase Realtime</h3>
+        <p class="text-xs text-slate-500">Tempel URL Web App Google Script (/exec) atau URL Firebase Realtime Database (.firebasedatabase.app).</p>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5">
           <div class="md:col-span-7">
-            <input type="url" id="gsheetWebhookUrl" onchange="saveWebhookUrl()" placeholder="Tempel URL Web App (/exec) atau Firebase (.firebasedatabase.app)" class="form-input text-xs font-mono" />
+            <input type="url" id="gsheetWebhookUrl" placeholder="https://script.google.com/macros/s/.../exec atau https://...firebasedatabase.app" class="form-input text-xs font-mono" />
           </div>
           <div class="md:col-span-5 flex items-center justify-between gap-2 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
-            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700 cursor-pointer">
-              <input type="checkbox" id="autoSyncCheck" onchange="saveWebhookUrl()" class="rounded text-[#056839]" />
+            <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+              <input type="checkbox" id="autoSyncCheck" />
               <span>Auto-Sync</span>
             </label>
-            <button type="button" onclick="testGoogleSheetConnection()" class="px-3 py-1.5 rounded-lg bg-[#056839] text-white text-[11px] font-bold cursor-pointer">
-              🔌 Tes Koneksi
+            <button type="button" id="btnTestConn" class="px-3 py-1.5 rounded-lg bg-[#056839] text-white text-xs font-bold">
+              🔌 Simpan & Tes
             </button>
           </div>
         </div>
-
-        <div id="appsScriptGuide" class="hidden p-4 bg-slate-900 text-emerald-300 rounded-2xl text-[11px] font-mono overflow-x-auto space-y-2">
-          <p class="text-slate-400">// Tempel di Google Spreadsheet -> Ekstensi -> Apps Script -> Deploy Web App (Akses: Anyone):</p>
-<pre>function doPost(e) { return simpanElegan(e.postData ? e.postData.contents : "{}"); }
-function doGet(e) {
-  if (e && e.parameter && e.parameter.payload) return simpanElegan(e.parameter.payload);
-  return ContentService.createTextOutput(JSON.stringify({status:"ready"})).setMimeType(ContentService.MimeType.JSON);
-}</pre>
-        </div>
       </div>
 
-      <!-- Grid Pengaturan Master Database -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-
-        <!-- 1. Master PT, Afdeling & Blok -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 space-y-3.5">
-          <h3 class="font-extrabold text-sm text-[#056839] border-b border-slate-100 pb-2.5">1. Database PT, Afdeling & Blok</h3>
-          
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- 1. PT, Afdeling & Blok -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3">
+          <h3 class="font-extrabold text-sm text-[#056839] border-b pb-2">1. Database PT, Afdeling & Blok</h3>
           <div class="flex gap-2">
-            <input type="text" id="newPtName" placeholder="Tambah Nama PT..." class="form-input text-xs" />
-            <button type="button" onclick="addPT()" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ PT</button>
+            <input type="text" id="newPtName" placeholder="Nama PT baru..." class="form-input text-xs" />
+            <button type="button" id="btnAddPt" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0">+ PT</button>
           </div>
-
-          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-2">
-            <select id="mstSelectPtForAfd" class="form-input text-xs bg-white font-semibold"></select>
+          <div class="p-3 rounded-2xl bg-slate-50 space-y-2">
+            <select id="mstSelectPtForAfd" class="form-input text-xs font-semibold"></select>
             <div class="flex gap-2">
-              <input type="text" id="newAfdName" placeholder="Nama Afdeling (mis: Plasma BSP AFD 4)" class="form-input text-xs bg-white" />
-              <button type="button" onclick="addAfdeling()" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Afd</button>
+              <input type="text" id="newAfdName" placeholder="Nama Afdeling..." class="form-input text-xs" />
+              <button type="button" id="btnAddAfd" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0">+ Afd</button>
             </div>
           </div>
-
           <div class="p-3 rounded-2xl bg-[#FFFDF2] border border-[#A6891B]/30 space-y-2">
-            <p class="text-[10px] font-extrabold uppercase text-[#A6891B]">Tambah Blok ke Afdeling:</p>
-            <select id="mstSelectAfdForBlok" class="form-input text-xs bg-white font-semibold"></select>
+            <select id="mstSelectAfdForBlok" class="form-input text-xs font-semibold"></select>
             <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="newBlokCode" placeholder="Kode Blok (D01/23)" class="form-input text-xs bg-white" />
-              <input type="number" step="0.1" id="newBlokLuas" placeholder="Luas (Ha)" class="form-input text-xs bg-white" />
+              <input type="text" id="newBlokCode" placeholder="Kode Blok" class="form-input text-xs" />
+              <input type="number" step="0.1" id="newBlokLuas" placeholder="Luas (Ha)" class="form-input text-xs" />
             </div>
-            <button type="button" onclick="addBlok()" class="w-full py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold cursor-pointer">+ Tambah Blok</button>
+            <button type="button" id="btnAddBlok" class="w-full py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold">+ Tambah Blok</button>
           </div>
-
-          <div id="masterOrgList" class="space-y-2.5 max-h-64 overflow-y-auto pr-1"></div>
+          <div id="masterOrgList" class="space-y-2 max-h-60 overflow-y-auto"></div>
         </div>
 
-        <!-- 2. Master Jenis Pekerjaan & Satuan Item -->
-        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 space-y-3.5">
-          <h3 class="font-extrabold text-sm text-[#056839] border-b border-slate-100 pb-2.5">2. Jenis Pekerjaan & Satuan Item</h3>
-          
-          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-2">
-            <input type="text" id="newJobName" placeholder="Nama Pekerjaan (mis: Pemupukan Manual)" class="form-input text-xs bg-white" />
+        <!-- 2. Pekerjaan & Satuan -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3">
+          <h3 class="font-extrabold text-sm text-[#056839] border-b pb-2">2. Jenis Pekerjaan & Satuan</h3>
+          <div class="p-3 rounded-2xl bg-slate-50 space-y-2">
+            <input type="text" id="newJobName" placeholder="Nama Pekerjaan..." class="form-input text-xs" />
             <div class="flex gap-2">
-              <select id="newJobUnit" class="form-input text-xs bg-white font-bold"></select>
-              <button type="button" onclick="addJob()" class="px-4 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Simpan</button>
+              <select id="newJobUnit" class="form-input text-xs font-bold"></select>
+              <button type="button" id="btnAddJob" class="px-4 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0">+ Simpan</button>
             </div>
           </div>
-
           <div class="flex gap-2">
-            <input type="text" id="newUnitName" placeholder="Satuan baru (Ha / Pokok / Kg)" class="form-input text-xs" />
-            <button type="button" onclick="addUnit()" class="px-3 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold shrink-0 cursor-pointer">+ Unit</button>
+            <input type="text" id="newUnitName" placeholder="Satuan baru..." class="form-input text-xs" />
+            <button type="button" id="btnAddUnit" class="px-3 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold shrink-0">+ Unit</button>
           </div>
           <div id="masterUnitList" class="flex flex-wrap gap-1.5"></div>
-
-          <div id="masterJobList" class="divide-y divide-slate-100 max-h-64 overflow-y-auto pt-1"></div>
+          <div id="masterJobList" class="divide-y divide-slate-100 max-h-60 overflow-y-auto"></div>
         </div>
 
-        <!-- 3. Master Material (Pupuk & Racun) + Asisten & Mandor -->
-        <div class="space-y-5">
-          <!-- Database Material Pupuk & Racun -->
-          <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 space-y-3">
-            <h3 class="font-extrabold text-sm text-[#056839] border-b border-slate-100 pb-2">3. Database Material (Pupuk & Racun)</h3>
-            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-2">
-              <div class="grid grid-cols-2 gap-2">
-                <select id="newMatType" class="form-input text-xs bg-white font-bold">
-                  <option value="Pupuk">Jenis: Pupuk</option>
-                  <option value="Racun">Jenis: Racun / Herbisida</option>
-                </select>
-                <input type="text" id="newMatUnit" placeholder="Satuan (Kg / Liter)" class="form-input text-xs bg-white font-bold" />
-              </div>
-              <div class="flex gap-2">
-                <input type="text" id="newMatName" placeholder="Nama Material (mis: NPK / Glyphosate)" class="form-input text-xs bg-white" />
-                <button type="button" onclick="addMaterial()" class="px-3.5 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Tambah</button>
-              </div>
+        <!-- 3. Material & Mandor -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3">
+          <h3 class="font-extrabold text-sm text-[#056839] border-b pb-2">3. Material, Asisten & Mandor</h3>
+          <div class="p-3 rounded-2xl bg-slate-50 space-y-2">
+            <div class="grid grid-cols-2 gap-2">
+              <select id="newMatType" class="form-input text-xs font-bold">
+                <option value="Pupuk">Pupuk</option>
+                <option value="Racun">Racun</option>
+              </select>
+              <input type="text" id="newMatUnit" placeholder="Unit (Kg/Ltr)" class="form-input text-xs font-bold" />
             </div>
-            <div id="masterMaterialList" class="divide-y divide-slate-100 max-h-44 overflow-y-auto"></div>
+            <div class="flex gap-2">
+              <input type="text" id="newMatName" placeholder="Nama Material..." class="form-input text-xs" />
+              <button type="button" id="btnAddMat" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0">+ Mat</button>
+            </div>
           </div>
+          <div id="masterMaterialList" class="divide-y divide-slate-100 max-h-36 overflow-y-auto"></div>
 
-          <!-- Database Asisten & Mandor -->
-          <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-5 space-y-3">
-            <h3 class="font-extrabold text-sm text-[#056839] border-b border-slate-100 pb-2">4. Database Asisten & Mandor</h3>
-            
+          <div class="pt-2 border-t space-y-2">
             <div class="flex gap-2">
               <input type="text" id="newAsistenName" placeholder="Nama Asisten..." class="form-input text-xs" />
-              <button type="button" onclick="addPerson('asisten')" class="px-3 py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold shrink-0 cursor-pointer">+ Asisten</button>
+              <button type="button" id="btnAddAsisten" class="px-3 py-2 rounded-xl bg-[#A6891B] text-white text-xs font-bold shrink-0">+ Ast</button>
             </div>
             <div id="masterAsistenList" class="flex flex-wrap gap-1.5"></div>
 
-            <div class="flex gap-2 pt-2 border-t border-slate-100">
+            <div class="flex gap-2">
               <input type="text" id="newMandorName" placeholder="Nama Mandor..." class="form-input text-xs" />
-              <button type="button" onclick="addPerson('mandor')" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0 cursor-pointer">+ Mandor</button>
+              <button type="button" id="btnAddMandor" class="px-3 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0">+ Mdr</button>
             </div>
             <div id="masterMandorList" class="flex flex-wrap gap-1.5"></div>
           </div>
         </div>
-
       </div>
 
       <div class="flex justify-end">
-        <button type="button" onclick="resetMasterToDefault()" class="px-4 py-2 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 text-xs font-bold cursor-pointer">
-          Reset Semua Master Data ke Default
+        <button type="button" id="btnResetMaster" class="px-4 py-2 rounded-xl border border-red-200 text-red-600 text-xs font-bold">
+          Reset Master Data ke Default
         </button>
       </div>
     </section>
-
   </main>
 
-  <!-- FOOTER -->
-  <footer class="py-5 text-center text-xs text-slate-400">
-    <p>Powered BY <strong class="text-[#056839]">Plasma Wanggarasi</strong> • PT Kencana Agri</p>
+  <footer class="py-4 text-center text-xs text-slate-400">
+    Powered BY <strong class="text-[#056839]">Plasma Wanggarasi</strong> • PT Kencana Agri
   </footer>
 
-  <!-- TOAST -->
   <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl text-xs font-bold flex items-center gap-2">
     <span id="toastIcon">✅</span>
     <span id="toastMsg">Tersimpan</span>
   </div>
-
-  <!-- PENGAMAN SPLASH SCREEN ANTI-STUCK DI ANDROID WEBVIEW -->
-  <script>
-    window.enterApp = function(withSound) {
-      var splash = document.getElementById("splashScreen");
-      if (withSound) {
-        var pill = document.getElementById("voiceStatusPill");
-        if (pill) {
-          pill.classList.remove("hidden");
-          pill.classList.add("inline-flex");
+    <script>
+    const DEFAULT_MASTER = {
+      orgs: {
+        "PT Kencana Agri (Plasma BSP)": {
+          "Plasma BSP - AFD 1": [{ kode: "A-01", luas: 25.0 }, { kode: "A-02", luas: 28.5 }],
+          "Plasma BSP - AFD 4": [{ kode: "D01/2023", luas: 24.5 }, { kode: "D02/2023", luas: 26.0 }, { kode: "D03/2022", luas: 28.0 }, { kode: "D04/2022", luas: 25.4 }]
+        },
+        "PT Kencana Agri (Plasma MSM)": {
+          "Plasma MSM - AFD 1": [{ kode: "M-01", luas: 25.0 }, { kode: "M-02", luas: 27.5 }],
+          "Plasma MSM - AFD 2": [{ kode: "N-01", luas: 24.0 }, { kode: "N-02", luas: 26.5 }]
         }
-        try {
-          if (typeof playKencanaVoice === "function") {
-            playKencanaVoice();
-          } else if ("speechSynthesis" in window) {
-            window.speechSynthesis.cancel();
-            var u = new SpeechSynthesisUtterance("Kencana, Pasti Bisa!");
-            u.lang = "id-ID";
-            window.speechSynthesis.speak(u);
-          }
-        } catch (e) {}
-        setTimeout(function() {
-          if (splash) {
-            splash.style.opacity = "0";
-            splash.style.pointerEvents = "none";
-            setTimeout(function() { splash.style.display = "none"; }, 500);
-          }
-        }, 1200);
+      },
+      units: ["Ha", "Pokok", "Kg", "Liter", "Meter", "Janjang", "Titik"],
+      jobs: [
+        { nama: "Pruning / Tunas Pokok", unit: "Pokok" },
+        { nama: "Tebas / Babat Gawangan", unit: "Ha" },
+        { nama: "Chemis Piringan & Pasar Pikul", unit: "Ha" },
+        { nama: "Chemis Gawangan / Anak Kayu", unit: "Ha" },
+        { nama: "Pemupukan Manual (Manuring)", unit: "Kg" },
+        { nama: "Pemupukan Pokok", unit: "Pokok" },
+        { nama: "Kastrasi & Sanitasi", unit: "Pokok" },
+        { nama: "Perawatan Parit / Drainase", unit: "Meter" }
+      ],
+      materials: [
+        { nama: "Glyphosate (Roundup / Glifosat)", jenis: "Racun", unit: "Liter" },
+        { nama: "Metsulfuron Methyl (Ally)", jenis: "Racun", unit: "Gram" },
+        { nama: "Paraquat (Gramoxone)", jenis: "Racun", unit: "Liter" },
+        { nama: "Fluroxypyr (Starane)", jenis: "Racun", unit: "Liter" },
+        { nama: "NPK 15-15-6-4 / 13-6-27", jenis: "Pupuk", unit: "Kg" },
+        { nama: "Urea", jenis: "Pupuk", unit: "Kg" },
+        { nama: "KCl / MOP", jenis: "Pupuk", unit: "Kg" },
+        { nama: "RP (Rock Phosphate)", jenis: "Pupuk", unit: "Kg" },
+        { nama: "Dolomit", jenis: "Pupuk", unit: "Kg" },
+        { nama: "Borate (HGFB)", jenis: "Pupuk", unit: "Kg" }
+      ],
+      asistens: ["Sukri"],
+      mandors: ["Meti", "Pak Ramin", "Pak Budi", "Bang Candra", "Bang Edi"]
+    };
+
+    function cloneObj(o) { return JSON.parse(JSON.stringify(o)); }
+    let masterData = JSON.parse(localStorage.getItem("kencana_master_v3")) || cloneObj(DEFAULT_MASTER);
+    let records = JSON.parse(localStorage.getItem("kencana_records_v3")) || [];
+    let sheetConfig = JSON.parse(localStorage.getItem("kencana_gsheet_cfg_v3")) || { url: "", autoSync: false };
+
+    function showToast(msg, icon) {
+      const t = document.getElementById("toast");
+      if (!t) return;
+      document.getElementById("toastMsg").textContent = msg;
+      document.getElementById("toastIcon").textContent = icon || "✅";
+      t.classList.remove("translate-y-24", "opacity-0");
+      setTimeout(() => t.classList.add("translate-y-24", "opacity-0"), 2800);
+    }
+
+    function switchTab(name) {
+      document.querySelectorAll(".tab-section").forEach(el => el.classList.add("hidden"));
+      document.querySelectorAll(".tab-trigger").forEach(btn => btn.classList.remove("nav-pill-active"));
+      const target = document.getElementById("tab-" + name);
+      if (target) target.classList.remove("hidden");
+      document.querySelectorAll('.tab-trigger[data-tab="' + name + '"]').forEach(btn => btn.classList.add("nav-pill-active"));
+      if (name === "rekap") renderRekapAll();
+      if (name === "master") renderMasterUI();
+    }
+
+    function saveStorage() {
+      localStorage.setItem("kencana_master_v3", JSON.stringify(masterData));
+      localStorage.setItem("kencana_records_v3", JSON.stringify(records));
+      pushRealtimeToCloud();
+    }
+
+    function refreshAllDropdowns() {
+      const ptNames = Object.keys(masterData.orgs || {});
+      const inpPT = document.getElementById("inpPT");
+      const mstPt = document.getElementById("mstSelectPtForAfd");
+      const prevPT = inpPT.value;
+
+      inpPT.innerHTML = '<option value="">-- Pilih PT --</option>' + ptNames.map(p => `<option value="${p}">${p}</option>`).join("");
+      mstPt.innerHTML = ptNames.map(p => `<option value="${p}">${p}</option>`).join("");
+      inpPT.value = ptNames.includes(prevPT) ? prevPT : (ptNames[0] || "");
+      onPTChange();
+
+      const fltAfd = document.getElementById("fltAfdeling");
+      const mstAfd = document.getElementById("mstSelectAfdForBlok");
+      fltAfd.innerHTML = '<option value="">Semua Afdeling</option>';
+      mstAfd.innerHTML = "";
+      Object.entries(masterData.orgs || {}).forEach(([pt, afds]) => {
+        Object.keys(afds).forEach(afd => {
+          fltAfd.innerHTML += `<option value="${afd}">${afd}</option>`;
+          mstAfd.innerHTML += `<option value="${pt}|||${afd}">${pt} — ${afd}</option>`;
+        });
+      });
+
+      const inpAsisten = document.getElementById("inpAsisten");
+      inpAsisten.innerHTML = '<option value="">-- Pilih Asisten --</option>' + masterData.asistens.map(a => `<option value="${a}">${a}</option>`).join("");
+      if (masterData.asistens.length) inpAsisten.value = masterData.asistens[0];
+
+      document.getElementById("inpMandor").innerHTML = '<option value="">-- Pilih Mandor --</option>' + masterData.mandors.map(m => `<option value="${m}">${m}</option>`).join("");
+      document.getElementById("inpPekerjaan").innerHTML = '<option value="">-- Pilih Jenis Pekerjaan --</option>' + masterData.jobs.map(j => `<option value="${j.nama}" data-unit="${j.unit}">${j.nama} (${j.unit})</option>`).join("");
+      document.getElementById("fltPekerjaan").innerHTML = '<option value="">Semua Pekerjaan</option>' + masterData.jobs.map(j => `<option value="${j.nama}">${j.nama}</option>`).join("");
+      document.getElementById("inpSatuan").innerHTML = masterData.units.map(u => `<option value="${u}">${u}</option>`).join("");
+      document.getElementById("newJobUnit").innerHTML = masterData.units.map(u => `<option value="${u}">${u}</option>`).join("");
+
+      const matOpt = '<option value="">-- Tanpa Material --</option>' + masterData.materials.map((m, i) => `<option value="${i}" data-unit="${m.unit}">[${m.jenis}] ${m.nama}</option>`).join("");
+      document.getElementById("inpMat1").innerHTML = matOpt;
+      document.getElementById("inpMat2").innerHTML = matOpt;
+    }
+
+    function onPTChange() {
+      const pt = document.getElementById("inpPT").value;
+      const afdSel = document.getElementById("inpAfdeling");
+      const afds = masterData.orgs[pt] ? Object.keys(masterData.orgs[pt]) : [];
+      afdSel.innerHTML = '<option value="">-- Pilih Afdeling --</option>' + afds.map(a => `<option value="${a}">${a}</option>`).join("");
+      if (afds.length) afdSel.value = afds[0];
+      document.getElementById("hdrPtBadge").textContent = pt || "PT KENCANA AGRI";
+      onAfdelingChange();
+    }
+
+    function onAfdelingChange() {
+      const pt = document.getElementById("inpPT").value;
+      const afd = document.getElementById("inpAfdeling").value;
+      const blokSel = document.getElementById("inpBlok");
+      document.getElementById("infoLuasBlok").textContent = "";
+      document.getElementById("hdrAfdBadge").textContent = afd || "Wanggarasi";
+      const bloks = (masterData.orgs[pt] && masterData.orgs[pt][afd]) ? masterData.orgs[pt][afd] : [];
+      blokSel.innerHTML = `<option value="">-- Pilih Blok (${bloks.length}) --</option>` + bloks.map(b => `<option value="${b.kode}" data-luas="${b.luas}">Blok ${b.kode} (${b.luas} Ha)</option>`).join("");
+    }
+
+    function onBlokChange() {
+      const sel = document.getElementById("inpBlok");
+      const luas = sel.options[sel.selectedIndex]?.getAttribute("data-luas");
+      document.getElementById("infoLuasBlok").textContent = luas ? `• ${luas} Ha` : "";
+    }
+
+    function onPekerjaanChange() {
+      const sel = document.getElementById("inpPekerjaan");
+      const unit = sel.options[sel.selectedIndex]?.getAttribute("data-unit");
+      if (unit && masterData.units.includes(unit)) document.getElementById("inpSatuan").value = unit;
+    }
+
+    function onMaterialSelect(slot) {
+      const sel = document.getElementById("inpMat" + slot);
+      const u = document.getElementById("inpMat" + slot + "Unit");
+      const q = document.getElementById("inpMat" + slot + "Qty");
+      if (!sel.value) { u.value = "-"; q.value = ""; }
+      else { u.value = sel.options[sel.selectedIndex].getAttribute("data-unit") || ""; }
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const editId = document.getElementById("editId").value;
+      const m1Idx = document.getElementById("inpMat1").value;
+      const m1 = m1Idx !== "" ? masterData.materials[Number(m1Idx)] : null;
+      const m2Idx = document.getElementById("inpMat2").value;
+      const m2 = m2Idx !== "" ? masterData.materials[Number(m2Idx)] : null;
+
+      const rec = {
+        id: editId || "KC-" + Date.now().toString().slice(-6),
+        tanggal: document.getElementById("inpTanggal").value,
+        pt: document.getElementById("inpPT").value,
+        afdeling: document.getElementById("inpAfdeling").value,
+        blok: document.getElementById("inpBlok").value,
+        asisten: document.getElementById("inpAsisten").value,
+        mandor: document.getElementById("inpMandor").value,
+        pekerjaan: document.getElementById("inpPekerjaan").value,
+        satuan: document.getElementById("inpSatuan").value,
+        hasil: parseFloat(document.getElementById("inpHasil").value) || 0,
+        hk: parseFloat(document.getElementById("inpHK").value) || 0,
+        mat1Nama: m1 ? m1.nama : "-", mat1Jenis: m1 ? m1.jenis : "-", mat1Qty: m1 ? (parseFloat(document.getElementById("inpMat1Qty").value) || 0) : 0, mat1Unit: m1 ? m1.unit : "-",
+        mat2Nama: m2 ? m2.nama : "-", mat2Jenis: m2 ? m2.jenis : "-", mat2Qty: m2 ? (parseFloat(document.getElementById("inpMat2Qty").value) || 0) : 0, mat2Unit: m2 ? m2.unit : "-",
+        keterangan: document.getElementById("inpKeterangan").value.trim() || "-"
+      };
+
+      if (editId) {
+        const idx = records.findIndex(r => r.id === editId);
+        if (idx !== -1) records[idx] = rec;
+        showToast("Data realisasi diperbarui!");
       } else {
-        if (splash) {
-          splash.style.opacity = "0";
-          splash.style.pointerEvents = "none";
-          setTimeout(function() { splash.style.display = "none"; }, 300);
+        records.unshift(rec);
+        showToast("Realisasi tersimpan!");
+        if (sheetConfig.autoSync && sheetConfig.url) postRecordToWebhook(rec);
+      }
+      saveStorage(); resetForm(true); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+    }
+
+    function resetForm(keep) {
+      document.getElementById("editId").value = "";
+      document.getElementById("btnSubmitForm").innerHTML = "✓ Simpan Realisasi";
+      document.getElementById("btnCancelEdit").classList.add("hidden");
+      if (!keep) {
+        document.getElementById("realisasiForm").reset();
+        document.getElementById("inpTanggal").value = new Date().toISOString().split("T")[0];
+        onPTChange();
+      } else {
+        ["inpHasil","inpHK","inpMat1","inpMat1Qty","inpMat2","inpMat2Qty","inpKeterangan"].forEach(id => document.getElementById(id).value = "");
+        document.getElementById("inpMat1Unit").value = "-";
+        document.getElementById("inpMat2Unit").value = "-";
+      }
+    }
+
+    window.editRecord = function(id) {
+      const r = records.find(x => x.id === id);
+      if (!r) return;
+      switchTab("input");
+      document.getElementById("editId").value = r.id;
+      document.getElementById("inpTanggal").value = r.tanggal;
+      document.getElementById("inpPT").value = r.pt; onPTChange();
+      document.getElementById("inpAfdeling").value = r.afdeling; onAfdelingChange();
+      document.getElementById("inpBlok").value = r.blok; onBlokChange();
+      document.getElementById("inpAsisten").value = r.asisten;
+      document.getElementById("inpMandor").value = r.mandor;
+      document.getElementById("inpPekerjaan").value = r.pekerjaan;
+      document.getElementById("inpSatuan").value = r.satuan;
+      document.getElementById("inpHasil").value = r.hasil;
+      document.getElementById("inpHK").value = r.hk;
+      document.getElementById("inpKeterangan").value = r.keterangan === "-" ? "" : r.keterangan;
+      document.getElementById("btnSubmitForm").innerHTML = "💾 Update Perubahan";
+      document.getElementById("btnCancelEdit").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.deleteRecord = function(id) {
+      if (!confirm("Hapus catatan realisasi yang salah ini?")) return;
+      records = records.filter(r => r.id !== id);
+      saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+      showToast("Data berhasil dihapus!", "🗑️");
+    };
+          function formatMatBadge(r) {
+      const p = [];
+      if (r.mat1Nama && r.mat1Nama !== "-") p.push(`${r.mat1Nama} (${r.mat1Qty} ${r.mat1Unit})`);
+      if (r.mat2Nama && r.mat2Nama !== "-") p.push(`${r.mat2Nama} (${r.mat2Qty} ${r.mat2Unit})`);
+      return p.length ? p.join(" + ") : "Tanpa material";
+    }
+
+    function updateDashboardKPI() {
+      const selDate = document.getElementById("inpTanggal").value;
+      const selMonth = selDate ? selDate.substring(0, 7) : "";
+      const dayList = records.filter(r => r.tanggal === selDate);
+      const monthList = records.filter(r => r.tanggal && r.tanggal.startsWith(selMonth));
+      const totalHK = dayList.reduce((a, r) => a + Number(r.hk || 0), 0);
+
+      document.getElementById("kpiTanggalCount").textContent = `${dayList.length} Item`;
+      document.getElementById("kpiTotalHK").textContent = `${totalHK.toLocaleString("id-ID")} HK`;
+      document.getElementById("kpiBulanCount").textContent = `${monthList.length} Data`;
+      document.getElementById("badgeCount").textContent = records.length;
+
+      const cloudEl = document.getElementById("kpiCloudStatus");
+      cloudEl.textContent = sheetConfig.url ? "● Terhubung Cloud" : "Lokal (Offline Ready)";
+      cloudEl.className = sheetConfig.url ? "text-xs font-bold text-[#056839] mt-1.5" : "text-xs font-bold text-slate-500 mt-1.5";
+    }
+
+    function renderRecentFeed() {
+      const box = document.getElementById("recentFeedList");
+      if (!records.length) {
+        box.innerHTML = '<div class="text-center py-10 text-slate-400 text-xs">Belum ada realisasi yang diinput.</div>';
+        return;
+      }
+      box.innerHTML = records.slice(0, 10).map(r => `
+        <div class="p-3 rounded-2xl border border-slate-200 bg-[#FAFDFB] flex items-start justify-between gap-2">
+          <div class="space-y-1">
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="px-2 py-0.5 rounded bg-[#056839] text-white text-[10px] font-bold">${r.afdeling}</span>
+              <span class="px-2 py-0.5 rounded bg-[#FFF200] text-[#056839] text-[10px] font-extrabold">Blok ${r.blok}</span>
+              <span class="text-[11px] text-slate-400">${r.tanggal}</span>
+            </div>
+            <p class="text-xs font-extrabold text-slate-800">${r.pekerjaan}</p>
+            <p class="text-xs font-bold text-[#056839]">${Number(r.hasil).toLocaleString("id-ID")} ${r.satuan} • ${r.hk} HK</p>
+            <p class="text-[11px] text-slate-500">Mandor: ${r.mandor} • ${formatMatBadge(r)}</p>
+          </div>
+          <div class="flex flex-col gap-1.5 shrink-0">
+            <button type="button" onclick="editRecord('${r.id}')" class="px-2.5 py-1 rounded-lg bg-emerald-50 text-[#056839] text-[11px] font-bold">✏️ Edit</button>
+            <button type="button" onclick="deleteRecord('${r.id}')" class="px-2.5 py-1 rounded-lg bg-red-50 text-red-600 text-[11px] font-bold">🗑️ Hapus</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function getFilteredRecords() {
+      const mode = document.getElementById("fltMode").value;
+      const fTgl = document.getElementById("fltTanggal").value;
+      const fBln = document.getElementById("fltBulan").value;
+      const fAfd = document.getElementById("fltAfdeling").value;
+      const fJob = document.getElementById("fltPekerjaan").value;
+      return records.filter(r => {
+        if (mode === "harian" && fTgl && r.tanggal !== fTgl) return false;
+        if (mode === "bulanan" && fBln && (!r.tanggal || !r.tanggal.startsWith(fBln))) return false;
+        if (fAfd && r.afdeling !== fAfd) return false;
+        if (fJob && r.pekerjaan !== fJob) return false;
+        return true;
+      });
+    }
+
+    function renderRekapAll() {
+      const mode = document.getElementById("fltMode").value;
+      document.getElementById("lblPeriodeTk").textContent = mode === "harian" ? (document.getElementById("fltTanggal").value || "Harian") : (mode === "bulanan" ? (document.getElementById("fltBulan").value || "Bulanan") : "Semua");
+      const list = getFilteredRecords();
+      document.getElementById("tblRowCount").textContent = `${list.length} Baris`;
+
+      const jobMap = {}, matMap = {}, tkMap = {};
+      list.forEach(r => {
+        const jk = `${r.pekerjaan}|||${r.satuan}`;
+        if (!jobMap[jk]) jobMap[jk] = { pekerjaan: r.pekerjaan, satuan: r.satuan, hasil: 0, hk: 0 };
+        jobMap[jk].hasil += Number(r.hasil || 0); jobMap[jk].hk += Number(r.hk || 0);
+
+        const tk = `${r.mandor}|||${r.pekerjaan}|||${r.satuan}`;
+        if (!tkMap[tk]) tkMap[tk] = { mandor: r.mandor, pekerjaan: r.pekerjaan, satuan: r.satuan, hasil: 0, hk: 0 };
+        tkMap[tk].hasil += Number(r.hasil || 0); tkMap[tk].hk += Number(r.hk || 0);
+
+        [{ nama: r.mat1Nama, jenis: r.mat1Jenis, qty: Number(r.mat1Qty || 0), unit: r.mat1Unit },
+         { nama: r.mat2Nama, jenis: r.mat2Jenis, qty: Number(r.mat2Qty || 0), unit: r.mat2Unit }].forEach(m => {
+          if (m.nama && m.nama !== "-" && m.qty > 0) {
+            const mk = `${m.nama}|||${m.unit}`;
+            if (!matMap[mk]) matMap[mk] = { nama: m.nama, jenis: m.jenis, qty: 0, unit: m.unit };
+            matMap[mk].qty += m.qty;
+          }
+        });
+      });
+
+      const tkRows = Object.values(tkMap);
+      document.getElementById("rekapTkBody").innerHTML = tkRows.length ? tkRows.map(t => `
+        <tr>
+          <td class="py-2.5 px-4 font-extrabold">${t.mandor}</td>
+          <td class="py-2.5 px-4">${t.pekerjaan}</td>
+          <td class="py-2.5 px-4 text-right font-bold text-[#056839]">${t.hasil.toLocaleString("id-ID")}</td>
+          <td class="py-2.5 px-4 font-bold text-[#A6891B]">${t.satuan}</td>
+          <td class="py-2.5 px-4 text-right font-bold">${t.hk} HK</td>
+          <td class="py-2.5 px-4 text-right font-extrabold bg-[#F4F8F5] text-[#056839]">${t.hk > 0 ? (t.hasil / t.hk).toFixed(2) : "0.00"} ${t.satuan}/TK</td>
+        </tr>`).join("") : '<tr><td colspan="6" class="py-5 text-center text-slate-400">Belum ada data output per TK</td></tr>';
+
+      const jobRows = Object.values(jobMap);
+      document.getElementById("rekapPekerjaanBody").innerHTML = jobRows.length ? jobRows.map(j => `
+        <tr>
+          <td class="py-2 px-4 font-bold">${j.pekerjaan}</td>
+          <td class="py-2 px-4 text-right font-extrabold text-[#056839]">${j.hasil.toLocaleString("id-ID")}</td>
+          <td class="py-2 px-4 font-bold text-[#A6891B]">${j.satuan}</td>
+          <td class="py-2 px-4 text-right font-bold">${j.hk}</td>
+          <td class="py-2 px-4 text-right">${j.hk > 0 ? (j.hasil / j.hk).toFixed(2) : "0.00"}</td>
+        </tr>`).join("") : '<tr><td colspan="5" class="py-5 text-center text-slate-400">Tidak ada data</td></tr>';
+
+      const matRows = Object.values(matMap);
+      document.getElementById("rekapMaterialBody").innerHTML = matRows.length ? matRows.map(m => `
+        <tr>
+          <td class="py-2 px-4 font-bold">${m.nama}</td>
+          <td class="py-2 px-4">${m.jenis}</td>
+          <td class="py-2 px-4 text-right font-extrabold text-[#056839]">${m.qty.toLocaleString("id-ID")}</td>
+          <td class="py-2 px-4">${m.unit}</td>
+        </tr>`).join("") : '<tr><td colspan="4" class="py-5 text-center text-slate-400">Belum ada pemakaian material</td></tr>';
+
+      const tbody = document.getElementById("sheetTableBody");
+      const tfoot = document.getElementById("sheetTableFoot");
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="9" class="py-8 text-center text-slate-400">Belum ada data realisasi pada periode ini.</td></tr>';
+        tfoot.innerHTML = ""; return;
+      }
+      let totalHK = 0;
+      tbody.innerHTML = list.map(r => {
+        totalHK += Number(r.hk || 0);
+        return `
+          <tr>
+            <td class="py-2 px-3 whitespace-nowrap">${r.tanggal}</td>
+            <td class="py-2 px-3 font-bold text-[#056839]">${r.afdeling}</td>
+            <td class="py-2 px-3 font-extrabold">${r.blok}</td>
+            <td class="py-2 px-3">${r.pekerjaan}</td>
+            <td class="py-2 px-3 text-right font-extrabold text-[#056839]">${Number(r.hasil).toLocaleString("id-ID")} ${r.satuan}</td>
+            <td class="py-2 px-3 text-right font-bold">${r.hk}</td>
+            <td class="py-2 px-3 text-[11px]">${formatMatBadge(r)}</td>
+            <td class="py-2 px-3 font-bold">${r.mandor}</td>
+            <td class="py-2 px-3 text-center whitespace-nowrap">
+              <button type="button" onclick="editRecord('${r.id}')" class="px-2 py-1 rounded bg-emerald-50 text-[#056839] font-bold mr-1">Edit</button>
+              <button type="button" onclick="deleteRecord('${r.id}')" class="px-2 py-1 rounded bg-red-50 text-red-600 font-bold">Hapus</button>
+            </td>
+          </tr>`;
+      }).join("");
+      tfoot.innerHTML = `<tr><td colspan="5" class="py-2.5 px-3 text-right uppercase text-xs">Total HK:</td><td class="py-2.5 px-3 text-right text-sm">${totalHK.toLocaleString("id-ID")} HK</td><td colspan="3"></td></tr>`;
+    }
+
+    function renderMasterUI() {
+      refreshAllDropdowns();
+      document.getElementById("masterOrgList").innerHTML = Object.entries(masterData.orgs || {}).map(([pt, afds]) => `
+        <div class="p-3 rounded-2xl border bg-slate-50 space-y-2">
+          <div class="flex justify-between"><span class="text-xs font-extrabold text-[#056839]">${pt}</span><button type="button" onclick="deletePT('${pt}')" class="text-[10px] text-red-500 font-bold">Hapus PT</button></div>
+          ${Object.entries(afds).map(([afd, bloks]) => `
+            <div class="pl-2 border-l-2 border-[#A6891B] space-y-1">
+              <div class="flex justify-between"><span class="text-[11px] font-bold">${afd}</span><button type="button" onclick="deleteAfdeling('${pt}','${afd}')" class="text-[10px] text-red-400">× Afd</button></div>
+              <div class="flex flex-wrap gap-1">${bloks.map((b, i) => `<span class="px-2 py-0.5 rounded bg-white border text-[10px]">${b.kode} (${b.luas}Ha) <button type="button" onclick="deleteBlok('${pt}','${afd}',${i})" class="text-red-500 font-bold">×</button></span>`).join("")}</div>
+            </div>`).join("")}
+        </div>`).join("");
+
+      document.getElementById("masterUnitList").innerHTML = masterData.units.map((u, i) => `<span class="px-2.5 py-1 rounded-lg bg-[#F4F8F5] text-[#056839] text-[11px] font-bold">${u} <button type="button" onclick="deleteUnit(${i})" class="text-red-500">×</button></span>`).join("");
+      document.getElementById("masterJobList").innerHTML = masterData.jobs.map((j, i) => `<div class="py-2 flex justify-between text-xs"><span class="font-bold">${j.nama} (${j.unit})</span><button type="button" onclick="deleteJob(${i})" class="text-red-500 font-bold">Hapus</button></div>`).join("");
+      document.getElementById("masterMaterialList").innerHTML = masterData.materials.map((m, i) => `<div class="py-2 flex justify-between text-xs"><span class="font-bold">[${m.jenis}] ${m.nama} (${m.unit})</span><button type="button" onclick="deleteMaterial(${i})" class="text-red-500 font-bold">Hapus</button></div>`).join("");
+      document.getElementById("masterAsistenList").innerHTML = masterData.asistens.map((a, i) => `<span class="px-2.5 py-1 rounded-lg bg-[#FFFDF2] text-[#A6891B] text-[11px] font-bold">${a} <button type="button" onclick="deletePerson('asisten',${i})" class="text-red-500">×</button></span>`).join("");
+      document.getElementById("masterMandorList").innerHTML = masterData.mandors.map((m, i) => `<span class="px-2.5 py-1 rounded-lg bg-[#F4F8F5] text-[#056839] text-[11px] font-bold">${m} <button type="button" onclick="deletePerson('mandor',${i})" class="text-red-500">×</button></span>`).join("");
+    }
+
+    window.deletePT = pt => { if (confirm("Hapus PT?")) { delete masterData.orgs[pt]; saveStorage(); renderMasterUI(); } };
+    window.deleteAfdeling = (pt, afd) => { delete masterData.orgs[pt][afd]; saveStorage(); renderMasterUI(); };
+    window.deleteBlok = (pt, afd, i) => { masterData.orgs[pt][afd].splice(i, 1); saveStorage(); renderMasterUI(); };
+    window.deleteJob = i => { masterData.jobs.splice(i, 1); saveStorage(); renderMasterUI(); };
+    window.deleteUnit = i => { masterData.units.splice(i, 1); saveStorage(); renderMasterUI(); };
+    window.deleteMaterial = i => { masterData.materials.splice(i, 1); saveStorage(); renderMasterUI(); };
+    window.deletePerson = (r, i) => { (r === "asisten" ? masterData.asistens : masterData.mandors).splice(i, 1); saveStorage(); renderMasterUI(); };
+          function shareWhatsAppReport() {
+      const tgl = document.getElementById("inpTanggal").value;
+      const crashList = records.filter(r => r.tanggal === tgl && ((r.pekerjaan||"").toLowerCase().includes("pruning") || (r.pekerjaan||"").toLowerCase().includes("tunas") || (r.pekerjaan||"").toLowerCase().includes("tebas") || (r.pekerjaan||"").toLowerCase().includes("gawangan")));
+      if (!crashList.length) return showToast(`Tidak ada data Pruning / Tebas Gawangan tgl ${tgl}`, "⚠️");
+      const afdLabel = (crashList[0].afdeling || "BSP").toUpperCase().includes("BSP") ? "BSP" : crashList[0].afdeling;
+      const pt = tgl.split("-"); const tglFmt = pt.length === 3 ? `${pt[2]}-${pt[1]}-${pt[0]}` : tgl;
+      const grouped = {}; let totalHK = 0;
+      crashList.forEach(r => { totalHK += Number(r.hk || 0); (grouped[r.pekerjaan] = grouped[r.pekerjaan] || []).push(r); });
+      let rincian = "", idx = 1;
+      Object.entries(grouped).forEach(([job, items]) => {
+        let subH = 0, subHK = 0;
+        rincian += `*${idx}. ${job}*\n`;
+        items.forEach(it => {
+          subH += Number(it.hasil || 0); subHK += Number(it.hk || 0);
+          rincian += `   • Blok *${it.blok}* : *${Number(it.hasil).toLocaleString("id-ID")} ${it.satuan}* (${it.hk} HK | Out/TK: ${it.hk > 0 ? (it.hasil/it.hk).toFixed(2) : "0.00"}) — Mandor: ${it.mandor}\n`;
+        });
+        rincian += `   _Subtotal: ${subH.toLocaleString("id-ID")} ${items[0].satuan} (${subHK} HK)_\n\n`; idx++;
+      });
+      const text = `*Laporan Realisasi Crash Program*\nAfdeling : *${afdLabel}*\nTanggal : *${tglFmt}*\n\n${rincian.trim()}\n\n*Total Tenaga Kerja (HK) : ${totalHK.toLocaleString("id-ID")} HK*`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    }
+
+    function exportToExcel() {
+      if (!records.length) return showToast("Belum ada data realisasi!", "⚠️");
+      if (typeof XLSX === "undefined") return showToast("Library Excel butuh koneksi internet!", "⚠️");
+      const wb = XLSX.utils.book_new();
+      const headers = ["No","Tanggal","Bulan","PT","Afdeling","Blok","Jenis Pekerjaan","Realisasi","Satuan","HK","Output / TK","Material 1","Dosis 1","Unit 1","Material 2","Dosis 2","Unit 2","Mandor","Asisten","Keterangan"];
+      const rows = records.map((r, i) => [i+1, r.tanggal, (r.tanggal||"").substring(0,7), r.pt, r.afdeling, r.blok, r.pekerjaan, Number(r.hasil||0), r.satuan, Number(r.hk||0), r.hk>0?Number((r.hasil/r.hk).toFixed(2)):0, r.mat1Nama||"-", Number(r.mat1Qty||0), r.mat1Unit||"-", r.mat2Nama||"-", Number(r.mat2Qty||0), r.mat2Unit||"-", r.mandor||"-", r.asisten||"-", r.keterangan||"-"]);
+      const ws = XLSX.utils.aoa_to_sheet([["LAPORAN REALISASI RAWAT — PT KENCANA AGRI (PLASMA WANGGARASI)"], [], headers, ...rows]);
+      ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } }];
+      if (ws["A1"]) ws["A1"].s = { font: { bold: true, sz: 12, color: { rgb: "FFFFFF" } }, fill: { fgColor: { rgb: "044E2B" } } };
+      for (let c = 0; c < headers.length; c++) {
+        const hc = XLSX.utils.encode_cell({ r: 2, c });
+        if (ws[hc]) ws[hc].s = { font: { bold: true, sz: 10, color: { rgb: "FFFFFF" } }, fill: { fgColor: { rgb: "056839" } }, alignment: { horizontal: "center" } };
+        for (let r = 0; r < rows.length; r++) {
+          const cr = XLSX.utils.encode_cell({ r: r + 3, c });
+          if (ws[cr]) ws[cr].s = { font: { sz: 10, color: { rgb: "1E293B" } }, fill: { fgColor: { rgb: r % 2 === 0 ? "F4F8F5" : "FFFFFF" } }, border: { top: { style: "thin", color: { rgb: "CBD5E1" } }, bottom: { style: "thin", color: { rgb: "CBD5E1" } }, left: { style: "thin", color: { rgb: "CBD5E1" } }, right: { style: "thin", color: { rgb: "CBD5E1" } } } };
         }
       }
-    };
+      ws["!cols"] = headers.map(() => ({ wch: 18 }));
+      XLSX.utils.book_append_sheet(wb, ws, "Realisasi_Horizontal");
+      XLSX.writeFile(wb, `REALISASI_RAWAT_Kencana_${new Date().toISOString().split("T")[0]}.xlsx`);
+      showToast("Excel elegan horizontal berhasil diunduh!", "📥");
+    }
+
+    async function pushRealtimeToCloud() {
+      if (!sheetConfig.url) return;
+      const url = sheetConfig.url.replace(/\/$/, "");
+      if (url.includes("firebaseio.com") || url.includes("firebasedatabase.app")) {
+        try { await fetch(`${url}/realisasi_rawat.json`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ records, updatedAt: Date.now() }) }); } catch (e) {}
+      }
+    }
+
+    async function postRecordToWebhook(rec) {
+      if (!sheetConfig.url) return;
+      const url = sheetConfig.url.replace(/\/$/, "");
+      if (url.includes("firebaseio.com") || url.includes("firebasedatabase.app")) return pushRealtimeToCloud();
+      try { await fetch(url, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(rec) }); } catch (e) {}
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".tab-trigger").forEach(btn => {
+        btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab")));
+      });
+
+      document.getElementById("inpTanggal").addEventListener("change", updateDashboardKPI);
+      document.getElementById("inpPT").addEventListener("change", onPTChange);
+      document.getElementById("inpAfdeling").addEventListener("change", onAfdelingChange);
+      document.getElementById("inpBlok").addEventListener("change", onBlokChange);
+      document.getElementById("inpPekerjaan").addEventListener("change", onPekerjaanChange);
+      document.getElementById("inpMat1").addEventListener("change", () => onMaterialSelect(1));
+      document.getElementById("inpMat2").addEventListener("change", () => onMaterialSelect(2));
+      document.getElementById("realisasiForm").addEventListener("submit", handleFormSubmit);
+      document.getElementById("btnCancelEdit").addEventListener("click", () => resetForm(false));
+
+      document.getElementById("btnWaTop").addEventListener("click", shareWhatsAppReport);
+      document.getElementById("btnExcelTop").addEventListener("click", exportToExcel);
+      document.getElementById("btnExcelRekap").addEventListener("click", exportToExcel);
+
+      document.getElementById("btnResetPeriode").addEventListener("click", () => {
+        const flt = getFilteredRecords();
+        if (!flt.length) return showToast("Tidak ada data pada periode ini.", "⚠️");
+        if (!confirm(`Reset / hapus ${flt.length} data rekap pada periode yang dipilih?`)) return;
+        const ids = new Set(flt.map(r => r.id));
+        records = records.filter(r => !ids.has(r.id));
+        saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+        showToast(`${ids.size} data rekap periode ini dihapus!`, "🧹");
+      });
+
+      document.getElementById("btnResetSemua").addEventListener("click", () => {
+        if (!records.length) return showToast("Catatan rekapan sudah kosong.", "⚠️");
+        if (!confirm(`Hapus SEMUA (${records.length}) data realisasi dari catatan rekapan?`)) return;
+        records = [];
+        saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+        showToast("Semua catatan rekapan dihapus!", "🗑️");
+      });
+
+      document.getElementById("fltMode").addEventListener("change", () => {
+        const m = document.getElementById("fltMode").value;
+        document.getElementById("wrapFltTanggal").classList.toggle("hidden", m !== "harian");
+        document.getElementById("wrapFltBulan").classList.toggle("hidden", m !== "bulanan");
+        renderRekapAll();
+      });
+      ["fltTanggal", "fltBulan", "fltAfdeling", "fltPekerjaan"].forEach(id => {
+        document.getElementById(id).addEventListener("change", renderRekapAll);
+      });
+
+      document.getElementById("btnSyncGsheet").addEventListener("click", async () => {
+        if (!sheetConfig.url) { switchTab("master"); return showToast("Isi URL Cloud / Spreadsheet dulu!", "⚠️"); }
+        const btn = document.getElementById("btnSyncGsheet");
+        btn.textContent = "⏳ Mengirim...";
+        const url = sheetConfig.url.replace(/\/$/, "");
+        if (url.includes("firebaseio.com") || url.includes("firebasedatabase.app")) await pushRealtimeToCloud();
+        else for (const r of records) await postRecordToWebhook(r);
+        btn.textContent = "☁️ Sync Spreadsheet";
+        showToast(`${records.length} data tersinkronisasi!`, "☁️");
+      });
+
+      document.getElementById("btnTestConn").addEventListener("click", async () => {
+        sheetConfig.url = document.getElementById("gsheetWebhookUrl").value.trim();
+        sheetConfig.autoSync = document.getElementById("autoSyncCheck").checked;
+        localStorage.setItem("kencana_gsheet_cfg_v3", JSON.stringify(sheetConfig));
+        updateDashboardKPI();
+        if (!sheetConfig.url) return showToast("URL dikosongkan.", "⚠️");
+        try {
+          const target = (sheetConfig.url.includes("firebaseio.com") || sheetConfig.url.includes("firebasedatabase.app")) ? `${sheetConfig.url.replace(/\/$/, "")}/realisasi_rawat.json` : sheetConfig.url;
+          const res = await fetch(target);
+          showToast(res.ok ? "TERHUBUNG! Siap sinkronisasi." : "Tersimpan (cek akses publik).", "✅");
+        } catch (e) { showToast("URL tersimpan, cek koneksi internet.", "⚠️"); }
+      });
+
+      document.getElementById("btnAddPt").addEventListener("click", () => {
+        const n = document.getElementById("newPtName").value.trim(); if (!n) return;
+        masterData.orgs[n] = masterData.orgs[n] || {}; document.getElementById("newPtName").value = "";
+        saveStorage(); renderMasterUI(); showToast("PT ditambahkan");
+      });
+      document.getElementById("btnAddAfd").addEventListener("click", () => {
+        const pt = document.getElementById("mstSelectPtForAfd").value, afd = document.getElementById("newAfdName").value.trim();
+        if (!pt || !afd) return; masterData.orgs[pt][afd] = masterData.orgs[pt][afd] || [];
+        document.getElementById("newAfdName").value = ""; saveStorage(); renderMasterUI(); showToast("Afdeling ditambahkan");
+      });
+      document.getElementById("btnAddBlok").addEventListener("click", () => {
+        const v = document.getElementById("mstSelectAfdForBlok").value, k = document.getElementById("newBlokCode").value.trim().toUpperCase(), l = parseFloat(document.getElementById("newBlokLuas").value) || 0;
+        if (!v || !k) return; const [pt, afd] = v.split("|||"); masterData.orgs[pt][afd].push({ kode: k, luas: l });
+        document.getElementById("newBlokCode").value = ""; document.getElementById("newBlokLuas").value = "";
+        saveStorage(); renderMasterUI(); showToast("Blok ditambahkan");
+      });
+      document.getElementById("btnAddJob").addEventListener("click", () => {
+        const n = document.getElementById("newJobName").value.trim(), u = document.getElementById("newJobUnit").value;
+        if (!n) return; masterData.jobs.push({ nama: n, unit: u }); document.getElementById("newJobName").value = "";
+        saveStorage(); renderMasterUI(); showToast("Pekerjaan ditambahkan");
+      });
+      document.getElementById("btnAddUnit").addEventListener("click", () => {
+        const u = document.getElementById("newUnitName").value.trim(); if (!u) return;
+        masterData.units.push(u); document.getElementById("newUnitName").value = "";
+        saveStorage(); renderMasterUI(); showToast("Satuan ditambahkan");
+      });
+      document.getElementById("btnAddMat").addEventListener("click", () => {
+        const j = document.getElementById("newMatType").value, n = document.getElementById("newMatName").value.trim(), u = document.getElementById("newMatUnit").value.trim() || "Kg";
+        if (!n) return; masterData.materials.push({ nama: n, jenis: j, unit: u });
+        document.getElementById("newMatName").value = ""; document.getElementById("newMatUnit").value = "";
+        saveStorage(); renderMasterUI(); showToast("Material ditambahkan");
+      });
+      document.getElementById("btnAddAsisten").addEventListener("click", () => {
+        const v = document.getElementById("newAsistenName").value.trim(); if (!v) return;
+        masterData.asistens.push(v); document.getElementById("newAsistenName").value = "";
+        saveStorage(); renderMasterUI(); showToast("Asisten ditambahkan");
+      });
+      document.getElementById("btnAddMandor").addEventListener("click", () => {
+        const v = document.getElementById("newMandorName").value.trim(); if (!v) return;
+        masterData.mandors.push(v); document.getElementById("newMandorName").value = "";
+        saveStorage(); renderMasterUI(); showToast("Mandor ditambahkan");
+      });
+      document.getElementById("btnResetMaster").addEventListener("click", () => {
+        if (confirm("Kembalikan database PT, Blok, Pekerjaan & Mandor ke default?")) {
+          masterData = cloneObj(DEFAULT_MASTER); saveStorage(); renderMasterUI(); showToast("Database direset");
+        }
+      });
+
+      const today = new Date().toISOString().split("T")[0];
+      document.getElementById("inpTanggal").value = today;
+      document.getElementById("fltTanggal").value = today;
+      document.getElementById("fltBulan").value = today.substring(0, 7);
+      document.getElementById("gsheetWebhookUrl").value = sheetConfig.url || "";
+      document.getElementById("autoSyncCheck").checked = !!sheetConfig.autoSync;
+
+      refreshAllDropdowns(); renderMasterUI(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+    });
   </script>
-  <script src="app.js"></script>
 </body>
 </html>
