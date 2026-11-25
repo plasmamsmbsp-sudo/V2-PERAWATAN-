@@ -195,7 +195,7 @@
           </form>
         </div>
 
-        <!-- PANEL CATATAN TERAKHIR (ADA TOMBOL EDIT & HAPUS LANGSUNG) -->
+        <!-- PANEL CATATAN TERAKHIR -->
         <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200 shadow-xs flex flex-col overflow-hidden">
           <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
             <div>
@@ -207,8 +207,8 @@
           <div id="recentFeedList" class="p-4 space-y-2.5 overflow-y-auto max-h-[540px] flex-1"></div>
         </div>
       </div>
-    </section>
-        <!-- ==================== TAB 2: REKAP & OUTPUT PER TK ==================== -->
+  </section>
+      <!-- ==================== TAB 2: REKAP & OUTPUT PER TK ==================== -->
     <section id="tab-rekap" class="tab-section hidden space-y-5">
       <div class="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
@@ -264,7 +264,7 @@
         </div>
       </div>
 
-      <!-- Rekap Output per TK (Mandor / Regu TK) -->
+      <!-- Rekap Output per TK -->
       <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
         <div class="px-5 py-3 bg-slate-900 text-white flex items-center justify-between">
           <h3 class="font-bold text-xs uppercase tracking-wider">👷 Rekap Output & Prestasi per TK (Mandor / Regu)</h3>
@@ -360,21 +360,36 @@
     <!-- ==================== TAB 3: DATABASE & SPREADSHEET ==================== -->
     <section id="tab-master" class="tab-section hidden space-y-5">
       <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-5 space-y-3">
-        <h3 class="font-extrabold text-sm text-[#056839]">☁️ Integrasi Google Spreadsheets / Firebase Realtime</h3>
-        <p class="text-xs text-slate-500">Tempel URL Web App Google Script (/exec) atau URL Firebase Realtime Database (.firebasedatabase.app).</p>
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="font-extrabold text-sm text-[#056839]">☁️ Sinkronisasi Live Google Spreadsheets (Akun Baru)</h3>
+            <p class="text-xs text-slate-500">Tempel URL Web App (/exec) dari Google Apps Script akun baru Anda.</p>
+          </div>
+          <span id="liveSyncBadge" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-bold">Menunggu URL</span>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5">
           <div class="md:col-span-7">
-            <input type="url" id="gsheetWebhookUrl" placeholder="https://script.google.com/macros/s/.../exec atau https://...firebasedatabase.app" class="form-input text-xs font-mono" />
+            <input type="url" id="gsheetWebhookUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="form-input text-xs font-mono" />
           </div>
           <div class="md:col-span-5 flex items-center justify-between gap-2 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
             <label class="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-              <input type="checkbox" id="autoSyncCheck" />
-              <span>Auto-Sync</span>
+              <input type="checkbox" id="autoSyncCheck" checked />
+              <span>Live Otomatis</span>
             </label>
             <button type="button" id="btnTestConn" class="px-3 py-1.5 rounded-lg bg-[#056839] text-white text-xs font-bold">
-              🔌 Simpan & Tes
+              🔌 Hubungkan & Tes
             </button>
           </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 pt-1">
+          <button type="button" id="btnPullFromSheet" class="px-3.5 py-2 rounded-xl bg-emerald-50 text-[#056839] border border-[#056839]/30 text-xs font-bold">
+            ⬇️ Tarik Data Live dari Spreadsheets
+          </button>
+          <button type="button" id="btnPushMasterSheet" class="px-3.5 py-2 rounded-xl bg-[#FFFDF2] text-[#A6891B] border border-[#A6891B]/30 text-xs font-bold">
+            ⬆️ Cadangkan Master PT/Blok ke Spreadsheets
+          </button>
         </div>
       </div>
 
@@ -456,9 +471,15 @@
         </div>
       </div>
 
-      <div class="flex justify-end">
-        <button type="button" id="btnResetMaster" class="px-4 py-2 rounded-xl border border-red-200 text-red-600 text-xs font-bold">
-          Reset Master Data ke Default
+      <div class="flex flex-wrap justify-end gap-2">
+        <button type="button" id="btnSaveCustomDefault" class="px-4 py-2.5 rounded-xl bg-[#056839] text-white text-xs font-bold shadow-xs">
+          📌 Jadikan Data Master Saat Ini Sebagai Default
+        </button>
+        <button type="button" id="btnCopyMasterJson" class="px-4 py-2.5 rounded-xl bg-[#A6891B] text-white text-xs font-bold shadow-xs">
+          📋 Salin Kode Master Default
+        </button>
+        <button type="button" id="btnResetMaster" class="px-4 py-2.5 rounded-xl border border-red-200 text-red-600 text-xs font-bold">
+          Kembalikan ke Default Awal
         </button>
       </div>
     </section>
@@ -471,17 +492,38 @@
   <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl text-xs font-bold flex items-center gap-2">
     <span id="toastIcon">✅</span>
     <span id="toastMsg">Tersimpan</span>
-  </div>
-    <script>
+            </div>
+              <script>
     const DEFAULT_MASTER = {
       orgs: {
         "PT Kencana Agri (Plasma BSP)": {
-          "Plasma BSP - AFD 1": [{ kode: "A-01", luas: 25.0 }, { kode: "A-02", luas: 28.5 }],
-          "Plasma BSP - AFD 4": [{ kode: "D01/2023", luas: 24.5 }, { kode: "D02/2023", luas: 26.0 }, { kode: "D03/2022", luas: 28.0 }, { kode: "D04/2022", luas: 25.4 }]
+          "Plasma BSP - AFD 1": [
+            { kode: "A-01", luas: 25.0 }, { kode: "A-02", luas: 26.5 }, { kode: "A-03", luas: 24.0 }, { kode: "A-04", luas: 27.0 }
+          ],
+          "Plasma BSP - AFD 2": [
+            { kode: "B-01", luas: 25.5 }, { kode: "B-02", luas: 26.0 }, { kode: "B-03", luas: 24.8 }
+          ],
+          "Plasma BSP - AFD 3": [
+            { kode: "C-01", luas: 25.0 }, { kode: "C-02", luas: 27.2 }, { kode: "C-03", luas: 26.4 }
+          ],
+          "Plasma BSP - AFD 4": [
+            { kode: "D01/2023", luas: 24.5 }, { kode: "D02/2023", luas: 26.0 },
+            { kode: "D03/2022", luas: 28.0 }, { kode: "D04/2022", luas: 25.4 },
+            { kode: "D05/2022", luas: 26.8 }, { kode: "D06/2023", luas: 25.0 }
+          ]
         },
         "PT Kencana Agri (Plasma MSM)": {
-          "Plasma MSM - AFD 1": [{ kode: "M-01", luas: 25.0 }, { kode: "M-02", luas: 27.5 }],
-          "Plasma MSM - AFD 2": [{ kode: "N-01", luas: 24.0 }, { kode: "N-02", luas: 26.5 }]
+          "Plasma MSM - AFD 1": [
+            { kode: "M-01", luas: 25.0 }, { kode: "M-02", luas: 27.5 }, { kode: "M-03", luas: 26.0 }
+          ],
+          "Plasma MSM - AFD 2": [
+            { kode: "N-01", luas: 24.0 }, { kode: "N-02", luas: 26.5 }, { kode: "N-03", luas: 25.2 }
+          ]
+        },
+        "PT. STN (Inti Wanggarasi)": {
+          "Inti - AFD 1": [
+            { kode: "I-01", luas: 30.0 }, { kode: "I-02", luas: 28.5 }
+          ]
         }
       },
       units: ["Ha", "Pokok", "Kg", "Liter", "Meter", "Janjang", "Titik"],
@@ -493,28 +535,33 @@
         { nama: "Pemupukan Manual (Manuring)", unit: "Kg" },
         { nama: "Pemupukan Pokok", unit: "Pokok" },
         { nama: "Kastrasi & Sanitasi", unit: "Pokok" },
-        { nama: "Perawatan Parit / Drainase", unit: "Meter" }
+        { nama: "Perawatan Parit / Drainase", unit: "Meter" },
+        { nama: "Dongkel Anak Kayu (DAK)", unit: "Ha" },
+        { nama: "Garuk Piringan Manual", unit: "Pokok" }
       ],
       materials: [
         { nama: "Glyphosate (Roundup / Glifosat)", jenis: "Racun", unit: "Liter" },
         { nama: "Metsulfuron Methyl (Ally)", jenis: "Racun", unit: "Gram" },
         { nama: "Paraquat (Gramoxone)", jenis: "Racun", unit: "Liter" },
         { nama: "Fluroxypyr (Starane)", jenis: "Racun", unit: "Liter" },
+        { nama: "Triclopyr (Garlon)", jenis: "Racun", unit: "Liter" },
         { nama: "NPK 15-15-6-4 / 13-6-27", jenis: "Pupuk", unit: "Kg" },
         { nama: "Urea", jenis: "Pupuk", unit: "Kg" },
         { nama: "KCl / MOP", jenis: "Pupuk", unit: "Kg" },
         { nama: "RP (Rock Phosphate)", jenis: "Pupuk", unit: "Kg" },
         { nama: "Dolomit", jenis: "Pupuk", unit: "Kg" },
-        { nama: "Borate (HGFB)", jenis: "Pupuk", unit: "Kg" }
+        { nama: "Borate (HGFB)", jenis: "Pupuk", unit: "Kg" },
+        { nama: "Kieserite", jenis: "Pupuk", unit: "Kg" }
       ],
       asistens: ["Sukri"],
       mandors: ["Meti", "Pak Ramin", "Pak Budi", "Bang Candra", "Bang Edi"]
     };
 
     function cloneObj(o) { return JSON.parse(JSON.stringify(o)); }
-    let masterData = JSON.parse(localStorage.getItem("kencana_master_v3")) || cloneObj(DEFAULT_MASTER);
+    const SAVED_CUSTOM_DEFAULT = JSON.parse(localStorage.getItem("kencana_custom_default_v1"));
+    let masterData = JSON.parse(localStorage.getItem("kencana_master_v3")) || (SAVED_CUSTOM_DEFAULT ? cloneObj(SAVED_CUSTOM_DEFAULT) : cloneObj(DEFAULT_MASTER));
     let records = JSON.parse(localStorage.getItem("kencana_records_v3")) || [];
-    let sheetConfig = JSON.parse(localStorage.getItem("kencana_gsheet_cfg_v3")) || { url: "", autoSync: false };
+    let sheetConfig = JSON.parse(localStorage.getItem("kencana_gsheet_cfg_v3")) || { url: "", autoSync: true };
 
     function showToast(msg, icon) {
       const t = document.getElementById("toast");
@@ -538,7 +585,6 @@
     function saveStorage() {
       localStorage.setItem("kencana_master_v3", JSON.stringify(masterData));
       localStorage.setItem("kencana_records_v3", JSON.stringify(records));
-      pushRealtimeToCloud();
     }
 
     function refreshAllDropdowns() {
@@ -647,10 +693,11 @@
         const idx = records.findIndex(r => r.id === editId);
         if (idx !== -1) records[idx] = rec;
         showToast("Data realisasi diperbarui!");
+        if (sheetConfig.autoSync && sheetConfig.url) sendToLiveSheet(rec);
       } else {
         records.unshift(rec);
         showToast("Realisasi tersimpan!");
-        if (sheetConfig.autoSync && sheetConfig.url) postRecordToWebhook(rec);
+        if (sheetConfig.autoSync && sheetConfig.url) sendToLiveSheet(rec);
       }
       saveStorage(); resetForm(true); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
     }
@@ -695,9 +742,10 @@
       if (!confirm("Hapus catatan realisasi yang salah ini?")) return;
       records = records.filter(r => r.id !== id);
       saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+      deleteFromLiveSheet(id);
       showToast("Data berhasil dihapus!", "🗑️");
     };
-          function formatMatBadge(r) {
+                    function formatMatBadge(r) {
       const p = [];
       if (r.mat1Nama && r.mat1Nama !== "-") p.push(`${r.mat1Nama} (${r.mat1Qty} ${r.mat1Unit})`);
       if (r.mat2Nama && r.mat2Nama !== "-") p.push(`${r.mat2Nama} (${r.mat2Qty} ${r.mat2Unit})`);
@@ -872,7 +920,8 @@
     window.deleteUnit = i => { masterData.units.splice(i, 1); saveStorage(); renderMasterUI(); };
     window.deleteMaterial = i => { masterData.materials.splice(i, 1); saveStorage(); renderMasterUI(); };
     window.deletePerson = (r, i) => { (r === "asisten" ? masterData.asistens : masterData.mandors).splice(i, 1); saveStorage(); renderMasterUI(); };
-          function shareWhatsAppReport() {
+
+    function shareWhatsAppReport() {
       const tgl = document.getElementById("inpTanggal").value;
       const crashList = records.filter(r => r.tanggal === tgl && ((r.pekerjaan||"").toLowerCase().includes("pruning") || (r.pekerjaan||"").toLowerCase().includes("tunas") || (r.pekerjaan||"").toLowerCase().includes("tebas") || (r.pekerjaan||"").toLowerCase().includes("gawangan")));
       if (!crashList.length) return showToast(`Tidak ada data Pruning / Tebas Gawangan tgl ${tgl}`, "⚠️");
@@ -895,48 +944,118 @@
     }
 
     function exportToExcel() {
-      if (!records.length) return showToast("Belum ada data realisasi!", "⚠️");
-      if (typeof XLSX === "undefined") return showToast("Library Excel butuh koneksi internet!", "⚠️");
-      const wb = XLSX.utils.book_new();
+      if (!records.length) return showToast("Belum ada data realisasi untuk diexport!", "⚠️");
       const headers = ["No","Tanggal","Bulan","PT","Afdeling","Blok","Jenis Pekerjaan","Realisasi","Satuan","HK","Output / TK","Material 1","Dosis 1","Unit 1","Material 2","Dosis 2","Unit 2","Mandor","Asisten","Keterangan"];
-      const rows = records.map((r, i) => [i+1, r.tanggal, (r.tanggal||"").substring(0,7), r.pt, r.afdeling, r.blok, r.pekerjaan, Number(r.hasil||0), r.satuan, Number(r.hk||0), r.hk>0?Number((r.hasil/r.hk).toFixed(2)):0, r.mat1Nama||"-", Number(r.mat1Qty||0), r.mat1Unit||"-", r.mat2Nama||"-", Number(r.mat2Qty||0), r.mat2Unit||"-", r.mandor||"-", r.asisten||"-", r.keterangan||"-"]);
-      const ws = XLSX.utils.aoa_to_sheet([["LAPORAN REALISASI RAWAT — PT KENCANA AGRI (PLASMA WANGGARASI)"], [], headers, ...rows]);
-      ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } }];
-      if (ws["A1"]) ws["A1"].s = { font: { bold: true, sz: 12, color: { rgb: "FFFFFF" } }, fill: { fgColor: { rgb: "044E2B" } } };
-      for (let c = 0; c < headers.length; c++) {
-        const hc = XLSX.utils.encode_cell({ r: 2, c });
-        if (ws[hc]) ws[hc].s = { font: { bold: true, sz: 10, color: { rgb: "FFFFFF" } }, fill: { fgColor: { rgb: "056839" } }, alignment: { horizontal: "center" } };
-        for (let r = 0; r < rows.length; r++) {
-          const cr = XLSX.utils.encode_cell({ r: r + 3, c });
-          if (ws[cr]) ws[cr].s = { font: { sz: 10, color: { rgb: "1E293B" } }, fill: { fgColor: { rgb: r % 2 === 0 ? "F4F8F5" : "FFFFFF" } }, border: { top: { style: "thin", color: { rgb: "CBD5E1" } }, bottom: { style: "thin", color: { rgb: "CBD5E1" } }, left: { style: "thin", color: { rgb: "CBD5E1" } }, right: { style: "thin", color: { rgb: "CBD5E1" } } } };
+      const rows = records.map((r, i) => [
+        i + 1, r.tanggal, (r.tanggal || "").substring(0, 7), r.pt, r.afdeling, r.blok,
+        r.pekerjaan, Number(r.hasil || 0), r.satuan, Number(r.hk || 0),
+        r.hk > 0 ? Number((r.hasil / r.hk).toFixed(2)) : 0,
+        r.mat1Nama || "-", Number(r.mat1Qty || 0), r.mat1Unit || "-",
+        r.mat2Nama || "-", Number(r.mat2Qty || 0), r.mat2Unit || "-",
+        r.mandor || "-", r.asisten || "-", r.keterangan || "-"
+      ]);
+      const fileName = `REALISASI_RAWAT_Kencana_${new Date().toISOString().split("T")[0]}.xlsx`;
+
+      if (typeof XLSX !== "undefined") {
+        try {
+          const wb = XLSX.utils.book_new();
+          const ws = XLSX.utils.aoa_to_sheet([["LAPORAN REALISASI RAWAT — PT KENCANA AGRI (PLASMA WANGGARASI)"], [], headers, ...rows]);
+          ws["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } }];
+          if (ws["A1"]) ws["A1"].s = { font: { bold: true, sz: 12, color: { rgb: "FFFFFF" } }, fill: { fgColor: { rgb: "044E2B" } } };
+          for (let c = 0; c < headers.length; c++) {
+            const hc = XLSX.utils.encode_cell({ r: 2, c });
+            if (ws[hc]) ws[hc].s = { font: { bold: true, sz: 10, color: { rgb: "FFFFFF" } }, fill: { fgColor: { rgb: "056839" } }, alignment: { horizontal: "center" } };
+            for (let r = 0; r < rows.length; r++) {
+              const cr = XLSX.utils.encode_cell({ r: r + 3, c });
+              if (ws[cr]) ws[cr].s = { font: { sz: 10, color: { rgb: "1E293B" } }, fill: { fgColor: { rgb: r % 2 === 0 ? "F4F8F5" : "FFFFFF" } }, border: { top: { style: "thin", color: { rgb: "CBD5E1" } }, bottom: { style: "thin", color: { rgb: "CBD5E1" } }, left: { style: "thin", color: { rgb: "CBD5E1" } }, right: { style: "thin", color: { rgb: "CBD5E1" } } } };
+            }
+          }
+          ws["!cols"] = headers.map(() => ({ wch: 18 }));
+          XLSX.utils.book_append_sheet(wb, ws, "Realisasi_Horizontal");
+          const wbBase64 = XLSX.write(wb, { bookType: "xlsx", type: "base64" });
+          const a = document.createElement("a");
+          a.href = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + wbBase64;
+          a.download = fileName;
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          return showToast("File Excel (.xlsx) berhasil diunduh!", "📥");
+        } catch (err) {}
+      }
+
+      const esc = v => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      let xml = `<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Styles><Style ss:ID="title"><Font ss:Bold="1" ss:Size="12" ss:Color="#FFFFFF"/><Interior ss:Color="#044E2B" ss:Pattern="Solid"/></Style><Style ss:ID="hdr"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#056839" ss:Pattern="Solid"/></Style><Style ss:ID="even"><Interior ss:Color="#F4F8F5" ss:Pattern="Solid"/></Style><Style ss:ID="odd"><Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/></Style></Styles><Worksheet ss:Name="Realisasi_Horizontal"><Table>`;
+      xml += `<Row><Cell ss:MergeAcross="${headers.length - 1}" ss:StyleID="title"><Data ss:Type="String">LAPORAN REALISASI RAWAT — PT KENCANA AGRI (PLASMA WANGGARASI)</Data></Cell></Row><Row></Row>`;
+      xml += `<Row>` + headers.map(h => `<Cell ss:StyleID="hdr"><Data ss:Type="String">${esc(h)}</Data></Cell>`).join("") + `</Row>`;
+      rows.forEach((row, idx) => {
+        const st = idx % 2 === 0 ? "even" : "odd";
+        xml += `<Row>` + row.map(val => `<Cell ss:StyleID="${st}"><Data ss:Type="${typeof val === "number" ? "Number" : "String"}">${esc(val)}</Data></Cell>`).join("") + `</Row>`;
+      });
+      xml += `</Table></Worksheet></Workbook>`;
+      const link = document.createElement("a");
+      link.href = "data:application/vnd.ms-excel;charset=utf-8," + encodeURIComponent(xml);
+      link.download = fileName.replace(".xlsx", ".xls");
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      showToast("Excel Offline berwarna berhasil diunduh!", "📥");
+    }
+                    async function sendToLiveSheet(rec) {
+      if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) return false;
+      const url = sheetConfig.url.trim();
+      try {
+        await fetch(url, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "upsert", record: rec })
+        });
+        return true;
+      } catch (e) {
+        try {
+          const sep = url.includes("?") ? "&" : "?";
+          await fetch(`${url}${sep}action=upsert&payload=${encodeURIComponent(JSON.stringify(rec))}`, { method: "GET", mode: "no-cors" });
+          return true;
+        } catch (err) { return false; }
+      }
+    }
+
+    async function deleteFromLiveSheet(id) {
+      if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) return;
+      try {
+        await fetch(sheetConfig.url.trim(), {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "delete", id: id })
+        });
+      } catch (e) {}
+    }
+
+    async function pullLiveFromSheet(silent) {
+      if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) return;
+      const url = sheetConfig.url.trim();
+      try {
+        const sep = url.includes("?") ? "&" : "?";
+        const res = await fetch(`${url}${sep}action=pull&t=${Date.now()}`, { method: "GET", redirect: "follow" });
+        const data = await res.json();
+        if (data && data.status === "ok" && Array.isArray(data.records)) {
+          if (data.records.length > 0) {
+            records = data.records;
+            localStorage.setItem("kencana_records_v3", JSON.stringify(records));
+          }
+          if (data.master && data.master.orgs) {
+            masterData = data.master;
+            localStorage.setItem("kencana_master_v3", JSON.stringify(masterData));
+            localStorage.setItem("kencana_custom_default_v1", JSON.stringify(masterData));
+            refreshAllDropdowns();
+          }
+          renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+          if (!silent) showToast(`Live Sync sukses! ${records.length} data dimuat dari Spreadsheets.`, "☁️");
         }
+      } catch (e) {
+        if (!silent) showToast("Gagal menarik data dari Spreadsheets.", "❌");
       }
-      ws["!cols"] = headers.map(() => ({ wch: 18 }));
-      XLSX.utils.book_append_sheet(wb, ws, "Realisasi_Horizontal");
-      XLSX.writeFile(wb, `REALISASI_RAWAT_Kencana_${new Date().toISOString().split("T")[0]}.xlsx`);
-      showToast("Excel elegan horizontal berhasil diunduh!", "📥");
-    }
-
-    async function pushRealtimeToCloud() {
-      if (!sheetConfig.url) return;
-      const url = sheetConfig.url.replace(/\/$/, "");
-      if (url.includes("firebaseio.com") || url.includes("firebasedatabase.app")) {
-        try { await fetch(`${url}/realisasi_rawat.json`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ records, updatedAt: Date.now() }) }); } catch (e) {}
-      }
-    }
-
-    async function postRecordToWebhook(rec) {
-      if (!sheetConfig.url) return;
-      const url = sheetConfig.url.replace(/\/$/, "");
-      if (url.includes("firebaseio.com") || url.includes("firebasedatabase.app")) return pushRealtimeToCloud();
-      try { await fetch(url, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(rec) }); } catch (e) {}
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll(".tab-trigger").forEach(btn => {
-        btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab")));
-      });
-
+      document.querySelectorAll(".tab-trigger").forEach(btn => btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab"))));
       document.getElementById("inpTanggal").addEventListener("change", updateDashboardKPI);
       document.getElementById("inpPT").addEventListener("change", onPTChange);
       document.getElementById("inpAfdeling").addEventListener("change", onAfdelingChange);
@@ -958,14 +1077,18 @@
         const ids = new Set(flt.map(r => r.id));
         records = records.filter(r => !ids.has(r.id));
         saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+        ids.forEach(id => deleteFromLiveSheet(id));
         showToast(`${ids.size} data rekap periode ini dihapus!`, "🧹");
       });
 
-      document.getElementById("btnResetSemua").addEventListener("click", () => {
+      document.getElementById("btnResetSemua").addEventListener("click", async () => {
         if (!records.length) return showToast("Catatan rekapan sudah kosong.", "⚠️");
         if (!confirm(`Hapus SEMUA (${records.length}) data realisasi dari catatan rekapan?`)) return;
         records = [];
         saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+        if (sheetConfig.url && sheetConfig.url.includes("/exec")) {
+          try { await fetch(sheetConfig.url.trim(), { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "reset_all" }) }); } catch (e) {}
+        }
         showToast("Semua catatan rekapan dihapus!", "🗑️");
       });
 
@@ -975,32 +1098,51 @@
         document.getElementById("wrapFltBulan").classList.toggle("hidden", m !== "bulanan");
         renderRekapAll();
       });
-      ["fltTanggal", "fltBulan", "fltAfdeling", "fltPekerjaan"].forEach(id => {
-        document.getElementById(id).addEventListener("change", renderRekapAll);
-      });
+      ["fltTanggal", "fltBulan", "fltAfdeling", "fltPekerjaan"].forEach(id => document.getElementById(id).addEventListener("change", renderRekapAll));
 
       document.getElementById("btnSyncGsheet").addEventListener("click", async () => {
-        if (!sheetConfig.url) { switchTab("master"); return showToast("Isi URL Cloud / Spreadsheet dulu!", "⚠️"); }
+        if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) { switchTab("master"); return showToast("Tempel URL Web App (/exec) di pengaturan dulu!", "⚠️"); }
+        if (!records.length) return showToast("Belum ada data realisasi untuk dikirim!", "⚠️");
         const btn = document.getElementById("btnSyncGsheet");
-        btn.textContent = "⏳ Mengirim...";
-        const url = sheetConfig.url.replace(/\/$/, "");
-        if (url.includes("firebaseio.com") || url.includes("firebasedatabase.app")) await pushRealtimeToCloud();
-        else for (const r of records) await postRecordToWebhook(r);
-        btn.textContent = "☁️ Sync Spreadsheet";
-        showToast(`${records.length} data tersinkronisasi!`, "☁️");
+        btn.disabled = true;
+        let terkirim = 0;
+        for (let i = 0; i < records.length; i++) {
+          btn.textContent = `⏳ Mengirim ${i + 1}/${records.length}...`;
+          const ok = await sendToLiveSheet(records[i]);
+          if (ok) terkirim++;
+          await new Promise(r => setTimeout(r, 400));
+        }
+        btn.disabled = false; btn.textContent = "☁️ Sync Spreadsheet";
+        showToast(`${terkirim} data terkirim ke Spreadsheets!`, "☁️");
       });
 
       document.getElementById("btnTestConn").addEventListener("click", async () => {
-        sheetConfig.url = document.getElementById("gsheetWebhookUrl").value.trim();
+        const rawUrl = document.getElementById("gsheetWebhookUrl").value.trim();
+        if (!rawUrl.includes("/exec")) return showToast("Tempel URL Web App yang berakhiran /exec!", "⚠️");
+        sheetConfig.url = rawUrl;
         sheetConfig.autoSync = document.getElementById("autoSyncCheck").checked;
         localStorage.setItem("kencana_gsheet_cfg_v3", JSON.stringify(sheetConfig));
         updateDashboardKPI();
-        if (!sheetConfig.url) return showToast("URL dikosongkan.", "⚠️");
+        showToast("Menguji koneksi ke akun baru...", "⏳");
         try {
-          const target = (sheetConfig.url.includes("firebaseio.com") || sheetConfig.url.includes("firebasedatabase.app")) ? `${sheetConfig.url.replace(/\/$/, "")}/realisasi_rawat.json` : sheetConfig.url;
-          const res = await fetch(target);
-          showToast(res.ok ? "TERHUBUNG! Siap sinkronisasi." : "Tersimpan (cek akses publik).", "✅");
-        } catch (e) { showToast("URL tersimpan, cek koneksi internet.", "⚠️"); }
+          const res = await fetch(`${rawUrl}?t=${Date.now()}`, { method: "GET", redirect: "follow" });
+          const j = await res.json();
+          if (j && j.status === "ready") {
+            document.getElementById("liveSyncBadge").textContent = "● LIVE TERHUBUNG";
+            document.getElementById("liveSyncBadge").className = "px-2.5 py-1 rounded-full bg-emerald-100 text-[#056839] text-[11px] font-extrabold";
+            showToast("TERHUBUNG LIVE ke Google Spreadsheets!", "✅");
+            await pullLiveFromSheet(true);
+          } else { showToast("URL terhubung, silakan coba Sync.", "⚠️"); }
+        } catch (err) { showToast("Gagal terhubung! Cek izin 'Anyone' di Apps Script.", "❌"); }
+      });
+
+      document.getElementById("btnPullFromSheet").addEventListener("click", () => pullLiveFromSheet(false));
+      document.getElementById("btnPushMasterSheet").addEventListener("click", async () => {
+        if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) return showToast("Hubungkan URL /exec dulu!", "⚠️");
+        try {
+          await fetch(sheetConfig.url.trim(), { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "save_master", master: masterData }) });
+          showToast("Database PT, Blok & Mandor tersimpan di Spreadsheets!", "☁️");
+        } catch (e) { showToast("Gagal mengirim master database.", "❌"); }
       });
 
       document.getElementById("btnAddPt").addEventListener("click", () => {
@@ -1045,9 +1187,22 @@
         masterData.mandors.push(v); document.getElementById("newMandorName").value = "";
         saveStorage(); renderMasterUI(); showToast("Mandor ditambahkan");
       });
+
+      document.getElementById("btnSaveCustomDefault").addEventListener("click", () => {
+        localStorage.setItem("kencana_custom_default_v1", JSON.stringify(masterData));
+        localStorage.setItem("kencana_master_v3", JSON.stringify(masterData));
+        showToast("Master data saat ini dikunci sebagai DEFAULT permanen!", "📌");
+      });
+      document.getElementById("btnCopyMasterJson").addEventListener("click", () => {
+        const txt = JSON.stringify(masterData);
+        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => showToast("Kode Master Default disalin!", "📋"));
+        else prompt("Salin kode Master Default berikut:", txt);
+      });
       document.getElementById("btnResetMaster").addEventListener("click", () => {
-        if (confirm("Kembalikan database PT, Blok, Pekerjaan & Mandor ke default?")) {
-          masterData = cloneObj(DEFAULT_MASTER); saveStorage(); renderMasterUI(); showToast("Database direset");
+        const customDef = JSON.parse(localStorage.getItem("kencana_custom_default_v1"));
+        if (confirm(customDef ? "Kembalikan ke Master Default yang sudah Anda simpan?" : "Kembalikan database ke Default Awal?")) {
+          masterData = customDef ? cloneObj(customDef) : cloneObj(DEFAULT_MASTER);
+          saveStorage(); renderMasterUI(); showToast("Database dikembalikan ke Default!");
         }
       });
 
@@ -1059,6 +1214,7 @@
       document.getElementById("autoSyncCheck").checked = !!sheetConfig.autoSync;
 
       refreshAllDropdowns(); renderMasterUI(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+      setInterval(() => { if (sheetConfig.url && sheetConfig.autoSync && navigator.onLine) pullLiveFromSheet(true); }, 15000);
     });
   </script>
 </body>
