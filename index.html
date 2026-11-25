@@ -17,7 +17,6 @@
 </head>
 <body class="bg-[#F6F8F7] text-slate-800 min-h-screen flex flex-col antialiased">
 
-  <!-- HEADER -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
     <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
       <div class="flex items-center gap-2.5">
@@ -44,7 +43,6 @@
       </div>
     </div>
 
-    <!-- MENU TAB UTAMA -->
     <nav class="bg-[#F9FBFA] border-t border-slate-100">
       <div class="max-w-6xl mx-auto px-4 py-2 flex gap-2 overflow-x-auto no-scrollbar">
         <button type="button" data-tab="input" class="tab-trigger nav-pill-active px-4 py-2.5 rounded-xl text-xs whitespace-nowrap">
@@ -62,8 +60,7 @@
   </header>
 
   <main class="max-w-6xl w-full mx-auto px-4 py-5 flex-1">
-
-    <!-- ==================== TAB 1: INPUT HARIAN ==================== -->
+        <!-- ==================== TAB 1: INPUT HARIAN ==================== -->
     <section id="tab-input" class="tab-section space-y-5">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
@@ -85,7 +82,6 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <!-- FORM INPUT -->
         <div class="lg:col-span-7 bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
           <div class="px-5 py-3.5 bg-[#056839] text-white flex items-center justify-between">
             <div>
@@ -156,26 +152,14 @@
             <div class="p-3.5 rounded-2xl bg-[#F6F9F7] border border-slate-200 space-y-2.5">
               <span class="text-[11px] font-extrabold uppercase text-[#056839] block">Pemakaian Material (Pupuk / Racun — Opsional)</span>
               <div class="grid grid-cols-12 gap-2">
-                <div class="col-span-6">
-                  <select id="inpMat1" class="form-input text-xs"></select>
-                </div>
-                <div class="col-span-3">
-                  <input type="number" step="0.01" min="0" id="inpMat1Qty" placeholder="Qty 1" class="form-input text-xs font-bold" />
-                </div>
-                <div class="col-span-3">
-                  <input type="text" id="inpMat1Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold" />
-                </div>
+                <div class="col-span-6"><select id="inpMat1" class="form-input text-xs"></select></div>
+                <div class="col-span-3"><input type="number" step="0.01" min="0" id="inpMat1Qty" placeholder="Qty 1" class="form-input text-xs font-bold" /></div>
+                <div class="col-span-3"><input type="text" id="inpMat1Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold" /></div>
               </div>
               <div class="grid grid-cols-12 gap-2">
-                <div class="col-span-6">
-                  <select id="inpMat2" class="form-input text-xs"></select>
-                </div>
-                <div class="col-span-3">
-                  <input type="number" step="0.01" min="0" id="inpMat2Qty" placeholder="Qty 2" class="form-input text-xs font-bold" />
-                </div>
-                <div class="col-span-3">
-                  <input type="text" id="inpMat2Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold" />
-                </div>
+                <div class="col-span-6"><select id="inpMat2" class="form-input text-xs"></select></div>
+                <div class="col-span-3"><input type="number" step="0.01" min="0" id="inpMat2Qty" placeholder="Qty 2" class="form-input text-xs font-bold" /></div>
+                <div class="col-span-3"><input type="text" id="inpMat2Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold" /></div>
               </div>
             </div>
 
@@ -195,7 +179,6 @@
           </form>
         </div>
 
-        <!-- PANEL CATATAN TERAKHIR -->
         <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200 shadow-xs flex flex-col overflow-hidden">
           <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
             <div>
@@ -207,8 +190,8 @@
           <div id="recentFeedList" class="p-4 space-y-2.5 overflow-y-auto max-h-[540px] flex-1"></div>
         </div>
       </div>
-  </section>
-      <!-- ==================== TAB 2: REKAP & OUTPUT PER TK ==================== -->
+    </section>
+        <!-- ==================== TAB 2: REKAP & OUTPUT PER TK ==================== -->
     <section id="tab-rekap" class="tab-section hidden space-y-5">
       <div class="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200 shadow-xs space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
@@ -251,20 +234,15 @@
           </div>
           <div>
             <label class="form-label">Filter Afdeling</label>
-            <select id="fltAfdeling" class="form-input text-xs">
-              <option value="">Semua Afdeling</option>
-            </select>
+            <select id="fltAfdeling" class="form-input text-xs"><option value="">Semua Afdeling</option></select>
           </div>
           <div>
             <label class="form-label">Filter Pekerjaan</label>
-            <select id="fltPekerjaan" class="form-input text-xs">
-              <option value="">Semua Pekerjaan</option>
-            </select>
+            <select id="fltPekerjaan" class="form-input text-xs"><option value="">Semua Pekerjaan</option></select>
           </div>
         </div>
       </div>
 
-      <!-- Rekap Output per TK -->
       <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
         <div class="px-5 py-3 bg-slate-900 text-white flex items-center justify-between">
           <h3 class="font-bold text-xs uppercase tracking-wider">👷 Rekap Output & Prestasi per TK (Mandor / Regu)</h3>
@@ -287,22 +265,13 @@
         </div>
       </div>
 
-      <!-- Rekap per Pekerjaan & Material -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
-          <div class="px-5 py-3 bg-[#056839] text-white">
-            <h3 class="font-bold text-xs uppercase">Rekap Prestasi per Pekerjaan</h3>
-          </div>
+          <div class="px-5 py-3 bg-[#056839] text-white"><h3 class="font-bold text-xs uppercase">Rekap Prestasi per Pekerjaan</h3></div>
           <div class="overflow-x-auto">
             <table class="w-full text-xs text-left">
               <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
-                <tr>
-                  <th class="py-2 px-4">Pekerjaan</th>
-                  <th class="py-2 px-4 text-right">Hasil</th>
-                  <th class="py-2 px-4">Unit</th>
-                  <th class="py-2 px-4 text-right">HK</th>
-                  <th class="py-2 px-4 text-right">Out/HK</th>
-                </tr>
+                <tr><th class="py-2 px-4">Pekerjaan</th><th class="py-2 px-4 text-right">Hasil</th><th class="py-2 px-4">Unit</th><th class="py-2 px-4 text-right">HK</th><th class="py-2 px-4 text-right">Out/HK</th></tr>
               </thead>
               <tbody id="rekapPekerjaanBody" class="divide-y divide-slate-100"></tbody>
             </table>
@@ -310,18 +279,11 @@
         </div>
 
         <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
-          <div class="px-5 py-3 bg-[#A6891B] text-white">
-            <h3 class="font-bold text-xs uppercase">Rekap Pemakaian Material</h3>
-          </div>
+          <div class="px-5 py-3 bg-[#A6891B] text-white"><h3 class="font-bold text-xs uppercase">Rekap Pemakaian Material</h3></div>
           <div class="overflow-x-auto">
             <table class="w-full text-xs text-left">
               <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
-                <tr>
-                  <th class="py-2 px-4">Material</th>
-                  <th class="py-2 px-4">Jenis</th>
-                  <th class="py-2 px-4 text-right">Jumlah</th>
-                  <th class="py-2 px-4">Unit</th>
-                </tr>
+                <tr><th class="py-2 px-4">Material</th><th class="py-2 px-4">Jenis</th><th class="py-2 px-4 text-right">Jumlah</th><th class="py-2 px-4">Unit</th></tr>
               </thead>
               <tbody id="rekapMaterialBody" class="divide-y divide-slate-100"></tbody>
             </table>
@@ -329,7 +291,6 @@
         </div>
       </div>
 
-      <!-- Tabel Rincian Data -->
       <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
         <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
           <h3 class="font-bold text-sm text-slate-800">Rincian Catatan Realisasi</h3>
@@ -339,15 +300,8 @@
           <table class="w-full text-left border-collapse text-xs">
             <thead>
               <tr class="bg-slate-900 text-white text-[10px] uppercase">
-                <th class="py-2.5 px-3">Tanggal</th>
-                <th class="py-2.5 px-3">Afdeling</th>
-                <th class="py-2.5 px-3">Blok</th>
-                <th class="py-2.5 px-3">Pekerjaan</th>
-                <th class="py-2.5 px-3 text-right">Hasil</th>
-                <th class="py-2.5 px-3 text-right">HK</th>
-                <th class="py-2.5 px-3">Material</th>
-                <th class="py-2.5 px-3">Mandor</th>
-                <th class="py-2.5 px-3 text-center">Aksi</th>
+                <th class="py-2.5 px-3">Tanggal</th><th class="py-2.5 px-3">Afdeling</th><th class="py-2.5 px-3">Blok</th><th class="py-2.5 px-3">Pekerjaan</th>
+                <th class="py-2.5 px-3 text-right">Hasil</th><th class="py-2.5 px-3 text-right">HK</th><th class="py-2.5 px-3">Material</th><th class="py-2.5 px-3">Mandor</th><th class="py-2.5 px-3 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody id="sheetTableBody" class="divide-y divide-slate-100"></tbody>
@@ -356,14 +310,13 @@
         </div>
       </div>
     </section>
-
-    <!-- ==================== TAB 3: DATABASE & SPREADSHEET ==================== -->
+        <!-- ==================== TAB 3: DATABASE & SPREADSHEET ==================== -->
     <section id="tab-master" class="tab-section hidden space-y-5">
       <div class="bg-white rounded-3xl border border-slate-200 shadow-xs p-5 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h3 class="font-extrabold text-sm text-[#056839]">☁️ Sinkronisasi Live Google Spreadsheets (Akun Baru)</h3>
-            <p class="text-xs text-slate-500">Tempel URL Web App (/exec) dari Google Apps Script akun baru Anda.</p>
+            <h3 class="font-extrabold text-sm text-[#056839]">☁️ Sinkronisasi Live Google Spreadsheets</h3>
+            <p class="text-xs text-slate-500">Tempel URL Web App (/exec) dari Google Apps Script Anda.</p>
           </div>
           <span id="liveSyncBadge" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-bold">Menunggu URL</span>
         </div>
@@ -386,9 +339,6 @@
         <div class="flex flex-wrap gap-2 pt-1">
           <button type="button" id="btnPullFromSheet" class="px-3.5 py-2 rounded-xl bg-emerald-50 text-[#056839] border border-[#056839]/30 text-xs font-bold">
             ⬇️ Tarik Data Live dari Spreadsheets
-          </button>
-          <button type="button" id="btnPushMasterSheet" class="px-3.5 py-2 rounded-xl bg-[#FFFDF2] text-[#A6891B] border border-[#A6891B]/30 text-xs font-bold">
-            ⬆️ Cadangkan Master PT/Blok ke Spreadsheets
           </button>
         </div>
       </div>
@@ -436,8 +386,7 @@
           <div id="masterUnitList" class="flex flex-wrap gap-1.5"></div>
           <div id="masterJobList" class="divide-y divide-slate-100 max-h-60 overflow-y-auto"></div>
         </div>
-
-        <!-- 3. Material & Mandor -->
+                <!-- 3. Material, Asisten & Mandor -->
         <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3">
           <h3 class="font-extrabold text-sm text-[#056839] border-b pb-2">3. Material, Asisten & Mandor</h3>
           <div class="p-3 rounded-2xl bg-slate-50 space-y-2">
@@ -471,16 +420,31 @@
         </div>
       </div>
 
-      <div class="flex flex-wrap justify-end gap-2">
-        <button type="button" id="btnSaveCustomDefault" class="px-4 py-2.5 rounded-xl bg-[#056839] text-white text-xs font-bold shadow-xs">
-          📌 Jadikan Data Master Saat Ini Sebagai Default
-        </button>
-        <button type="button" id="btnCopyMasterJson" class="px-4 py-2.5 rounded-xl bg-[#A6891B] text-white text-xs font-bold shadow-xs">
-          📋 Salin Kode Master Default
-        </button>
-        <button type="button" id="btnResetMaster" class="px-4 py-2.5 rounded-xl border border-red-200 text-red-600 text-xs font-bold">
-          Kembalikan ke Default Awal
-        </button>
+      <!-- PANEL SHARE & UPLOAD FILE DATA MASTER KE PENGGUNA LAIN -->
+      <div class="bg-white rounded-3xl border-2 border-[#056839]/30 shadow-xs p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="font-extrabold text-sm text-[#056839]">📤 Simpan Default & Bagikan File Data Master ke Pengguna Lain</h3>
+            <p class="text-xs text-slate-500">Unduh file <strong>MASTER_DATA_KENCANA.json</strong> untuk dikirim ke pengguna APK lain, atau upload file master yang diterima.</p>
+          </div>
+          <span id="masterStatusBadge" class="px-2.5 py-1 rounded-full bg-emerald-100 text-[#056839] text-[11px] font-extrabold">● Tersimpan & Terkunci Default</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <button type="button" id="btnSaveCustomDefault" class="px-4 py-3 rounded-2xl bg-[#056839] text-white text-xs font-bold shadow-xs">
+            📌 Kunci Jadi Default Permanen
+          </button>
+          <button type="button" id="btnDownloadMasterFile" class="px-4 py-3 rounded-2xl bg-emerald-600 text-white text-xs font-bold shadow-xs">
+            💾 Unduh File Master (.json)
+          </button>
+          <label for="fileUploadMaster" class="cursor-pointer px-4 py-3 rounded-2xl bg-[#A6891B] text-white text-xs font-bold shadow-xs text-center flex items-center justify-center">
+            📂 Upload File Master (.json)
+          </label>
+          <input type="file" id="fileUploadMaster" accept=".json,application/json" class="hidden" />
+          <button type="button" id="btnResetMaster" class="px-4 py-3 rounded-2xl border border-red-200 bg-red-50 text-red-600 text-xs font-bold">
+            🔄 Reset ke Default Bawaan
+          </button>
+        </div>
       </div>
     </section>
   </main>
@@ -492,38 +456,22 @@
   <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl text-xs font-bold flex items-center gap-2">
     <span id="toastIcon">✅</span>
     <span id="toastMsg">Tersimpan</span>
-            </div>
-              <script>
+  </div>
+    <script>
     const DEFAULT_MASTER = {
       orgs: {
         "PT Kencana Agri (Plasma BSP)": {
-          "Plasma BSP - AFD 1": [
-            { kode: "A-01", luas: 25.0 }, { kode: "A-02", luas: 26.5 }, { kode: "A-03", luas: 24.0 }, { kode: "A-04", luas: 27.0 }
-          ],
-          "Plasma BSP - AFD 2": [
-            { kode: "B-01", luas: 25.5 }, { kode: "B-02", luas: 26.0 }, { kode: "B-03", luas: 24.8 }
-          ],
-          "Plasma BSP - AFD 3": [
-            { kode: "C-01", luas: 25.0 }, { kode: "C-02", luas: 27.2 }, { kode: "C-03", luas: 26.4 }
-          ],
-          "Plasma BSP - AFD 4": [
-            { kode: "D01/2023", luas: 24.5 }, { kode: "D02/2023", luas: 26.0 },
-            { kode: "D03/2022", luas: 28.0 }, { kode: "D04/2022", luas: 25.4 },
-            { kode: "D05/2022", luas: 26.8 }, { kode: "D06/2023", luas: 25.0 }
-          ]
+          "Plasma BSP - AFD 1": [{ kode: "A-01", luas: 25.0 }, { kode: "A-02", luas: 26.5 }, { kode: "A-03", luas: 24.0 }],
+          "Plasma BSP - AFD 2": [{ kode: "B-01", luas: 25.5 }, { kode: "B-02", luas: 26.0 }],
+          "Plasma BSP - AFD 3": [{ kode: "C-01", luas: 25.0 }, { kode: "C-02", luas: 27.2 }],
+          "Plasma BSP - AFD 4": [{ kode: "D01/2023", luas: 24.5 }, { kode: "D02/2023", luas: 26.0 }, { kode: "D03/2022", luas: 28.0 }, { kode: "D04/2022", luas: 25.4 }]
         },
         "PT Kencana Agri (Plasma MSM)": {
-          "Plasma MSM - AFD 1": [
-            { kode: "M-01", luas: 25.0 }, { kode: "M-02", luas: 27.5 }, { kode: "M-03", luas: 26.0 }
-          ],
-          "Plasma MSM - AFD 2": [
-            { kode: "N-01", luas: 24.0 }, { kode: "N-02", luas: 26.5 }, { kode: "N-03", luas: 25.2 }
-          ]
+          "Plasma MSM - AFD 1": [{ kode: "M-01", luas: 25.0 }, { kode: "M-02", luas: 27.5 }],
+          "Plasma MSM - AFD 2": [{ kode: "N-01", luas: 24.0 }, { kode: "N-02", luas: 26.5 }]
         },
         "PT. STN (Inti Wanggarasi)": {
-          "Inti - AFD 1": [
-            { kode: "I-01", luas: 30.0 }, { kode: "I-02", luas: 28.5 }
-          ]
+          "Inti - AFD 1": [{ kode: "I-01", luas: 30.0 }, { kode: "I-02", luas: 28.5 }]
         }
       },
       units: ["Ha", "Pokok", "Kg", "Liter", "Meter", "Janjang", "Titik"],
@@ -536,32 +484,45 @@
         { nama: "Pemupukan Pokok", unit: "Pokok" },
         { nama: "Kastrasi & Sanitasi", unit: "Pokok" },
         { nama: "Perawatan Parit / Drainase", unit: "Meter" },
-        { nama: "Dongkel Anak Kayu (DAK)", unit: "Ha" },
-        { nama: "Garuk Piringan Manual", unit: "Pokok" }
+        { nama: "Dongkel Anak Kayu (DAK)", unit: "Ha" }
       ],
       materials: [
         { nama: "Glyphosate (Roundup / Glifosat)", jenis: "Racun", unit: "Liter" },
         { nama: "Metsulfuron Methyl (Ally)", jenis: "Racun", unit: "Gram" },
         { nama: "Paraquat (Gramoxone)", jenis: "Racun", unit: "Liter" },
         { nama: "Fluroxypyr (Starane)", jenis: "Racun", unit: "Liter" },
-        { nama: "Triclopyr (Garlon)", jenis: "Racun", unit: "Liter" },
         { nama: "NPK 15-15-6-4 / 13-6-27", jenis: "Pupuk", unit: "Kg" },
         { nama: "Urea", jenis: "Pupuk", unit: "Kg" },
         { nama: "KCl / MOP", jenis: "Pupuk", unit: "Kg" },
         { nama: "RP (Rock Phosphate)", jenis: "Pupuk", unit: "Kg" },
         { nama: "Dolomit", jenis: "Pupuk", unit: "Kg" },
-        { nama: "Borate (HGFB)", jenis: "Pupuk", unit: "Kg" },
-        { nama: "Kieserite", jenis: "Pupuk", unit: "Kg" }
+        { nama: "Borate (HGFB)", jenis: "Pupuk", unit: "Kg" }
       ],
       asistens: ["Sukri"],
       mandors: ["Meti", "Pak Ramin", "Pak Budi", "Bang Candra", "Bang Edi"]
     };
 
     function cloneObj(o) { return JSON.parse(JSON.stringify(o)); }
-    const SAVED_CUSTOM_DEFAULT = JSON.parse(localStorage.getItem("kencana_custom_default_v1"));
-    let masterData = JSON.parse(localStorage.getItem("kencana_master_v3")) || (SAVED_CUSTOM_DEFAULT ? cloneObj(SAVED_CUSTOM_DEFAULT) : cloneObj(DEFAULT_MASTER));
-    let records = JSON.parse(localStorage.getItem("kencana_records_v3")) || [];
-    let sheetConfig = JSON.parse(localStorage.getItem("kencana_gsheet_cfg_v3")) || { url: "", autoSync: true };
+
+    function loadInitialMaster() {
+      try {
+        const m1 = localStorage.getItem("kencana_master_v3");
+        if (m1) {
+          const parsed = JSON.parse(m1);
+          if (parsed && parsed.orgs) return parsed;
+        }
+        const m2 = localStorage.getItem("kencana_custom_default_v1");
+        if (m2) {
+          const parsed2 = JSON.parse(m2);
+          if (parsed2 && parsed2.orgs) return parsed2;
+        }
+      } catch (e) {}
+      return cloneObj(DEFAULT_MASTER);
+    }
+
+    let masterData = loadInitialMaster();
+    let records = JSON.parse(localStorage.getItem("kencana_records_v3") || "[]");
+    let sheetConfig = JSON.parse(localStorage.getItem("kencana_gsheet_cfg_v3") || '{"url":"","autoSync":true}');
 
     function showToast(msg, icon) {
       const t = document.getElementById("toast");
@@ -572,7 +533,23 @@
       setTimeout(() => t.classList.add("translate-y-24", "opacity-0"), 2800);
     }
 
-    function switchTab(name) {
+    function persistMasterData(msg) {
+      try {
+        const raw = JSON.stringify(masterData);
+        localStorage.setItem("kencana_master_v3", raw);
+        localStorage.setItem("kencana_custom_default_v1", raw);
+        const badge = document.getElementById("masterStatusBadge");
+        if (badge) badge.textContent = "● Tersimpan & Terkunci Default";
+        if (msg) showToast(msg, "✅");
+      } catch (err) {
+        showToast("Gagal menyimpan ke memori HP!", "❌");
+      }
+    }
+
+    function saveStorage() {
+      localStorage.setItem("kencana_records_v3", JSON.stringify(records));
+    }
+        function switchTab(name) {
       document.querySelectorAll(".tab-section").forEach(el => el.classList.add("hidden"));
       document.querySelectorAll(".tab-trigger").forEach(btn => btn.classList.remove("nav-pill-active"));
       const target = document.getElementById("tab-" + name);
@@ -582,11 +559,6 @@
       if (name === "master") renderMasterUI();
     }
 
-    function saveStorage() {
-      localStorage.setItem("kencana_master_v3", JSON.stringify(masterData));
-      localStorage.setItem("kencana_records_v3", JSON.stringify(records));
-    }
-
     function refreshAllDropdowns() {
       const ptNames = Object.keys(masterData.orgs || {});
       const inpPT = document.getElementById("inpPT");
@@ -594,7 +566,7 @@
       const prevPT = inpPT.value;
 
       inpPT.innerHTML = '<option value="">-- Pilih PT --</option>' + ptNames.map(p => `<option value="${p}">${p}</option>`).join("");
-      mstPt.innerHTML = ptNames.map(p => `<option value="${p}">${p}</option>`).join("");
+      mstPt.innerHTML = ptNames.length ? ptNames.map(p => `<option value="${p}">${p}</option>`).join("") : '<option value="">-- Tambah PT dulu --</option>';
       inpPT.value = ptNames.includes(prevPT) ? prevPT : (ptNames[0] || "");
       onPTChange();
 
@@ -608,6 +580,7 @@
           mstAfd.innerHTML += `<option value="${pt}|||${afd}">${pt} — ${afd}</option>`;
         });
       });
+      if (!mstAfd.innerHTML) mstAfd.innerHTML = '<option value="">-- Tambah Afdeling dulu --</option>';
 
       const inpAsisten = document.getElementById("inpAsisten");
       inpAsisten.innerHTML = '<option value="">-- Pilih Asisten --</option>' + masterData.asistens.map(a => `<option value="${a}">${a}</option>`).join("");
@@ -693,12 +666,11 @@
         const idx = records.findIndex(r => r.id === editId);
         if (idx !== -1) records[idx] = rec;
         showToast("Data realisasi diperbarui!");
-        if (sheetConfig.autoSync && sheetConfig.url) sendToLiveSheet(rec);
       } else {
         records.unshift(rec);
         showToast("Realisasi tersimpan!");
-        if (sheetConfig.autoSync && sheetConfig.url) sendToLiveSheet(rec);
       }
+      if (sheetConfig.autoSync && sheetConfig.url) sendToLiveSheet(rec);
       saveStorage(); resetForm(true); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
     }
 
@@ -739,13 +711,12 @@
     };
 
     window.deleteRecord = function(id) {
-      if (!confirm("Hapus catatan realisasi yang salah ini?")) return;
       records = records.filter(r => r.id !== id);
       saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
       deleteFromLiveSheet(id);
       showToast("Data berhasil dihapus!", "🗑️");
     };
-                    function formatMatBadge(r) {
+          function formatMatBadge(r) {
       const p = [];
       if (r.mat1Nama && r.mat1Nama !== "-") p.push(`${r.mat1Nama} (${r.mat1Qty} ${r.mat1Unit})`);
       if (r.mat2Nama && r.mat2Nama !== "-") p.push(`${r.mat2Nama} (${r.mat2Qty} ${r.mat2Unit})`);
@@ -892,17 +863,23 @@
           </tr>`;
       }).join("");
       tfoot.innerHTML = `<tr><td colspan="5" class="py-2.5 px-3 text-right uppercase text-xs">Total HK:</td><td class="py-2.5 px-3 text-right text-sm">${totalHK.toLocaleString("id-ID")} HK</td><td colspan="3"></td></tr>`;
-    }
-
-    function renderMasterUI() {
+      }
+          function renderMasterUI() {
+      const prevMstPt = document.getElementById("mstSelectPtForAfd")?.value || "";
+      const prevMstAfd = document.getElementById("mstSelectAfdForBlok")?.value || "";
       refreshAllDropdowns();
+      const selMstPt = document.getElementById("mstSelectPtForAfd");
+      const selMstAfd = document.getElementById("mstSelectAfdForBlok");
+      if (prevMstPt && [...selMstPt.options].some(o => o.value === prevMstPt)) selMstPt.value = prevMstPt;
+      if (prevMstAfd && [...selMstAfd.options].some(o => o.value === prevMstAfd)) selMstAfd.value = prevMstAfd;
+
       document.getElementById("masterOrgList").innerHTML = Object.entries(masterData.orgs || {}).map(([pt, afds]) => `
         <div class="p-3 rounded-2xl border bg-slate-50 space-y-2">
-          <div class="flex justify-between"><span class="text-xs font-extrabold text-[#056839]">${pt}</span><button type="button" onclick="deletePT('${pt}')" class="text-[10px] text-red-500 font-bold">Hapus PT</button></div>
+          <div class="flex justify-between"><span class="text-xs font-extrabold text-[#056839]">${pt}</span><button type="button" onclick="deletePT('${pt.replace(/'/g, "\\'")}')" class="text-[10px] text-red-500 font-bold">Hapus PT</button></div>
           ${Object.entries(afds).map(([afd, bloks]) => `
             <div class="pl-2 border-l-2 border-[#A6891B] space-y-1">
-              <div class="flex justify-between"><span class="text-[11px] font-bold">${afd}</span><button type="button" onclick="deleteAfdeling('${pt}','${afd}')" class="text-[10px] text-red-400">× Afd</button></div>
-              <div class="flex flex-wrap gap-1">${bloks.map((b, i) => `<span class="px-2 py-0.5 rounded bg-white border text-[10px]">${b.kode} (${b.luas}Ha) <button type="button" onclick="deleteBlok('${pt}','${afd}',${i})" class="text-red-500 font-bold">×</button></span>`).join("")}</div>
+              <div class="flex justify-between"><span class="text-[11px] font-bold">${afd}</span><button type="button" onclick="deleteAfdeling('${pt.replace(/'/g, "\\'")}','${afd.replace(/'/g, "\\'")}')" class="text-[10px] text-red-400">× Afd</button></div>
+              <div class="flex flex-wrap gap-1">${bloks.map((b, i) => `<span class="px-2 py-0.5 rounded bg-white border text-[10px]">${b.kode} (${b.luas}Ha) <button type="button" onclick="deleteBlok('${pt.replace(/'/g, "\\'")}','${afd.replace(/'/g, "\\'")}',${i})" class="text-red-500 font-bold">×</button></span>`).join("")}</div>
             </div>`).join("")}
         </div>`).join("");
 
@@ -913,13 +890,45 @@
       document.getElementById("masterMandorList").innerHTML = masterData.mandors.map((m, i) => `<span class="px-2.5 py-1 rounded-lg bg-[#F4F8F5] text-[#056839] text-[11px] font-bold">${m} <button type="button" onclick="deletePerson('mandor',${i})" class="text-red-500">×</button></span>`).join("");
     }
 
-    window.deletePT = pt => { if (confirm("Hapus PT?")) { delete masterData.orgs[pt]; saveStorage(); renderMasterUI(); } };
-    window.deleteAfdeling = (pt, afd) => { delete masterData.orgs[pt][afd]; saveStorage(); renderMasterUI(); };
-    window.deleteBlok = (pt, afd, i) => { masterData.orgs[pt][afd].splice(i, 1); saveStorage(); renderMasterUI(); };
-    window.deleteJob = i => { masterData.jobs.splice(i, 1); saveStorage(); renderMasterUI(); };
-    window.deleteUnit = i => { masterData.units.splice(i, 1); saveStorage(); renderMasterUI(); };
-    window.deleteMaterial = i => { masterData.materials.splice(i, 1); saveStorage(); renderMasterUI(); };
-    window.deletePerson = (r, i) => { (r === "asisten" ? masterData.asistens : masterData.mandors).splice(i, 1); saveStorage(); renderMasterUI(); };
+    window.deletePT = pt => { delete masterData.orgs[pt]; persistMasterData("PT dihapus"); renderMasterUI(); };
+    window.deleteAfdeling = (pt, afd) => { delete masterData.orgs[pt][afd]; persistMasterData("Afdeling dihapus"); renderMasterUI(); };
+    window.deleteBlok = (pt, afd, i) => { masterData.orgs[pt][afd].splice(i, 1); persistMasterData("Blok dihapus"); renderMasterUI(); };
+    window.deleteJob = i => { masterData.jobs.splice(i, 1); persistMasterData("Pekerjaan dihapus"); renderMasterUI(); };
+    window.deleteUnit = i => { masterData.units.splice(i, 1); persistMasterData("Satuan dihapus"); renderMasterUI(); };
+    window.deleteMaterial = i => { masterData.materials.splice(i, 1); persistMasterData("Material dihapus"); renderMasterUI(); };
+    window.deletePerson = (r, i) => { (r === "asisten" ? masterData.asistens : masterData.mandors).splice(i, 1); persistMasterData("Data dihapus"); renderMasterUI(); };
+
+    function downloadMasterFile() {
+      const payload = JSON.stringify({ app: "REALISASI_RAWAT_KENCANA", exportedAt: new Date().toISOString(), masterData: masterData }, null, 2);
+      const fileName = `MASTER_DATA_KENCANA_${new Date().toISOString().split("T")[0]}.json`;
+      const a = document.createElement("a");
+      a.href = "data:application/json;charset=utf-8," + encodeURIComponent(payload);
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast("File Master (.json) diunduh! Siap dikirim ke pengguna lain.", "💾");
+    }
+
+    function handleUploadMasterFile(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          const incoming = parsed.masterData ? parsed.masterData : parsed;
+          if (!incoming || !incoming.orgs) return showToast("Format file Master tidak valid!", "❌");
+          masterData = incoming;
+          persistMasterData("File Master berhasil dimuat & dikunci jadi Default!");
+          renderMasterUI();
+        } catch (err) {
+          showToast("Gagal membaca file Master!", "❌");
+        }
+        e.target.value = "";
+      };
+      reader.readAsText(file);
+    }
 
     function shareWhatsAppReport() {
       const tgl = document.getElementById("inpTanggal").value;
@@ -995,63 +1004,36 @@
       link.download = fileName.replace(".xlsx", ".xls");
       document.body.appendChild(link); link.click(); document.body.removeChild(link);
       showToast("Excel Offline berwarna berhasil diunduh!", "📥");
-    }
-                    async function sendToLiveSheet(rec) {
-      if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) return false;
-      const url = sheetConfig.url.trim();
-      try {
-        await fetch(url, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: "upsert", record: rec })
-        });
-        return true;
-      } catch (e) {
-        try {
-          const sep = url.includes("?") ? "&" : "?";
-          await fetch(`${url}${sep}action=upsert&payload=${encodeURIComponent(JSON.stringify(rec))}`, { method: "GET", mode: "no-cors" });
-          return true;
-        } catch (err) { return false; }
       }
+          function encodeB64(str) { return btoa(unescape(encodeURIComponent(str))); }
+
+    async function sendToLiveSheet(rec) {
+      if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) return false;
+      const baseUrl = sheetConfig.url.trim();
+      try {
+        await fetch(`${baseUrl}?act=save&d=${encodeURIComponent(encodeB64(JSON.stringify(rec)))}&t=${Date.now()}`, { method: "GET", mode: "no-cors", cache: "no-store" });
+        return true;
+      } catch (e) { return false; }
     }
 
     async function deleteFromLiveSheet(id) {
       if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) return;
-      try {
-        await fetch(sheetConfig.url.trim(), {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: "delete", id: id })
-        });
-      } catch (e) {}
+      try { await fetch(`${sheetConfig.url.trim()}?act=del&id=${encodeURIComponent(id)}&t=${Date.now()}`, { method: "GET", mode: "no-cors" }); } catch (e) {}
     }
 
     async function pullLiveFromSheet(silent) {
       if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) return;
-      const url = sheetConfig.url.trim();
       try {
-        const sep = url.includes("?") ? "&" : "?";
-        const res = await fetch(`${url}${sep}action=pull&t=${Date.now()}`, { method: "GET", redirect: "follow" });
+        const res = await fetch(`${sheetConfig.url.trim()}?act=pull&t=${Date.now()}`, { method: "GET", redirect: "follow" });
         const data = await res.json();
         if (data && data.status === "ok" && Array.isArray(data.records)) {
           if (data.records.length > 0) {
             records = data.records;
-            localStorage.setItem("kencana_records_v3", JSON.stringify(records));
+            saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
           }
-          if (data.master && data.master.orgs) {
-            masterData = data.master;
-            localStorage.setItem("kencana_master_v3", JSON.stringify(masterData));
-            localStorage.setItem("kencana_custom_default_v1", JSON.stringify(masterData));
-            refreshAllDropdowns();
-          }
-          renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
-          if (!silent) showToast(`Live Sync sukses! ${records.length} data dimuat dari Spreadsheets.`, "☁️");
+          if (!silent) showToast(`Sinkronisasi sukses! ${data.records.length} data dimuat.`, "☁️");
         }
-      } catch (e) {
-        if (!silent) showToast("Gagal menarik data dari Spreadsheets.", "❌");
-      }
+      } catch (e) { if (!silent) showToast("Gagal menarik data dari Spreadsheets.", "❌"); }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -1073,21 +1055,19 @@
       document.getElementById("btnResetPeriode").addEventListener("click", () => {
         const flt = getFilteredRecords();
         if (!flt.length) return showToast("Tidak ada data pada periode ini.", "⚠️");
-        if (!confirm(`Reset / hapus ${flt.length} data rekap pada periode yang dipilih?`)) return;
         const ids = new Set(flt.map(r => r.id));
         records = records.filter(r => !ids.has(r.id));
         saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
         ids.forEach(id => deleteFromLiveSheet(id));
-        showToast(`${ids.size} data rekap periode ini dihapus!`, "🧹");
+        showToast(`${ids.size} data rekap periode ini direset!`, "🧹");
       });
 
       document.getElementById("btnResetSemua").addEventListener("click", async () => {
         if (!records.length) return showToast("Catatan rekapan sudah kosong.", "⚠️");
-        if (!confirm(`Hapus SEMUA (${records.length}) data realisasi dari catatan rekapan?`)) return;
         records = [];
         saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
         if (sheetConfig.url && sheetConfig.url.includes("/exec")) {
-          try { await fetch(sheetConfig.url.trim(), { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "reset_all" }) }); } catch (e) {}
+          try { await fetch(`${sheetConfig.url.trim()}?act=reset&t=${Date.now()}`, { method: "GET", mode: "no-cors" }); } catch (e) {}
         }
         showToast("Semua catatan rekapan dihapus!", "🗑️");
       });
@@ -1101,19 +1081,17 @@
       ["fltTanggal", "fltBulan", "fltAfdeling", "fltPekerjaan"].forEach(id => document.getElementById(id).addEventListener("change", renderRekapAll));
 
       document.getElementById("btnSyncGsheet").addEventListener("click", async () => {
-        if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) { switchTab("master"); return showToast("Tempel URL Web App (/exec) di pengaturan dulu!", "⚠️"); }
+        if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) { switchTab("master"); return showToast("Tempel URL Web App (/exec) dulu!", "⚠️"); }
         if (!records.length) return showToast("Belum ada data realisasi untuk dikirim!", "⚠️");
         const btn = document.getElementById("btnSyncGsheet");
         btn.disabled = true;
-        let terkirim = 0;
         for (let i = 0; i < records.length; i++) {
           btn.textContent = `⏳ Mengirim ${i + 1}/${records.length}...`;
-          const ok = await sendToLiveSheet(records[i]);
-          if (ok) terkirim++;
-          await new Promise(r => setTimeout(r, 400));
+          await sendToLiveSheet(records[i]);
+          await new Promise(r => setTimeout(r, 350));
         }
         btn.disabled = false; btn.textContent = "☁️ Sync Spreadsheet";
-        showToast(`${terkirim} data terkirim ke Spreadsheets!`, "☁️");
+        showToast(`${records.length} data terkirim ke Spreadsheets!`, "☁️");
       });
 
       document.getElementById("btnTestConn").addEventListener("click", async () => {
@@ -1123,7 +1101,6 @@
         sheetConfig.autoSync = document.getElementById("autoSyncCheck").checked;
         localStorage.setItem("kencana_gsheet_cfg_v3", JSON.stringify(sheetConfig));
         updateDashboardKPI();
-        showToast("Menguji koneksi ke akun baru...", "⏳");
         try {
           const res = await fetch(`${rawUrl}?t=${Date.now()}`, { method: "GET", redirect: "follow" });
           const j = await res.json();
@@ -1132,78 +1109,77 @@
             document.getElementById("liveSyncBadge").className = "px-2.5 py-1 rounded-full bg-emerald-100 text-[#056839] text-[11px] font-extrabold";
             showToast("TERHUBUNG LIVE ke Google Spreadsheets!", "✅");
             await pullLiveFromSheet(true);
-          } else { showToast("URL terhubung, silakan coba Sync.", "⚠️"); }
+          } else showToast("URL terhubung, silakan coba Sync.", "⚠️");
         } catch (err) { showToast("Gagal terhubung! Cek izin 'Anyone' di Apps Script.", "❌"); }
       });
 
       document.getElementById("btnPullFromSheet").addEventListener("click", () => pullLiveFromSheet(false));
-      document.getElementById("btnPushMasterSheet").addEventListener("click", async () => {
-        if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) return showToast("Hubungkan URL /exec dulu!", "⚠️");
-        try {
-          await fetch(sheetConfig.url.trim(), { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ action: "save_master", master: masterData }) });
-          showToast("Database PT, Blok & Mandor tersimpan di Spreadsheets!", "☁️");
-        } catch (e) { showToast("Gagal mengirim master database.", "❌"); }
-      });
 
       document.getElementById("btnAddPt").addEventListener("click", () => {
-        const n = document.getElementById("newPtName").value.trim(); if (!n) return;
-        masterData.orgs[n] = masterData.orgs[n] || {}; document.getElementById("newPtName").value = "";
-        saveStorage(); renderMasterUI(); showToast("PT ditambahkan");
+        const n = document.getElementById("newPtName").value.trim();
+        if (!n) return showToast("Isi nama PT terlebih dahulu!", "⚠️");
+        if (!masterData.orgs[n]) masterData.orgs[n] = {};
+        document.getElementById("newPtName").value = "";
+        persistMasterData("PT tersimpan & menjadi default!"); renderMasterUI();
       });
       document.getElementById("btnAddAfd").addEventListener("click", () => {
         const pt = document.getElementById("mstSelectPtForAfd").value, afd = document.getElementById("newAfdName").value.trim();
-        if (!pt || !afd) return; masterData.orgs[pt][afd] = masterData.orgs[pt][afd] || [];
-        document.getElementById("newAfdName").value = ""; saveStorage(); renderMasterUI(); showToast("Afdeling ditambahkan");
+        if (!pt || !afd) return showToast("Pilih PT dan isi nama Afdeling!", "⚠️");
+        if (!masterData.orgs[pt][afd]) masterData.orgs[pt][afd] = [];
+        document.getElementById("newAfdName").value = "";
+        persistMasterData("Afdeling tersimpan!"); renderMasterUI();
       });
       document.getElementById("btnAddBlok").addEventListener("click", () => {
         const v = document.getElementById("mstSelectAfdForBlok").value, k = document.getElementById("newBlokCode").value.trim().toUpperCase(), l = parseFloat(document.getElementById("newBlokLuas").value) || 0;
-        if (!v || !k) return; const [pt, afd] = v.split("|||"); masterData.orgs[pt][afd].push({ kode: k, luas: l });
+        if (!v || !k) return showToast("Pilih Afdeling dan isi Kode Blok!", "⚠️");
+        const [pt, afd] = v.split("|||");
+        const ex = masterData.orgs[pt][afd].findIndex(b => b.kode === k);
+        if (ex !== -1) masterData.orgs[pt][afd][ex].luas = l;
+        else masterData.orgs[pt][afd].push({ kode: k, luas: l });
         document.getElementById("newBlokCode").value = ""; document.getElementById("newBlokLuas").value = "";
-        saveStorage(); renderMasterUI(); showToast("Blok ditambahkan");
+        persistMasterData(`Blok ${k} tersimpan!`); renderMasterUI();
       });
       document.getElementById("btnAddJob").addEventListener("click", () => {
-        const n = document.getElementById("newJobName").value.trim(), u = document.getElementById("newJobUnit").value;
-        if (!n) return; masterData.jobs.push({ nama: n, unit: u }); document.getElementById("newJobName").value = "";
-        saveStorage(); renderMasterUI(); showToast("Pekerjaan ditambahkan");
+        const n = document.getElementById("newJobName").value.trim(), u = document.getElementById("newJobUnit").value || "Ha";
+        if (!n) return showToast("Isi nama pekerjaan!", "⚠️");
+        masterData.jobs.push({ nama: n, unit: u }); document.getElementById("newJobName").value = "";
+        persistMasterData("Pekerjaan tersimpan!"); renderMasterUI();
       });
       document.getElementById("btnAddUnit").addEventListener("click", () => {
-        const u = document.getElementById("newUnitName").value.trim(); if (!u) return;
-        masterData.units.push(u); document.getElementById("newUnitName").value = "";
-        saveStorage(); renderMasterUI(); showToast("Satuan ditambahkan");
+        const u = document.getElementById("newUnitName").value.trim();
+        if (!u) return showToast("Isi nama satuan!", "⚠️");
+        if (!masterData.units.includes(u)) masterData.units.push(u);
+        document.getElementById("newUnitName").value = "";
+        persistMasterData("Satuan tersimpan!"); renderMasterUI();
       });
       document.getElementById("btnAddMat").addEventListener("click", () => {
         const j = document.getElementById("newMatType").value, n = document.getElementById("newMatName").value.trim(), u = document.getElementById("newMatUnit").value.trim() || "Kg";
-        if (!n) return; masterData.materials.push({ nama: n, jenis: j, unit: u });
+        if (!n) return showToast("Isi nama material!", "⚠️");
+        masterData.materials.push({ nama: n, jenis: j, unit: u });
         document.getElementById("newMatName").value = ""; document.getElementById("newMatUnit").value = "";
-        saveStorage(); renderMasterUI(); showToast("Material ditambahkan");
+        persistMasterData("Material tersimpan!"); renderMasterUI();
       });
       document.getElementById("btnAddAsisten").addEventListener("click", () => {
-        const v = document.getElementById("newAsistenName").value.trim(); if (!v) return;
-        masterData.asistens.push(v); document.getElementById("newAsistenName").value = "";
-        saveStorage(); renderMasterUI(); showToast("Asisten ditambahkan");
+        const v = document.getElementById("newAsistenName").value.trim();
+        if (!v) return showToast("Isi nama Asisten!", "⚠️");
+        if (!masterData.asistens.includes(v)) masterData.asistens.push(v);
+        document.getElementById("newAsistenName").value = "";
+        persistMasterData("Asisten tersimpan!"); renderMasterUI();
       });
       document.getElementById("btnAddMandor").addEventListener("click", () => {
-        const v = document.getElementById("newMandorName").value.trim(); if (!v) return;
-        masterData.mandors.push(v); document.getElementById("newMandorName").value = "";
-        saveStorage(); renderMasterUI(); showToast("Mandor ditambahkan");
+        const v = document.getElementById("newMandorName").value.trim();
+        if (!v) return showToast("Isi nama Mandor!", "⚠️");
+        if (!masterData.mandors.includes(v)) masterData.mandors.push(v);
+        document.getElementById("newMandorName").value = "";
+        persistMasterData("Mandor tersimpan!"); renderMasterUI();
       });
 
-      document.getElementById("btnSaveCustomDefault").addEventListener("click", () => {
-        localStorage.setItem("kencana_custom_default_v1", JSON.stringify(masterData));
-        localStorage.setItem("kencana_master_v3", JSON.stringify(masterData));
-        showToast("Master data saat ini dikunci sebagai DEFAULT permanen!", "📌");
-      });
-      document.getElementById("btnCopyMasterJson").addEventListener("click", () => {
-        const txt = JSON.stringify(masterData);
-        if (navigator.clipboard) navigator.clipboard.writeText(txt).then(() => showToast("Kode Master Default disalin!", "📋"));
-        else prompt("Salin kode Master Default berikut:", txt);
-      });
+      document.getElementById("btnSaveCustomDefault").addEventListener("click", () => persistMasterData("Seluruh database dikunci sebagai DEFAULT permanen!"));
+      document.getElementById("btnDownloadMasterFile").addEventListener("click", downloadMasterFile);
+      document.getElementById("fileUploadMaster").addEventListener("change", handleUploadMasterFile);
       document.getElementById("btnResetMaster").addEventListener("click", () => {
-        const customDef = JSON.parse(localStorage.getItem("kencana_custom_default_v1"));
-        if (confirm(customDef ? "Kembalikan ke Master Default yang sudah Anda simpan?" : "Kembalikan database ke Default Awal?")) {
-          masterData = customDef ? cloneObj(customDef) : cloneObj(DEFAULT_MASTER);
-          saveStorage(); renderMasterUI(); showToast("Database dikembalikan ke Default!");
-        }
+        masterData = cloneObj(DEFAULT_MASTER);
+        persistMasterData("Database dikembalikan ke Default Bawaan!"); renderMasterUI();
       });
 
       const today = new Date().toISOString().split("T")[0];
