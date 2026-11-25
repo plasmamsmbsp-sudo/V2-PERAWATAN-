@@ -430,7 +430,22 @@
           <span id="masterStatusBadge" class="px-2.5 py-1 rounded-full bg-emerald-100 text-[#056839] text-[11px] font-extrabold">● Tersimpan & Terkunci Default</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <button type="button" id="btnSaveCustomDefault" class="px-4 py-3 rounded-2xl bg-[#056839] text-white text-xs font-bold shadow-xs">
+            📌 Kunci Jadi Default Permanen
+          </button>
+          <button type="button" id="btnDownloadMasterFile" class="px-4 py-3 rounded-2xl bg-emerald-600 text-white text-xs font-bold shadow-xs">
+            📤 Bagikan / Simpan File Master (.json)
+          </button>
+          <label for="fileUploadMaster" class="cursor-pointer px-4 py-3 rounded-2xl bg-[#A6891B] text-white text-xs font-bold shadow-xs text-center flex items-center justify-center">
+            📂 Upload File Master (.json)
+          </label>
+          <input type="file" id="fileUploadMaster" accept=".json,application/json,*/*" class="hidden" />
+          <button type="button" id="btnResetMaster" class="px-4 py-3 rounded-2xl border border-red-200 bg-red-50 text-red-600 text-xs font-bold">
+            🔄 Reset ke Default Bawaan
+          </button>
+                </div>
+        
           <button type="button" id="btnSaveCustomDefault" class="px-4 py-3 rounded-2xl bg-[#056839] text-white text-xs font-bold shadow-xs">
             📌 Kunci Jadi Default Permanen
           </button>
@@ -898,17 +913,51 @@
     window.deleteMaterial = i => { masterData.materials.splice(i, 1); persistMasterData("Material dihapus"); renderMasterUI(); };
     window.deletePerson = (r, i) => { (r === "asisten" ? masterData.asistens : masterData.mandors).splice(i, 1); persistMasterData("Data dihapus"); renderMasterUI(); };
 
-    function downloadMasterFile() {
-      const payload = JSON.stringify({ app: "REALISASI_RAWAT_KENCANA", exportedAt: new Date().toISOString(), masterData: masterData }, null, 2);
+        async function downloadMasterFile() {
+      const payload = JSON.stringify({
+        app: "REALISASI_RAWAT_KENCANA",
+        exportedAt: new Date().toISOString(),
+        masterData: masterData
+      }, null, 2);
       const fileName = `MASTER_DATA_KENCANA_${new Date().toISOString().split("T")[0]}.json`;
-      const a = document.createElement("a");
-      a.href = "data:application/json;charset=utf-8," + encodeURIComponent(payload);
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      showToast("File Master (.json) diunduh! Siap dikirim ke pengguna lain.", "💾");
-    }
+      const blob = new Blob([payload], { type: "application/json" });
+      const file = new File([blob], fileName, { type: "application/json" });
+
+      // 1. Jalur Utama APK Android: Buka Menu Share HP (Langsung ke WhatsApp / Files / Simpan ke Download)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: "Master Data Realisasi Rawat",
+            text: "File Database Master REALISASI RAWAT — PT Kencana Agri"
+          });
+          showToast("File Master siap dikirim / disimpan!", "📤");
+          return;
+        } catch (err) {
+          if (err.name === "AbortError") return;
+        }
+      }
+
+      // 2. Jalur Cadangan Browser (Blob Object URL)
+      try {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+        showToast("File Master (.json) diunduh ke folder Download!", "💾");
+      } catch (e) {
+        // 3. Jalur Darurat: Salin Teks JSON ke Clipboard jika WebView memblokir file
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(payload);
+          showToast("Data Master disalin ke Clipboard! Tempel & kirim ke WA.", "📋");
+        }
+      }
+        }
+      
 
     function handleUploadMasterFile(e) {
       const file = e.target.files && e.target.files[0];
