@@ -35,7 +35,7 @@
 
       <div class="flex items-center gap-1.5">
         <button type="button" id="btnWaTop" class="px-3 py-2 rounded-xl bg-[#056839] active:bg-[#044E2B] text-white text-xs font-bold shadow-xs">
-          📲 WA Crash
+          📲 Laporan WA
         </button>
         <button type="button" id="btnExcelTop" class="px-3 py-2 rounded-xl bg-[#A6891B] active:bg-[#8E7415] text-white text-xs font-bold shadow-xs">
           📥 Excel
@@ -72,7 +72,7 @@
           <p id="kpiTotalHK" class="text-lg font-extrabold text-[#A6891B] mt-0.5">0 HK</p>
         </div>
         <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
-          <p class="text-[10px] font-bold text-slate-400 uppercase">Bulan Berjalan</p>
+          <p class="text-[10px] font-bold text-slate-400 uppercase">Bulan Berjalan (SHI)</p>
           <p id="kpiBulanCount" class="text-lg font-extrabold text-slate-800 mt-0.5">0 Data</p>
         </div>
         <div class="bg-white p-3.5 rounded-2xl border border-slate-200">
@@ -86,7 +86,7 @@
           <div class="px-5 py-3.5 bg-[#056839] text-white flex items-center justify-between">
             <div>
               <h2 class="font-bold text-sm">Input Realisasi Rawat</h2>
-              <p class="text-[11px] text-emerald-100">Isi data realisasi pekerjaan harian kebun</p>
+              <p class="text-[11px] text-emerald-100">Manual • Chemis • Pupuk (Harian / Borongan)</p>
             </div>
             <span class="px-2 py-0.5 rounded bg-[#FFF200] text-[#056839] text-[10px] font-extrabold">KENCANA</span>
           </div>
@@ -116,14 +116,21 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="form-label">Asisten Afdeling *</label>
-                <select id="inpAsisten" required class="form-input"></select>
+                <label class="form-label">Kategori Rawat *</label>
+                <select id="inpKategori" required class="form-input font-extrabold text-[#056839] bg-[#F4F8F5]">
+                  <option value="Manual">Manual</option>
+                  <option value="Chemis">Chemis</option>
+                  <option value="Pupuk">Pupuk</option>
+                </select>
               </div>
               <div>
-                <label class="form-label">Mandor / Regu TK *</label>
-                <select id="inpMandor" required class="form-input"></select>
+                <label class="form-label">Sistem Kerja *</label>
+                <select id="inpSistemKerja" required class="form-input font-extrabold text-[#A6891B] bg-[#FFFDF2]">
+                  <option value="Harian">Harian</option>
+                  <option value="Borongan">Borongan</option>
+                </select>
               </div>
             </div>
 
@@ -138,9 +145,20 @@
               </div>
             </div>
 
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="form-label">Asisten Afdeling *</label>
+                <select id="inpAsisten" required class="form-input"></select>
+              </div>
+              <div>
+                <label class="form-label">Mandor / Regu TK *</label>
+                <select id="inpMandor" required class="form-input"></select>
+              </div>
+            </div>
+
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="form-label">Realisasi Hasil *</label>
+                <label id="lblInpHasil" class="form-label">Realisasi Hasil (HI) *</label>
                 <input type="number" step="0.01" min="0" id="inpHasil" required placeholder="0.00" class="form-input font-extrabold text-[#056839] text-base" />
               </div>
               <div>
@@ -149,8 +167,32 @@
               </div>
             </div>
 
+            <!-- Panel Parameter Tambahan Khusus Pemupukan -->
+            <div id="panelPupukExtra" class="hidden p-3.5 rounded-2xl bg-[#FFFDF2] border border-[#A6891B]/40 space-y-2.5">
+              <span class="text-[11px] font-extrabold uppercase text-[#A6891B] block">Detail Pemupukan (HA • Pokok FU • Dosis • Rekom)</span>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div>
+                  <label class="form-label text-[10px]">Luas Aplikasi (HA)</label>
+                  <input type="number" step="0.01" min="0" id="inpPupukHa" placeholder="0.00" class="form-input text-xs font-bold" />
+                </div>
+                <div>
+                  <label class="form-label text-[10px]">Pokok FU</label>
+                  <input type="number" step="1" min="0" id="inpPupukPokok" placeholder="0" class="form-input text-xs font-bold" />
+                </div>
+                <div>
+                  <label class="form-label text-[10px]">Dosis (Kg/Pkk)</label>
+                  <input type="number" step="0.01" min="0" id="inpPupukDosis" placeholder="0.00" class="form-input text-xs font-bold" />
+                </div>
+                <div>
+                  <label class="form-label text-[10px]">Rekom (Kg)</label>
+                  <input type="number" step="0.01" min="0" id="inpPupukRekom" placeholder="0.00" class="form-input text-xs font-bold" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Pemakaian Material (Pupuk / Herbisida) -->
             <div class="p-3.5 rounded-2xl bg-[#F6F9F7] border border-slate-200 space-y-2.5">
-              <span class="text-[11px] font-extrabold uppercase text-[#056839] block">Pemakaian Material (Pupuk / Racun — Opsional)</span>
+              <span class="text-[11px] font-extrabold uppercase text-[#056839] block">Pemakaian Material (Pupuk / Racun — Chemis & Pupuk)</span>
               <div class="grid grid-cols-12 gap-2">
                 <div class="col-span-6"><select id="inpMat1" class="form-input text-xs"></select></div>
                 <div class="col-span-3"><input type="number" step="0.01" min="0" id="inpMat1Qty" placeholder="Qty 1" class="form-input text-xs font-bold" /></div>
@@ -160,6 +202,11 @@
                 <div class="col-span-6"><select id="inpMat2" class="form-input text-xs"></select></div>
                 <div class="col-span-3"><input type="number" step="0.01" min="0" id="inpMat2Qty" placeholder="Qty 2" class="form-input text-xs font-bold" /></div>
                 <div class="col-span-3"><input type="text" id="inpMat2Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold" /></div>
+              </div>
+              <div class="grid grid-cols-12 gap-2">
+                <div class="col-span-6"><select id="inpMat3" class="form-input text-xs"></select></div>
+                <div class="col-span-3"><input type="number" step="0.01" min="0" id="inpMat3Qty" placeholder="Qty 3" class="form-input text-xs font-bold" /></div>
+                <div class="col-span-3"><input type="text" id="inpMat3Unit" readonly placeholder="-" class="form-input text-xs bg-slate-100 text-center font-bold" /></div>
               </div>
             </div>
 
@@ -183,11 +230,11 @@
           <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
             <div>
               <h3 class="font-bold text-slate-900 text-sm">Catatan Terakhir</h3>
-              <p class="text-[11px] text-slate-400">Tekan ✏️ Edit atau 🗑️ Hapus jika salah input</p>
+              <p class="text-[11px] text-slate-400">Tekan 📲 WA untuk kirim laporan per item kerja</p>
             </div>
             <button type="button" data-tab="rekap" class="tab-trigger text-xs font-bold text-[#056839]">Lihat Rekap →</button>
           </div>
-          <div id="recentFeedList" class="p-4 space-y-2.5 overflow-y-auto max-h-[540px] flex-1"></div>
+          <div id="recentFeedList" class="p-4 space-y-2.5 overflow-y-auto max-h-[580px] flex-1"></div>
         </div>
       </div>
     </section>
@@ -197,7 +244,7 @@
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
             <h2 class="text-base font-extrabold text-slate-900">Rekapitulasi & Output per TK</h2>
-            <p class="text-xs text-slate-500">Reset rekap harian atau hapus item jika terjadi kesalahan pengisian</p>
+            <p class="text-xs text-slate-500">Filter kategori Manual/Chemis/Pupuk, Harian/Borongan, atau kirim WA per item kerja</p>
           </div>
           <div class="flex flex-wrap items-center gap-2">
             <button type="button" id="btnSyncGsheet" class="px-3.5 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold">
@@ -207,20 +254,20 @@
               📥 Export Excel Elegan
             </button>
             <button type="button" id="btnResetPeriode" class="px-3.5 py-2 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold">
-              🧹 Reset Rekap Harian / Periode
+              🧹 Reset Rekap Periode
             </button>
             <button type="button" id="btnResetSemua" class="px-3.5 py-2 rounded-xl bg-red-100 text-red-700 border border-red-200 text-xs font-bold">
-              🗑️ Hapus Semua Data
+              🗑️ Hapus Semua
             </button>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-100">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-3 border-t border-slate-100">
           <div>
             <label class="form-label">Mode Periode</label>
             <select id="fltMode" class="form-input text-xs font-bold text-[#056839]">
               <option value="harian">Per Hari (Tanggal)</option>
-              <option value="bulanan">Per Bulan (Rekap Bulanan)</option>
+              <option value="bulanan">Per Bulan (SHI)</option>
               <option value="semua">Semua Data</option>
             </select>
           </div>
@@ -231,6 +278,23 @@
           <div id="wrapFltBulan" class="hidden">
             <label class="form-label">Pilih Bulan</label>
             <input type="month" id="fltBulan" class="form-input text-xs" />
+          </div>
+          <div>
+            <label class="form-label">Kategori</label>
+            <select id="fltKategori" class="form-input text-xs">
+              <option value="">Semua Kategori</option>
+              <option value="Manual">Manual</option>
+              <option value="Chemis">Chemis</option>
+              <option value="Pupuk">Pupuk</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Sistem Kerja</label>
+            <select id="fltSistem" class="form-input text-xs">
+              <option value="">Harian & Borongan</option>
+              <option value="Harian">Harian</option>
+              <option value="Borongan">Borongan</option>
+            </select>
           </div>
           <div>
             <label class="form-label">Filter Afdeling</label>
@@ -253,6 +317,7 @@
             <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
               <tr>
                 <th class="py-2.5 px-4">Mandor / Regu TK</th>
+                <th class="py-2.5 px-4">Kategori / Sistem</th>
                 <th class="py-2.5 px-4">Jenis Pekerjaan</th>
                 <th class="py-2.5 px-4 text-right">Total Hasil</th>
                 <th class="py-2.5 px-4">Satuan</th>
@@ -267,7 +332,7 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div class="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
-          <div class="px-5 py-3 bg-[#056839] text-white"><h3 class="font-bold text-xs uppercase">Rekap Prestasi per Pekerjaan</h3></div>
+          <div class="px-5 py-3 bg-[#056839] text-white"><h3 class="font-bold text-xs uppercase">Rekap Prestasi per Pekerjaan (HI & SHI)</h3></div>
           <div class="overflow-x-auto">
             <table class="w-full text-xs text-left">
               <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px]">
@@ -300,7 +365,7 @@
           <table class="w-full text-left border-collapse text-xs">
             <thead>
               <tr class="bg-slate-900 text-white text-[10px] uppercase">
-                <th class="py-2.5 px-3">Tanggal</th><th class="py-2.5 px-3">Afdeling</th><th class="py-2.5 px-3">Blok</th><th class="py-2.5 px-3">Pekerjaan</th>
+                <th class="py-2.5 px-3">Tanggal</th><th class="py-2.5 px-3">Kategori</th><th class="py-2.5 px-3">Afdeling</th><th class="py-2.5 px-3">Blok</th><th class="py-2.5 px-3">Pekerjaan</th>
                 <th class="py-2.5 px-3 text-right">Hasil</th><th class="py-2.5 px-3 text-right">HK</th><th class="py-2.5 px-3">Material</th><th class="py-2.5 px-3">Mandor</th><th class="py-2.5 px-3 text-center">Aksi</th>
               </tr>
             </thead>
@@ -344,7 +409,6 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <!-- 1. PT, Afdeling & Blok -->
         <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3">
           <h3 class="font-extrabold text-sm text-[#056839] border-b pb-2">1. Database PT, Afdeling & Blok</h3>
           <div class="flex gap-2">
@@ -369,15 +433,19 @@
           <div id="masterOrgList" class="space-y-2 max-h-60 overflow-y-auto"></div>
         </div>
 
-        <!-- 2. Pekerjaan & Satuan -->
         <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3">
           <h3 class="font-extrabold text-sm text-[#056839] border-b pb-2">2. Jenis Pekerjaan & Satuan</h3>
           <div class="p-3 rounded-2xl bg-slate-50 space-y-2">
             <input type="text" id="newJobName" placeholder="Nama Pekerjaan..." class="form-input text-xs" />
-            <div class="flex gap-2">
+            <div class="grid grid-cols-2 gap-2">
+              <select id="newJobCat" class="form-input text-xs font-bold text-[#056839]">
+                <option value="Manual">Manual</option>
+                <option value="Chemis">Chemis</option>
+                <option value="Pupuk">Pupuk</option>
+              </select>
               <select id="newJobUnit" class="form-input text-xs font-bold"></select>
-              <button type="button" id="btnAddJob" class="px-4 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0">+ Simpan</button>
             </div>
+            <button type="button" id="btnAddJob" class="w-full py-2 rounded-xl bg-[#056839] text-white text-xs font-bold">+ Simpan Pekerjaan</button>
           </div>
           <div class="flex gap-2">
             <input type="text" id="newUnitName" placeholder="Satuan baru..." class="form-input text-xs" />
@@ -386,8 +454,7 @@
           <div id="masterUnitList" class="flex flex-wrap gap-1.5"></div>
           <div id="masterJobList" class="divide-y divide-slate-100 max-h-60 overflow-y-auto"></div>
         </div>
-                <!-- 3. Material, Asisten & Mandor -->
-        <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3">
+                <div class="bg-white rounded-3xl border border-slate-200 p-5 space-y-3">
           <h3 class="font-extrabold text-sm text-[#056839] border-b pb-2">3. Material, Asisten & Mandor</h3>
           <div class="p-3 rounded-2xl bg-slate-50 space-y-2">
             <div class="grid grid-cols-2 gap-2">
@@ -464,6 +531,20 @@
     </section>
   </main>
 
+  <!-- MODAL PILIH ITEM PEKERJAAN UNTUK LAPORAN WHATSAPP (PER ITEM KERJA) -->
+  <div id="waModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 space-y-4 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between border-b pb-2.5">
+        <div>
+          <h3 class="font-extrabold text-sm text-[#056839]">📲 Kirim Laporan WhatsApp (Per Item Kerja)</h3>
+          <p id="waModalSub" class="text-[11px] text-slate-500">Pilih item pekerjaan yang akan dilaporkan terpisah</p>
+        </div>
+        <button type="button" id="btnCloseWaModal" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold">×</button>
+      </div>
+      <div id="waModalList" class="space-y-2 max-h-80 overflow-y-auto"></div>
+    </div>
+  </div>
+
   <footer class="py-4 text-center text-xs text-slate-400">
     Powered BY <strong class="text-[#056839]">Plasma Wanggarasi</strong> • PT Kencana Agri
   </footer>
@@ -479,7 +560,7 @@
           "Plasma BSP - AFD 1": [{ kode: "A-01", luas: 25.0 }, { kode: "A-02", luas: 26.5 }, { kode: "A-03", luas: 24.0 }],
           "Plasma BSP - AFD 2": [{ kode: "B-01", luas: 25.5 }, { kode: "B-02", luas: 26.0 }],
           "Plasma BSP - AFD 3": [{ kode: "C-01", luas: 25.0 }, { kode: "C-02", luas: 27.2 }],
-          "Plasma BSP - AFD 4": [{ kode: "D01/2023", luas: 24.5 }, { kode: "D02/2023", luas: 26.0 }, { kode: "D03/2022", luas: 28.0 }, { kode: "D04/2022", luas: 25.4 }]
+          "Plasma BSP - AFD 4": [{ kode: "D01/2023", luas: 24.5 }, { kode: "D02/2023", luas: 26.0 }, { kode: "E014", luas: 28.0 }, { kode: "D04/2022", luas: 25.4 }]
         },
         "PT Kencana Agri (Plasma MSM)": {
           "Plasma MSM - AFD 1": [{ kode: "M-01", luas: 25.0 }, { kode: "M-02", luas: 27.5 }],
@@ -491,20 +572,21 @@
       },
       units: ["Ha", "Pokok", "Kg", "Liter", "Meter", "Janjang", "Titik"],
       jobs: [
-        { nama: "Pruning / Tunas Pokok", unit: "Pokok" },
-        { nama: "Tebas / Babat Gawangan", unit: "Ha" },
-        { nama: "Chemis Piringan & Pasar Pikul", unit: "Ha" },
-        { nama: "Chemis Gawangan / Anak Kayu", unit: "Ha" },
-        { nama: "Pemupukan Manual (Manuring)", unit: "Kg" },
-        { nama: "Pemupukan Pokok", unit: "Pokok" },
-        { nama: "Kastrasi & Sanitasi", unit: "Pokok" },
-        { nama: "Perawatan Parit / Drainase", unit: "Meter" },
-        { nama: "Dongkel Anak Kayu (DAK)", unit: "Ha" }
+        { nama: "Pruning / Tunas Pokok", kategori: "Manual", unit: "Pokok" },
+        { nama: "Tebas / Babat Gawangan", kategori: "Manual", unit: "Ha" },
+        { nama: "Kastrasi & Sanitasi", kategori: "Manual", unit: "Pokok" },
+        { nama: "Perawatan Parit / Drainase", kategori: "Manual", unit: "Meter" },
+        { nama: "Dongkel Anak Kayu (DAK)", kategori: "Manual", unit: "Ha" },
+        { nama: "Semprot Piringan", kategori: "Chemis", unit: "Ha" },
+        { nama: "Semprot Gawangan", kategori: "Chemis", unit: "Ha" },
+        { nama: "Oles Anak Kayu", kategori: "Chemis", unit: "Ha" },
+        { nama: "Pemupukan", kategori: "Pupuk", unit: "Kg" },
+        { nama: "Pemupukan Manual (Manuring)", kategori: "Pupuk", unit: "Kg" }
       ],
       materials: [
-        { nama: "Glyphosate (Roundup / Glifosat)", jenis: "Racun", unit: "Liter" },
-        { nama: "Metsulfuron Methyl (Ally)", jenis: "Racun", unit: "Gram" },
-        { nama: "Paraquat (Gramoxone)", jenis: "Racun", unit: "Liter" },
+        { nama: "Paraquat", jenis: "Racun", unit: "Liter" },
+        { nama: "Glifosat", jenis: "Racun", unit: "Liter" },
+        { nama: "METIL", jenis: "Racun", unit: "Kg" },
         { nama: "Fluroxypyr (Starane)", jenis: "Racun", unit: "Liter" },
         { nama: "NPK 15-15-6-4 / 13-6-27", jenis: "Pupuk", unit: "Kg" },
         { nama: "Urea", jenis: "Pupuk", unit: "Kg" },
@@ -521,12 +603,12 @@
 
     function loadInitialMaster() {
       try {
-        const m1 = localStorage.getItem("kencana_master_v3");
+        const m1 = localStorage.getItem("kencana_master_v4");
         if (m1) {
           const parsed = JSON.parse(m1);
           if (parsed && parsed.orgs) return parsed;
         }
-        const m2 = localStorage.getItem("kencana_custom_default_v1");
+        const m2 = localStorage.getItem("kencana_custom_default_v2");
         if (m2) {
           const parsed2 = JSON.parse(m2);
           if (parsed2 && parsed2.orgs) return parsed2;
@@ -536,7 +618,7 @@
     }
 
     let masterData = loadInitialMaster();
-    let records = JSON.parse(localStorage.getItem("kencana_records_v3") || "[]");
+    let records = JSON.parse(localStorage.getItem("kencana_records_v4") || localStorage.getItem("kencana_records_v3") || "[]");
     let sheetConfig = JSON.parse(localStorage.getItem("kencana_gsheet_cfg_v3") || '{"url":"","autoSync":true}');
 
     function showToast(msg, icon) {
@@ -551,8 +633,8 @@
     function persistMasterData(msg) {
       try {
         const raw = JSON.stringify(masterData);
-        localStorage.setItem("kencana_master_v3", raw);
-        localStorage.setItem("kencana_custom_default_v1", raw);
+        localStorage.setItem("kencana_master_v4", raw);
+        localStorage.setItem("kencana_custom_default_v2", raw);
         const badge = document.getElementById("masterStatusBadge");
         if (badge) badge.textContent = "● Tersimpan & Terkunci Default";
         if (msg) showToast(msg, "✅");
@@ -562,7 +644,7 @@
     }
 
     function saveStorage() {
-      localStorage.setItem("kencana_records_v3", JSON.stringify(records));
+      localStorage.setItem("kencana_records_v4", JSON.stringify(records));
     }
           function switchTab(name) {
       document.querySelectorAll(".tab-section").forEach(el => el.classList.add("hidden"));
@@ -602,14 +684,15 @@
       if (masterData.asistens.length) inpAsisten.value = masterData.asistens[0];
 
       document.getElementById("inpMandor").innerHTML = '<option value="">-- Pilih Mandor --</option>' + masterData.mandors.map(m => `<option value="${m}">${m}</option>`).join("");
-      document.getElementById("inpPekerjaan").innerHTML = '<option value="">-- Pilih Jenis Pekerjaan --</option>' + masterData.jobs.map(j => `<option value="${j.nama}" data-unit="${j.unit}">${j.nama} (${j.unit})</option>`).join("");
+      document.getElementById("inpPekerjaan").innerHTML = '<option value="">-- Pilih Jenis Pekerjaan --</option>' + masterData.jobs.map(j => `<option value="${j.nama}" data-unit="${j.unit}" data-kat="${j.kategori || 'Manual'}">[${j.kategori || 'Manual'}] ${j.nama}</option>`).join("");
       document.getElementById("fltPekerjaan").innerHTML = '<option value="">Semua Pekerjaan</option>' + masterData.jobs.map(j => `<option value="${j.nama}">${j.nama}</option>`).join("");
       document.getElementById("inpSatuan").innerHTML = masterData.units.map(u => `<option value="${u}">${u}</option>`).join("");
       document.getElementById("newJobUnit").innerHTML = masterData.units.map(u => `<option value="${u}">${u}</option>`).join("");
 
-      const matOpt = '<option value="">-- Tanpa Material --</option>' + masterData.materials.map((m, i) => `<option value="${i}" data-unit="${m.unit}">[${m.jenis}] ${m.nama}</option>`).join("");
+      const matOpt = '<option value="">-- Pilih Material --</option>' + masterData.materials.map((m, i) => `<option value="${i}" data-unit="${m.unit}">[${m.jenis}] ${m.nama}</option>`).join("");
       document.getElementById("inpMat1").innerHTML = matOpt;
       document.getElementById("inpMat2").innerHTML = matOpt;
+      document.getElementById("inpMat3").innerHTML = matOpt;
     }
 
     function onPTChange() {
@@ -636,12 +719,28 @@
       const sel = document.getElementById("inpBlok");
       const luas = sel.options[sel.selectedIndex]?.getAttribute("data-luas");
       document.getElementById("infoLuasBlok").textContent = luas ? `• ${luas} Ha` : "";
+      if (luas && document.getElementById("inpKategori").value === "Pupuk" && !document.getElementById("inpPupukHa").value) {
+        document.getElementById("inpPupukHa").value = luas;
+      }
+    }
+
+    function togglePupukPanel() {
+      const kat = document.getElementById("inpKategori").value;
+      const isPupuk = kat === "Pupuk";
+      document.getElementById("panelPupukExtra").classList.toggle("hidden", !isPupuk);
+      document.getElementById("lblInpHasil").textContent = isPupuk ? "Realisasi Pupuk HI (Kg) *" : "Realisasi Hasil (HI) *";
     }
 
     function onPekerjaanChange() {
       const sel = document.getElementById("inpPekerjaan");
-      const unit = sel.options[sel.selectedIndex]?.getAttribute("data-unit");
+      const opt = sel.options[sel.selectedIndex];
+      const unit = opt?.getAttribute("data-unit");
+      const kat = opt?.getAttribute("data-kat");
       if (unit && masterData.units.includes(unit)) document.getElementById("inpSatuan").value = unit;
+      if (kat) {
+        document.getElementById("inpKategori").value = kat;
+        togglePupukPanel();
+      }
     }
 
     function onMaterialSelect(slot) {
@@ -652,13 +751,29 @@
       else { u.value = sel.options[sel.selectedIndex].getAttribute("data-unit") || ""; }
     }
 
+    function recalcPupukRekom() {
+      const pkk = parseFloat(document.getElementById("inpPupukPokok").value) || 0;
+      const dosis = parseFloat(document.getElementById("inpPupukDosis").value) || 0;
+      if (pkk > 0 && dosis > 0) {
+        document.getElementById("inpPupukRekom").value = (pkk * dosis).toFixed(2);
+      }
+    }
+
+    function getMatSlot(slot) {
+      const idx = document.getElementById("inpMat" + slot).value;
+      const m = idx !== "" ? masterData.materials[Number(idx)] : null;
+      return {
+        nama: m ? m.nama : "-",
+        jenis: m ? m.jenis : "-",
+        qty: m ? (parseFloat(document.getElementById("inpMat" + slot + "Qty").value) || 0) : 0,
+        unit: m ? m.unit : "-"
+      };
+    }
+
     function handleFormSubmit(e) {
       e.preventDefault();
       const editId = document.getElementById("editId").value;
-      const m1Idx = document.getElementById("inpMat1").value;
-      const m1 = m1Idx !== "" ? masterData.materials[Number(m1Idx)] : null;
-      const m2Idx = document.getElementById("inpMat2").value;
-      const m2 = m2Idx !== "" ? masterData.materials[Number(m2Idx)] : null;
+      const m1 = getMatSlot(1), m2 = getMatSlot(2), m3 = getMatSlot(3);
 
       const rec = {
         id: editId || "KC-" + Date.now().toString().slice(-6),
@@ -666,14 +781,21 @@
         pt: document.getElementById("inpPT").value,
         afdeling: document.getElementById("inpAfdeling").value,
         blok: document.getElementById("inpBlok").value,
+        kategori: document.getElementById("inpKategori").value,
+        sistemKerja: document.getElementById("inpSistemKerja").value,
         asisten: document.getElementById("inpAsisten").value,
         mandor: document.getElementById("inpMandor").value,
         pekerjaan: document.getElementById("inpPekerjaan").value,
         satuan: document.getElementById("inpSatuan").value,
         hasil: parseFloat(document.getElementById("inpHasil").value) || 0,
         hk: parseFloat(document.getElementById("inpHK").value) || 0,
-        mat1Nama: m1 ? m1.nama : "-", mat1Jenis: m1 ? m1.jenis : "-", mat1Qty: m1 ? (parseFloat(document.getElementById("inpMat1Qty").value) || 0) : 0, mat1Unit: m1 ? m1.unit : "-",
-        mat2Nama: m2 ? m2.nama : "-", mat2Jenis: m2 ? m2.jenis : "-", mat2Qty: m2 ? (parseFloat(document.getElementById("inpMat2Qty").value) || 0) : 0, mat2Unit: m2 ? m2.unit : "-",
+        pupukHa: parseFloat(document.getElementById("inpPupukHa").value) || 0,
+        pupukPokok: parseFloat(document.getElementById("inpPupukPokok").value) || 0,
+        pupukDosis: parseFloat(document.getElementById("inpPupukDosis").value) || 0,
+        pupukRekom: parseFloat(document.getElementById("inpPupukRekom").value) || 0,
+        mat1Nama: m1.nama, mat1Jenis: m1.jenis, mat1Qty: m1.qty, mat1Unit: m1.unit,
+        mat2Nama: m2.nama, mat2Jenis: m2.jenis, mat2Qty: m2.qty, mat2Unit: m2.unit,
+        mat3Nama: m3.nama, mat3Jenis: m3.jenis, mat3Qty: m3.qty, mat3Unit: m3.unit,
         keterangan: document.getElementById("inpKeterangan").value.trim() || "-"
       };
 
@@ -697,10 +819,13 @@
         document.getElementById("realisasiForm").reset();
         document.getElementById("inpTanggal").value = new Date().toISOString().split("T")[0];
         onPTChange();
+        togglePupukPanel();
       } else {
-        ["inpHasil","inpHK","inpMat1","inpMat1Qty","inpMat2","inpMat2Qty","inpKeterangan"].forEach(id => document.getElementById(id).value = "");
-        document.getElementById("inpMat1Unit").value = "-";
-        document.getElementById("inpMat2Unit").value = "-";
+        ["inpHasil","inpHK","inpPupukHa","inpPupukPokok","inpPupukDosis","inpPupukRekom","inpMat1","inpMat1Qty","inpMat2","inpMat2Qty","inpMat3","inpMat3Qty","inpKeterangan"].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+        ["inpMat1Unit","inpMat2Unit","inpMat3Unit"].forEach(id => document.getElementById(id).value = "-");
       }
     }
 
@@ -713,12 +838,19 @@
       document.getElementById("inpPT").value = r.pt; onPTChange();
       document.getElementById("inpAfdeling").value = r.afdeling; onAfdelingChange();
       document.getElementById("inpBlok").value = r.blok; onBlokChange();
+      document.getElementById("inpKategori").value = r.kategori || "Manual";
+      document.getElementById("inpSistemKerja").value = r.sistemKerja || "Harian";
+      togglePupukPanel();
       document.getElementById("inpAsisten").value = r.asisten;
       document.getElementById("inpMandor").value = r.mandor;
       document.getElementById("inpPekerjaan").value = r.pekerjaan;
       document.getElementById("inpSatuan").value = r.satuan;
       document.getElementById("inpHasil").value = r.hasil;
       document.getElementById("inpHK").value = r.hk;
+      document.getElementById("inpPupukHa").value = r.pupukHa || "";
+      document.getElementById("inpPupukPokok").value = r.pupukPokok || "";
+      document.getElementById("inpPupukDosis").value = r.pupukDosis || "";
+      document.getElementById("inpPupukRekom").value = r.pupukRekom || "";
       document.getElementById("inpKeterangan").value = r.keterangan === "-" ? "" : r.keterangan;
       document.getElementById("btnSubmitForm").innerHTML = "💾 Update Perubahan";
       document.getElementById("btnCancelEdit").classList.remove("hidden");
@@ -733,8 +865,9 @@
     };
           function formatMatBadge(r) {
       const p = [];
-      if (r.mat1Nama && r.mat1Nama !== "-") p.push(`${r.mat1Nama} (${r.mat1Qty} ${r.mat1Unit})`);
-      if (r.mat2Nama && r.mat2Nama !== "-") p.push(`${r.mat2Nama} (${r.mat2Qty} ${r.mat2Unit})`);
+      if (r.mat1Nama && r.mat1Nama !== "-" && r.mat1Qty > 0) p.push(`${r.mat1Nama} (${r.mat1Qty} ${r.mat1Unit})`);
+      if (r.mat2Nama && r.mat2Nama !== "-" && r.mat2Qty > 0) p.push(`${r.mat2Nama} (${r.mat2Qty} ${r.mat2Unit})`);
+      if (r.mat3Nama && r.mat3Nama !== "-" && r.mat3Qty > 0) p.push(`${r.mat3Nama} (${r.mat3Qty} ${r.mat3Unit})`);
       return p.length ? p.join(" + ") : "Tanpa material";
     }
 
@@ -761,19 +894,21 @@
         box.innerHTML = '<div class="text-center py-10 text-slate-400 text-xs">Belum ada realisasi yang diinput.</div>';
         return;
       }
-      box.innerHTML = records.slice(0, 10).map(r => `
+      box.innerHTML = records.slice(0, 12).map(r => `
         <div class="p-3 rounded-2xl border border-slate-200 bg-[#FAFDFB] flex items-start justify-between gap-2">
           <div class="space-y-1">
-            <div class="flex flex-wrap items-center gap-1.5">
+            <div class="flex flex-wrap items-center gap-1">
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-white text-[10px] font-bold">${r.kategori || "Manual"} • ${r.sistemKerja || "Harian"}</span>
               <span class="px-2 py-0.5 rounded bg-[#056839] text-white text-[10px] font-bold">${r.afdeling}</span>
               <span class="px-2 py-0.5 rounded bg-[#FFF200] text-[#056839] text-[10px] font-extrabold">Blok ${r.blok}</span>
               <span class="text-[11px] text-slate-400">${r.tanggal}</span>
             </div>
             <p class="text-xs font-extrabold text-slate-800">${r.pekerjaan}</p>
-            <p class="text-xs font-bold text-[#056839]">${Number(r.hasil).toLocaleString("id-ID")} ${r.satuan} • ${r.hk} HK</p>
+            <p class="text-xs font-bold text-[#056839]">HI: ${Number(r.hasil).toLocaleString("id-ID")} ${r.satuan} • ${r.hk} HK</p>
             <p class="text-[11px] text-slate-500">Mandor: ${r.mandor} • ${formatMatBadge(r)}</p>
           </div>
-          <div class="flex flex-col gap-1.5 shrink-0">
+          <div class="flex flex-col gap-1 shrink-0">
+            <button type="button" onclick="sendSingleJobWa('${r.id}')" class="px-2.5 py-1 rounded-lg bg-[#056839] text-white text-[11px] font-bold">📲 WA</button>
             <button type="button" onclick="editRecord('${r.id}')" class="px-2.5 py-1 rounded-lg bg-emerald-50 text-[#056839] text-[11px] font-bold">✏️ Edit</button>
             <button type="button" onclick="deleteRecord('${r.id}')" class="px-2.5 py-1 rounded-lg bg-red-50 text-red-600 text-[11px] font-bold">🗑️ Hapus</button>
           </div>
@@ -785,11 +920,15 @@
       const mode = document.getElementById("fltMode").value;
       const fTgl = document.getElementById("fltTanggal").value;
       const fBln = document.getElementById("fltBulan").value;
+      const fKat = document.getElementById("fltKategori").value;
+      const fSis = document.getElementById("fltSistem").value;
       const fAfd = document.getElementById("fltAfdeling").value;
       const fJob = document.getElementById("fltPekerjaan").value;
       return records.filter(r => {
         if (mode === "harian" && fTgl && r.tanggal !== fTgl) return false;
         if (mode === "bulanan" && fBln && (!r.tanggal || !r.tanggal.startsWith(fBln))) return false;
+        if (fKat && (r.kategori || "Manual") !== fKat) return false;
+        if (fSis && (r.sistemKerja || "Harian") !== fSis) return false;
         if (fAfd && r.afdeling !== fAfd) return false;
         if (fJob && r.pekerjaan !== fJob) return false;
         return true;
@@ -798,7 +937,7 @@
 
     function renderRekapAll() {
       const mode = document.getElementById("fltMode").value;
-      document.getElementById("lblPeriodeTk").textContent = mode === "harian" ? (document.getElementById("fltTanggal").value || "Harian") : (mode === "bulanan" ? (document.getElementById("fltBulan").value || "Bulanan") : "Semua");
+      document.getElementById("lblPeriodeTk").textContent = mode === "harian" ? (document.getElementById("fltTanggal").value || "Harian") : (mode === "bulanan" ? (document.getElementById("fltBulan").value || "Bulanan (SHI)") : "Semua");
       const list = getFilteredRecords();
       document.getElementById("tblRowCount").textContent = `${list.length} Baris`;
 
@@ -808,12 +947,13 @@
         if (!jobMap[jk]) jobMap[jk] = { pekerjaan: r.pekerjaan, satuan: r.satuan, hasil: 0, hk: 0 };
         jobMap[jk].hasil += Number(r.hasil || 0); jobMap[jk].hk += Number(r.hk || 0);
 
-        const tk = `${r.mandor}|||${r.pekerjaan}|||${r.satuan}`;
-        if (!tkMap[tk]) tkMap[tk] = { mandor: r.mandor, pekerjaan: r.pekerjaan, satuan: r.satuan, hasil: 0, hk: 0 };
+        const tk = `${r.mandor}|||${r.kategori || "Manual"}|||${r.sistemKerja || "Harian"}|||${r.pekerjaan}|||${r.satuan}`;
+        if (!tkMap[tk]) tkMap[tk] = { mandor: r.mandor, katSis: `${r.kategori || "Manual"} • ${r.sistemKerja || "Harian"}`, pekerjaan: r.pekerjaan, satuan: r.satuan, hasil: 0, hk: 0 };
         tkMap[tk].hasil += Number(r.hasil || 0); tkMap[tk].hk += Number(r.hk || 0);
 
         [{ nama: r.mat1Nama, jenis: r.mat1Jenis, qty: Number(r.mat1Qty || 0), unit: r.mat1Unit },
-         { nama: r.mat2Nama, jenis: r.mat2Jenis, qty: Number(r.mat2Qty || 0), unit: r.mat2Unit }].forEach(m => {
+         { nama: r.mat2Nama, jenis: r.mat2Jenis, qty: Number(r.mat2Qty || 0), unit: r.mat2Unit },
+         { nama: r.mat3Nama, jenis: r.mat3Jenis, qty: Number(r.mat3Qty || 0), unit: r.mat3Unit }].forEach(m => {
           if (m.nama && m.nama !== "-" && m.qty > 0) {
             const mk = `${m.nama}|||${m.unit}`;
             if (!matMap[mk]) matMap[mk] = { nama: m.nama, jenis: m.jenis, qty: 0, unit: m.unit };
@@ -826,12 +966,13 @@
       document.getElementById("rekapTkBody").innerHTML = tkRows.length ? tkRows.map(t => `
         <tr>
           <td class="py-2.5 px-4 font-extrabold">${t.mandor}</td>
+          <td class="py-2.5 px-4 text-[11px] font-bold text-[#A6891B]">${t.katSis}</td>
           <td class="py-2.5 px-4">${t.pekerjaan}</td>
           <td class="py-2.5 px-4 text-right font-bold text-[#056839]">${t.hasil.toLocaleString("id-ID")}</td>
           <td class="py-2.5 px-4 font-bold text-[#A6891B]">${t.satuan}</td>
           <td class="py-2.5 px-4 text-right font-bold">${t.hk} HK</td>
           <td class="py-2.5 px-4 text-right font-extrabold bg-[#F4F8F5] text-[#056839]">${t.hk > 0 ? (t.hasil / t.hk).toFixed(2) : "0.00"} ${t.satuan}/TK</td>
-        </tr>`).join("") : '<tr><td colspan="6" class="py-5 text-center text-slate-400">Belum ada data output per TK</td></tr>';
+        </tr>`).join("") : '<tr><td colspan="7" class="py-5 text-center text-slate-400">Belum ada data output per TK</td></tr>';
 
       const jobRows = Object.values(jobMap);
       document.getElementById("rekapPekerjaanBody").innerHTML = jobRows.length ? jobRows.map(j => `
@@ -855,7 +996,7 @@
       const tbody = document.getElementById("sheetTableBody");
       const tfoot = document.getElementById("sheetTableFoot");
       if (!list.length) {
-        tbody.innerHTML = '<tr><td colspan="9" class="py-8 text-center text-slate-400">Belum ada data realisasi pada periode ini.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="py-8 text-center text-slate-400">Belum ada data realisasi pada periode ini.</td></tr>';
         tfoot.innerHTML = ""; return;
       }
       let totalHK = 0;
@@ -864,6 +1005,7 @@
         return `
           <tr>
             <td class="py-2 px-3 whitespace-nowrap">${r.tanggal}</td>
+            <td class="py-2 px-3 whitespace-nowrap font-bold text-[11px]">${r.kategori || "Manual"} (${r.sistemKerja || "Harian"})</td>
             <td class="py-2 px-3 font-bold text-[#056839]">${r.afdeling}</td>
             <td class="py-2 px-3 font-extrabold">${r.blok}</td>
             <td class="py-2 px-3">${r.pekerjaan}</td>
@@ -872,13 +1014,14 @@
             <td class="py-2 px-3 text-[11px]">${formatMatBadge(r)}</td>
             <td class="py-2 px-3 font-bold">${r.mandor}</td>
             <td class="py-2 px-3 text-center whitespace-nowrap">
+              <button type="button" onclick="sendSingleJobWa('${r.id}')" class="px-2 py-1 rounded bg-[#056839] text-white font-bold mr-1">WA</button>
               <button type="button" onclick="editRecord('${r.id}')" class="px-2 py-1 rounded bg-emerald-50 text-[#056839] font-bold mr-1">Edit</button>
               <button type="button" onclick="deleteRecord('${r.id}')" class="px-2 py-1 rounded bg-red-50 text-red-600 font-bold">Hapus</button>
             </td>
           </tr>`;
       }).join("");
-      tfoot.innerHTML = `<tr><td colspan="5" class="py-2.5 px-3 text-right uppercase text-xs">Total HK:</td><td class="py-2.5 px-3 text-right text-sm">${totalHK.toLocaleString("id-ID")} HK</td><td colspan="3"></td></tr>`;
-        }
+      tfoot.innerHTML = `<tr><td colspan="6" class="py-2.5 px-3 text-right uppercase text-xs">Total HK:</td><td class="py-2.5 px-3 text-right text-sm">${totalHK.toLocaleString("id-ID")} HK</td><td colspan="3"></td></tr>`;
+      }
           function renderMasterUI() {
       const prevMstPt = document.getElementById("mstSelectPtForAfd")?.value || "";
       const prevMstAfd = document.getElementById("mstSelectAfdForBlok")?.value || "";
@@ -899,7 +1042,7 @@
         </div>`).join("");
 
       document.getElementById("masterUnitList").innerHTML = masterData.units.map((u, i) => `<span class="px-2.5 py-1 rounded-lg bg-[#F4F8F5] text-[#056839] text-[11px] font-bold">${u} <button type="button" onclick="deleteUnit(${i})" class="text-red-500">×</button></span>`).join("");
-      document.getElementById("masterJobList").innerHTML = masterData.jobs.map((j, i) => `<div class="py-2 flex justify-between text-xs"><span class="font-bold">${j.nama} (${j.unit})</span><button type="button" onclick="deleteJob(${i})" class="text-red-500 font-bold">Hapus</button></div>`).join("");
+      document.getElementById("masterJobList").innerHTML = masterData.jobs.map((j, i) => `<div class="py-2 flex justify-between text-xs"><span class="font-bold">[${j.kategori || "Manual"}] ${j.nama} (${j.unit})</span><button type="button" onclick="deleteJob(${i})" class="text-red-500 font-bold">Hapus</button></div>`).join("");
       document.getElementById("masterMaterialList").innerHTML = masterData.materials.map((m, i) => `<div class="py-2 flex justify-between text-xs"><span class="font-bold">[${m.jenis}] ${m.nama} (${m.unit})</span><button type="button" onclick="deleteMaterial(${i})" class="text-red-500 font-bold">Hapus</button></div>`).join("");
       document.getElementById("masterAsistenList").innerHTML = masterData.asistens.map((a, i) => `<span class="px-2.5 py-1 rounded-lg bg-[#FFFDF2] text-[#A6891B] text-[11px] font-bold">${a} <button type="button" onclick="deletePerson('asisten',${i})" class="text-red-500">×</button></span>`).join("");
       document.getElementById("masterMandorList").innerHTML = masterData.mandors.map((m, i) => `<span class="px-2.5 py-1 rounded-lg bg-[#F4F8F5] text-[#056839] text-[11px] font-bold">${m} <button type="button" onclick="deletePerson('mandor',${i})" class="text-red-500">×</button></span>`).join("");
@@ -912,6 +1055,142 @@
     window.deleteUnit = i => { masterData.units.splice(i, 1); persistMasterData("Satuan dihapus"); renderMasterUI(); };
     window.deleteMaterial = i => { masterData.materials.splice(i, 1); persistMasterData("Material dihapus"); renderMasterUI(); };
     window.deletePerson = (r, i) => { (r === "asisten" ? masterData.asistens : masterData.mandors).splice(i, 1); persistMasterData("Data dihapus"); renderMasterUI(); };
+
+    function fmtNumId(n, dec) {
+      return Number(n || 0).toLocaleString("id-ID", { minimumFractionDigits: dec || 0, maximumFractionDigits: dec !== undefined ? dec : 2 });
+    }
+
+    function fmtDateIndo(tgl) {
+      const p = String(tgl || "").split("-");
+      return p.length === 3 ? `${p[2]}-${p[1]}-${p[0]}` : tgl;
+    }
+
+    function getShortAfd(afd) {
+      const u = String(afd || "").toUpperCase();
+      if (u.includes("BSP")) return "BSP";
+      if (u.includes("MSM")) return "MSM";
+      if (u.includes("INTI") || u.includes("STN")) return "INTI";
+      return afd || "BSP";
+    }
+
+    // Kirim Laporan WhatsApp Per Item Pekerjaan (Tidak digabung antar pekerjaan berbeda)
+    window.sendSingleJobWa = function(id) {
+      const target = records.find(x => x.id === id);
+      if (!target) return;
+      document.getElementById("waModal").classList.add("hidden");
+
+      const tgl = target.tanggal;
+      const bulanPrefix = String(tgl || "").substring(0, 7);
+      const jobName = target.pekerjaan;
+      const afdVal = target.afdeling;
+      const kat = target.kategori || "Manual";
+
+      // Semua record pekerjaan & afdeling yang sama pada tanggal HI (Hari Ini)
+      const hiItems = records.filter(r => r.tanggal === tgl && r.afdeling === afdVal && r.pekerjaan === jobName);
+      // Semua record pekerjaan & afdeling yang sama s.d. tanggal tgl dalam bulan berjalan (SHI)
+      const shiItems = records.filter(r => r.tanggal && r.tanggal.startsWith(bulanPrefix) && r.tanggal <= tgl && r.afdeling === afdVal && r.pekerjaan === jobName);
+
+      let text = "";
+
+      if (kat === "Chemis") {
+        // FORMAT 2: PEKERJAAN CHEMIS (Semprot Piringan, Semprot Gawangan, Oles Anak Kayu)
+        const hiHasil = hiItems.reduce((s, r) => s + Number(r.hasil || 0), 0);
+        const shiHasil = shiItems.reduce((s, r) => s + Number(r.hasil || 0), 0);
+        const hiHK = hiItems.reduce((s, r) => s + Number(r.hk || 0), 0);
+        const outTk = hiHK > 0 ? (hiHasil / hiHK) : 0;
+        const bloks = [...new Set(hiItems.map(r => r.blok))].join(", ");
+
+        const matTotals = { "Paraquat": 0, "Glifosat": 0, "METIL": 0 };
+        hiItems.forEach(r => {
+          [[r.mat1Nama, r.mat1Qty], [r.mat2Nama, r.mat2Qty], [r.mat3Nama, r.mat3Qty]].forEach(([mName, mQty]) => {
+            if (!mName || mName === "-" || !mQty) return;
+            const low = mName.toLowerCase();
+            if (low.includes("paraquat")) matTotals["Paraquat"] += Number(mQty);
+            else if (low.includes("glifosat") || low.includes("glyphosate")) matTotals["Glifosat"] += Number(mQty);
+            else if (low.includes("metil") || low.includes("metsulfuron")) matTotals["METIL"] += Number(mQty);
+            else matTotals[mName] = (matTotals[mName] || 0) + Number(mQty);
+          });
+        });
+
+        const matLines = Object.entries(matTotals).map(([k, v]) => {
+          const label = k === "METIL" ? "METIL     " : (k === "Glifosat" ? "Glifosat " : "Paraquat ");
+          return `${label}: ${v > 0 ? fmtNumId(v) : ""}`;
+        }).join("\n");
+
+        text = `Tanggal : ${fmtDateIndo(tgl)}\nJenis pekerjaan : ${jobName}\nAfd  : ${getShortAfd(afdVal)}\n\nBlok : ${bloks}\nRealisasi Hi : ${fmtNumId(hiHasil)} ha\nHa realisasi SHI : ${fmtNumId(shiHasil)} Ha\nTK : ${hiHK}\nOutput/TK  : ${fmtNumId(outTk, 2)} ha\n\nMATERIAL\n${matLines}`;
+
+      } else if (kat === "Pupuk") {
+        // FORMAT 3: PEKERJAAN PEMUPUKAN
+        const jenisPupuk = [target.mat1Nama, target.mat2Nama, target.mat3Nama].filter(n => n && n !== "-").join(" + ") || "-";
+        const blokBlocks = hiItems.map(r => {
+          const haVal = r.pupukHa > 0 ? fmtNumId(r.pupukHa) : "";
+          const pkkVal = r.pupukPokok > 0 ? fmtNumId(r.pupukPokok, 0) : "";
+          const dosVal = r.pupukDosis > 0 ? fmtNumId(r.pupukDosis) : "";
+          const rekVal = r.pupukRekom > 0 ? fmtNumId(r.pupukRekom) : "";
+          return `BLOK            : ${r.blok}\nHA                   : ${haVal}\nPokok FU       : ${pkkVal}\nDosis.            : ${dosVal}\nRekom.         : ${rekVal}\nRealisasi      : ${fmtNumId(r.hasil)} Kg`;
+        }).join("\n\n");
+
+        const kgHi = hiItems.reduce((s, r) => s + Number(r.hasil || 0), 0);
+        const kgShi = shiItems.reduce((s, r) => s + Number(r.hasil || 0), 0);
+        const haHi = hiItems.reduce((s, r) => s + Number(r.pupukHa || 0), 0);
+        const haShi = shiItems.reduce((s, r) => s + Number(r.pupukHa || 0), 0);
+        const pkkHi = hiItems.reduce((s, r) => s + Number(r.pupukPokok || 0), 0);
+        const pkkShi = shiItems.reduce((s, r) => s + Number(r.pupukPokok || 0), 0);
+        const tkHi = hiItems.reduce((s, r) => s + Number(r.hk || 0), 0);
+        const outKg = tkHi > 0 ? (kgHi / tkHi) : 0;
+
+        text = `REALISASI PUPUK\nAfd : ${getShortAfd(afdVal)}\nJenis Pupuk : ${jenisPupuk}\nTanggal : ${fmtDateIndo(tgl)}\n\n\n${blokBlocks}\n\n\nTotal Realisasi \n- Kg Hi/Shi : ${fmtNumId(kgHi)} / ${fmtNumId(kgShi)} Kg\n- Ha Hi/Shi : ${fmtNumId(haHi)} / ${fmtNumId(haShi)} Ha\n- Pokok  Hi/Shi : ${fmtNumId(pkkHi, 0)} / ${fmtNumId(pkkShi, 0)} Pkk\n- TK  Hi: ${tkHi} org\n- Output : ${fmtNumId(outKg, 2)} kg`;
+
+      } else {
+        // FORMAT 1: PEKERJAAN MANUAL TEBAS & PRUNING (Harian & Borongan terpisah, per item pekerjaan)
+        const harianItems = hiItems.filter(r => (r.sistemKerja || "Harian") === "Harian");
+        const boronganItems = hiItems.filter(r => r.sistemKerja === "Borongan");
+
+        const buildSection = (items) => {
+          if (!items.length) return `Pekerjaan : -\nBlok : -\nRealisasi : -\nTK : -\nOutput : -`;
+          const bloks = [...new Set(items.map(r => r.blok))].join(", ");
+          const sumH = items.reduce((s, r) => s + Number(r.hasil || 0), 0);
+          const sumTK = items.reduce((s, r) => s + Number(r.hk || 0), 0);
+          const out = sumTK > 0 ? (sumH / sumTK) : 0;
+          const unit = items[0].satuan;
+          return `Pekerjaan : ${jobName}\nBlok : ${bloks}\nRealisasi : ${fmtNumId(sumH)} ${unit}\nTK : ${sumTK}\nOutput : ${fmtNumId(out, 2)} ${unit}/TK`;
+        };
+
+        text = `Realisasi Crash program\nTanggal : ${fmtDateIndo(tgl)}\n\n*Harian*\n${buildSection(harianItems)}\n\n*Borongan*\n${buildSection(boronganItems)}`;
+      }
+
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    };
+
+    function openWaJobSelector() {
+      const tgl = document.getElementById("inpTanggal").value;
+      const dayItems = records.filter(r => r.tanggal === tgl);
+      if (!dayItems.length) return showToast(`Belum ada data realisasi pada tanggal ${tgl}`, "⚠️");
+
+      // Kelompokkan unik berdasarkan Afdeling + Jenis Pekerjaan agar setiap item kerja dilaporkan terpisah
+      const uniqueJobs = [];
+      const seen = new Set();
+      dayItems.forEach(r => {
+        const key = `${r.afdeling}|||${r.pekerjaan}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          uniqueJobs.push(r);
+        }
+      });
+
+      document.getElementById("waModalSub").textContent = `Tanggal ${fmtDateIndo(tgl)} • Pilih 1 item pekerjaan untuk dikirim:`;
+      document.getElementById("waModalList").innerHTML = uniqueJobs.map(r => `
+        <button type="button" onclick="sendSingleJobWa('${r.id}')" class="w-full text-left p-3.5 rounded-2xl border border-slate-200 hover:border-[#056839] bg-[#FAFDFB] flex items-center justify-between gap-2">
+          <div>
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-white text-[10px] font-bold">${r.kategori || "Manual"}</span>
+            <span class="px-2 py-0.5 rounded bg-[#056839] text-white text-[10px] font-bold ml-1">${r.afdeling}</span>
+            <p class="text-xs font-extrabold text-slate-900 mt-1">${r.pekerjaan}</p>
+          </div>
+          <span class="px-3 py-1.5 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0">Kirim WA →</span>
+        </button>
+      `).join("");
+      document.getElementById("waModal").classList.remove("hidden");
+    }
 
     function buildMasterCode() {
       const jsonStr = JSON.stringify(masterData);
@@ -928,23 +1207,14 @@
     function copyMasterCode() {
       const code = buildMasterCode();
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(() => {
-          showToast("Kode Master disalin! Tinggal tempel & kirim ke WA.", "📋");
-        }).catch(() => fallbackCopyText(code));
-      } else {
-        fallbackCopyText(code);
-      }
+        navigator.clipboard.writeText(code).then(() => showToast("Kode Master disalin! Tempel & kirim ke WA.", "📋")).catch(() => fallbackCopyText(code));
+      } else { fallbackCopyText(code); }
     }
 
     function fallbackCopyText(text) {
       const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
       showToast("Kode Master disalin! Tempel & kirim ke WA.", "📋");
     }
 
@@ -953,22 +1223,14 @@
       if (!raw) return showToast("Tempel kode Master dari WhatsApp terlebih dahulu!", "⚠️");
       try {
         const match = raw.match(/MASTER_KENCANA:([A-Za-z0-9+/=]+)/);
-        let parsed = null;
-        if (match && match[1]) {
-          const decoded = decodeURIComponent(escape(atob(match[1])));
-          parsed = JSON.parse(decoded);
-        } else {
-          const obj = JSON.parse(raw);
-          parsed = obj.masterData ? obj.masterData : obj;
-        }
-        if (!parsed || !parsed.orgs) return showToast("Kode Master tidak valid!", "❌");
-        masterData = parsed;
+        const parsed = match && match[1] ? JSON.parse(decodeURIComponent(escape(atob(match[1])))) : JSON.parse(raw);
+        const finalData = parsed.masterData ? parsed.masterData : parsed;
+        if (!finalData || !finalData.orgs) return showToast("Kode Master tidak valid!", "❌");
+        masterData = finalData;
         document.getElementById("inpPasteMasterCode").value = "";
         persistMasterData("Data Master berhasil dimuat & dikunci jadi Default!");
         renderMasterUI();
-      } catch (e) {
-        showToast("Gagal membaca kode! Pastikan seluruh pesan tersalin.", "❌");
-      }
+      } catch (e) { showToast("Gagal membaca kode Master!", "❌"); }
     }
 
     function handleUploadMasterFile(e) {
@@ -983,45 +1245,23 @@
           masterData = incoming;
           persistMasterData("File Master berhasil dimuat & dikunci jadi Default!");
           renderMasterUI();
-        } catch (err) {
-          showToast("Gagal membaca file Master!", "❌");
-        }
+        } catch (err) { showToast("Gagal membaca file Master!", "❌"); }
         e.target.value = "";
       };
       reader.readAsText(file);
     }
 
-    function shareWhatsAppReport() {
-      const tgl = document.getElementById("inpTanggal").value;
-      const crashList = records.filter(r => r.tanggal === tgl && ((r.pekerjaan||"").toLowerCase().includes("pruning") || (r.pekerjaan||"").toLowerCase().includes("tunas") || (r.pekerjaan||"").toLowerCase().includes("tebas") || (r.pekerjaan||"").toLowerCase().includes("gawangan")));
-      if (!crashList.length) return showToast(`Tidak ada data Pruning / Tebas Gawangan tgl ${tgl}`, "⚠️");
-      const afdLabel = (crashList[0].afdeling || "BSP").toUpperCase().includes("BSP") ? "BSP" : crashList[0].afdeling;
-      const pt = tgl.split("-"); const tglFmt = pt.length === 3 ? `${pt[2]}-${pt[1]}-${pt[0]}` : tgl;
-      const grouped = {}; let totalHK = 0;
-      crashList.forEach(r => { totalHK += Number(r.hk || 0); (grouped[r.pekerjaan] = grouped[r.pekerjaan] || []).push(r); });
-      let rincian = "", idx = 1;
-      Object.entries(grouped).forEach(([job, items]) => {
-        let subH = 0, subHK = 0;
-        rincian += `*${idx}. ${job}*\n`;
-        items.forEach(it => {
-          subH += Number(it.hasil || 0); subHK += Number(it.hk || 0);
-          rincian += `   • Blok *${it.blok}* : *${Number(it.hasil).toLocaleString("id-ID")} ${it.satuan}* (${it.hk} HK | Out/TK: ${it.hk > 0 ? (it.hasil/it.hk).toFixed(2) : "0.00"}) — Mandor: ${it.mandor}\n`;
-        });
-        rincian += `   _Subtotal: ${subH.toLocaleString("id-ID")} ${items[0].satuan} (${subHK} HK)_\n\n`; idx++;
-      });
-      const text = `*Laporan Realisasi Crash Program*\nAfdeling : *${afdLabel}*\nTanggal : *${tglFmt}*\n\n${rincian.trim()}\n\n*Total Tenaga Kerja (HK) : ${totalHK.toLocaleString("id-ID")} HK*`;
-      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
-    }
-
     function exportToExcel() {
       if (!records.length) return showToast("Belum ada data realisasi untuk diexport!", "⚠️");
-      const headers = ["No","Tanggal","Bulan","PT","Afdeling","Blok","Jenis Pekerjaan","Realisasi","Satuan","HK","Output / TK","Material 1","Dosis 1","Unit 1","Material 2","Dosis 2","Unit 2","Mandor","Asisten","Keterangan"];
+      const headers = ["No","Tanggal","Bulan","PT","Afdeling","Blok","Kategori","Sistem Kerja","Jenis Pekerjaan","Realisasi HI","Satuan","HK","Output/TK","HA Pupuk","Pokok FU","Dosis","Rekom","Material 1","Dosis 1","Unit 1","Material 2","Dosis 2","Unit 2","Material 3","Dosis 3","Unit 3","Mandor","Asisten","Keterangan"];
       const rows = records.map((r, i) => [
         i + 1, r.tanggal, (r.tanggal || "").substring(0, 7), r.pt, r.afdeling, r.blok,
-        r.pekerjaan, Number(r.hasil || 0), r.satuan, Number(r.hk || 0),
+        r.kategori || "Manual", r.sistemKerja || "Harian", r.pekerjaan, Number(r.hasil || 0), r.satuan, Number(r.hk || 0),
         r.hk > 0 ? Number((r.hasil / r.hk).toFixed(2)) : 0,
+        Number(r.pupukHa || 0), Number(r.pupukPokok || 0), Number(r.pupukDosis || 0), Number(r.pupukRekom || 0),
         r.mat1Nama || "-", Number(r.mat1Qty || 0), r.mat1Unit || "-",
         r.mat2Nama || "-", Number(r.mat2Qty || 0), r.mat2Unit || "-",
+        r.mat3Nama || "-", Number(r.mat3Qty || 0), r.mat3Unit || "-",
         r.mandor || "-", r.asisten || "-", r.keterangan || "-"
       ]);
       const fileName = `REALISASI_RAWAT_Kencana_${new Date().toISOString().split("T")[0]}.xlsx`;
@@ -1040,7 +1280,7 @@
               if (ws[cr]) ws[cr].s = { font: { sz: 10, color: { rgb: "1E293B" } }, fill: { fgColor: { rgb: r % 2 === 0 ? "F4F8F5" : "FFFFFF" } }, border: { top: { style: "thin", color: { rgb: "CBD5E1" } }, bottom: { style: "thin", color: { rgb: "CBD5E1" } }, left: { style: "thin", color: { rgb: "CBD5E1" } }, right: { style: "thin", color: { rgb: "CBD5E1" } } } };
             }
           }
-          ws["!cols"] = headers.map(() => ({ wch: 18 }));
+          ws["!cols"] = headers.map(() => ({ wch: 16 }));
           XLSX.utils.book_append_sheet(wb, ws, "Realisasi_Horizontal");
           const wbBase64 = XLSX.write(wb, { bookType: "xlsx", type: "base64" });
           const a = document.createElement("a");
@@ -1050,29 +1290,14 @@
           return showToast("File Excel (.xlsx) berhasil diunduh!", "📥");
         } catch (err) {}
       }
-
-      const esc = v => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      let xml = `<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Styles><Style ss:ID="title"><Font ss:Bold="1" ss:Size="12" ss:Color="#FFFFFF"/><Interior ss:Color="#044E2B" ss:Pattern="Solid"/></Style><Style ss:ID="hdr"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#056839" ss:Pattern="Solid"/></Style><Style ss:ID="even"><Interior ss:Color="#F4F8F5" ss:Pattern="Solid"/></Style><Style ss:ID="odd"><Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/></Style></Styles><Worksheet ss:Name="Realisasi_Horizontal"><Table>`;
-      xml += `<Row><Cell ss:MergeAcross="${headers.length - 1}" ss:StyleID="title"><Data ss:Type="String">LAPORAN REALISASI RAWAT — PT KENCANA AGRI (PLASMA WANGGARASI)</Data></Cell></Row><Row></Row>`;
-      xml += `<Row>` + headers.map(h => `<Cell ss:StyleID="hdr"><Data ss:Type="String">${esc(h)}</Data></Cell>`).join("") + `</Row>`;
-      rows.forEach((row, idx) => {
-        const st = idx % 2 === 0 ? "even" : "odd";
-        xml += `<Row>` + row.map(val => `<Cell ss:StyleID="${st}"><Data ss:Type="${typeof val === "number" ? "Number" : "String"}">${esc(val)}</Data></Cell>`).join("") + `</Row>`;
-      });
-      xml += `</Table></Worksheet></Workbook>`;
-      const link = document.createElement("a");
-      link.href = "data:application/vnd.ms-excel;charset=utf-8," + encodeURIComponent(xml);
-      link.download = fileName.replace(".xlsx", ".xls");
-      document.body.appendChild(link); link.click(); document.body.removeChild(link);
-      showToast("Excel Offline berwarna berhasil diunduh!", "📥");
+      showToast("Gagal membuat Excel.", "❌");
       }
           function encodeB64(str) { return btoa(unescape(encodeURIComponent(str))); }
 
     async function sendToLiveSheet(rec) {
       if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) return false;
-      const baseUrl = sheetConfig.url.trim();
       try {
-        await fetch(`${baseUrl}?act=save&d=${encodeURIComponent(encodeB64(JSON.stringify(rec)))}&t=${Date.now()}`, { method: "GET", mode: "no-cors", cache: "no-store" });
+        await fetch(`${sheetConfig.url.trim()}?act=save&d=${encodeURIComponent(encodeB64(JSON.stringify(rec)))}&t=${Date.now()}`, { method: "GET", mode: "no-cors", cache: "no-store" });
         return true;
       } catch (e) { return false; }
     }
@@ -1087,11 +1312,9 @@
       try {
         const res = await fetch(`${sheetConfig.url.trim()}?act=pull&t=${Date.now()}`, { method: "GET", redirect: "follow" });
         const data = await res.json();
-        if (data && data.status === "ok" && Array.isArray(data.records)) {
-          if (data.records.length > 0) {
-            records = data.records;
-            saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
-          }
+        if (data && data.status === "ok" && Array.isArray(data.records) && data.records.length > 0) {
+          records = data.records;
+          saveStorage(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
           if (!silent) showToast(`Sinkronisasi sukses! ${data.records.length} data dimuat.`, "☁️");
         }
       } catch (e) { if (!silent) showToast("Gagal menarik data dari Spreadsheets.", "❌"); }
@@ -1103,13 +1326,18 @@
       document.getElementById("inpPT").addEventListener("change", onPTChange);
       document.getElementById("inpAfdeling").addEventListener("change", onAfdelingChange);
       document.getElementById("inpBlok").addEventListener("change", onBlokChange);
+      document.getElementById("inpKategori").addEventListener("change", togglePupukPanel);
       document.getElementById("inpPekerjaan").addEventListener("change", onPekerjaanChange);
+      document.getElementById("inpPupukPokok").addEventListener("input", recalcPupukRekom);
+      document.getElementById("inpPupukDosis").addEventListener("input", recalcPupukRekom);
       document.getElementById("inpMat1").addEventListener("change", () => onMaterialSelect(1));
       document.getElementById("inpMat2").addEventListener("change", () => onMaterialSelect(2));
+      document.getElementById("inpMat3").addEventListener("change", () => onMaterialSelect(3));
       document.getElementById("realisasiForm").addEventListener("submit", handleFormSubmit);
       document.getElementById("btnCancelEdit").addEventListener("click", () => resetForm(false));
 
-      document.getElementById("btnWaTop").addEventListener("click", shareWhatsAppReport);
+      document.getElementById("btnWaTop").addEventListener("click", openWaJobSelector);
+      document.getElementById("btnCloseWaModal").addEventListener("click", () => document.getElementById("waModal").classList.add("hidden"));
       document.getElementById("btnExcelTop").addEventListener("click", exportToExcel);
       document.getElementById("btnExcelRekap").addEventListener("click", exportToExcel);
 
@@ -1139,7 +1367,7 @@
         document.getElementById("wrapFltBulan").classList.toggle("hidden", m !== "bulanan");
         renderRekapAll();
       });
-      ["fltTanggal", "fltBulan", "fltAfdeling", "fltPekerjaan"].forEach(id => document.getElementById(id).addEventListener("change", renderRekapAll));
+      ["fltTanggal", "fltBulan", "fltKategori", "fltSistem", "fltAfdeling", "fltPekerjaan"].forEach(id => document.getElementById(id).addEventListener("change", renderRekapAll));
 
       document.getElementById("btnSyncGsheet").addEventListener("click", async () => {
         if (!sheetConfig.url || !sheetConfig.url.includes("/exec")) { switchTab("master"); return showToast("Tempel URL Web App (/exec) dulu!", "⚠️"); }
@@ -1215,9 +1443,9 @@
         persistMasterData(`Blok ${k} tersimpan!`); renderMasterUI();
       });
       document.getElementById("btnAddJob").addEventListener("click", () => {
-        const n = document.getElementById("newJobName").value.trim(), u = document.getElementById("newJobUnit").value || "Ha";
+        const n = document.getElementById("newJobName").value.trim(), kat = document.getElementById("newJobCat").value || "Manual", u = document.getElementById("newJobUnit").value || "Ha";
         if (!n) return showToast("Isi nama pekerjaan!", "⚠️");
-        masterData.jobs.push({ nama: n, unit: u }); document.getElementById("newJobName").value = "";
+        masterData.jobs.push({ nama: n, kategori: kat, unit: u }); document.getElementById("newJobName").value = "";
         persistMasterData("Pekerjaan tersimpan!"); renderMasterUI();
       });
       document.getElementById("btnAddUnit").addEventListener("click", () => {
@@ -1266,7 +1494,7 @@
       document.getElementById("gsheetWebhookUrl").value = sheetConfig.url || "";
       document.getElementById("autoSyncCheck").checked = !!sheetConfig.autoSync;
 
-      refreshAllDropdowns(); renderMasterUI(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
+      refreshAllDropdowns(); togglePupukPanel(); renderMasterUI(); renderRecentFeed(); renderRekapAll(); updateDashboardKPI();
       setInterval(() => { if (sheetConfig.url && sheetConfig.autoSync && navigator.onLine) pullLiveFromSheet(true); }, 15000);
     });
   </script>
