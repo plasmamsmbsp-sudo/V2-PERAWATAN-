@@ -420,22 +420,22 @@
         </div>
       </div>
 
-      <!-- PANEL SHARE & UPLOAD FILE DATA MASTER KE PENGGUNA LAIN -->
+      <!-- PANEL SHARE WA & UPLOAD FILE DATA MASTER KE PENGGUNA LAIN -->
       <div class="bg-white rounded-3xl border-2 border-[#056839]/30 shadow-xs p-5 space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h3 class="font-extrabold text-sm text-[#056839]">📤 Simpan Default & Bagikan File Data Master ke Pengguna Lain</h3>
-            <p class="text-xs text-slate-500">Unduh file <strong>MASTER_DATA_KENCANA.json</strong> untuk dikirim ke pengguna APK lain, atau upload file master yang diterima.</p>
+            <h3 class="font-extrabold text-sm text-[#056839]">📤 Bagikan & Muat Data Master ke Pengguna Lain</h3>
+            <p class="text-xs text-slate-500">Kirim langsung lewat WhatsApp ke rekan kerja, lalu tempel kode atau upload file di HP mereka.</p>
           </div>
           <span id="masterStatusBadge" class="px-2.5 py-1 rounded-full bg-emerald-100 text-[#056839] text-[11px] font-extrabold">● Tersimpan & Terkunci Default</span>
         </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
           <button type="button" id="btnSaveCustomDefault" class="px-4 py-3 rounded-2xl bg-[#056839] text-white text-xs font-bold shadow-xs">
             📌 Kunci Jadi Default Permanen
           </button>
-          <button type="button" id="btnDownloadMasterFile" class="px-4 py-3 rounded-2xl bg-emerald-600 text-white text-xs font-bold shadow-xs">
-            📤 Bagikan / Simpan File Master (.json)
+          <button type="button" id="btnShareWaMaster" class="px-4 py-3 rounded-2xl bg-emerald-600 text-white text-xs font-bold shadow-xs">
+            📲 Kirim Data Master ke WA
           </button>
           <label for="fileUploadMaster" class="cursor-pointer px-4 py-3 rounded-2xl bg-[#A6891B] text-white text-xs font-bold shadow-xs text-center flex items-center justify-center">
             📂 Upload File Master (.json)
@@ -444,21 +444,21 @@
           <button type="button" id="btnResetMaster" class="px-4 py-3 rounded-2xl border border-red-200 bg-red-50 text-red-600 text-xs font-bold">
             🔄 Reset ke Default Bawaan
           </button>
-                </div>
-        
-          <button type="button" id="btnSaveCustomDefault" class="px-4 py-3 rounded-2xl bg-[#056839] text-white text-xs font-bold shadow-xs">
-            📌 Kunci Jadi Default Permanen
-          </button>
-          <button type="button" id="btnDownloadMasterFile" class="px-4 py-3 rounded-2xl bg-emerald-600 text-white text-xs font-bold shadow-xs">
-            💾 Unduh File Master (.json)
-          </button>
-          <label for="fileUploadMaster" class="cursor-pointer px-4 py-3 rounded-2xl bg-[#A6891B] text-white text-xs font-bold shadow-xs text-center flex items-center justify-center">
-            📂 Upload File Master (.json)
-          </label>
-          <input type="file" id="fileUploadMaster" accept=".json,application/json" class="hidden" />
-          <button type="button" id="btnResetMaster" class="px-4 py-3 rounded-2xl border border-red-200 bg-red-50 text-red-600 text-xs font-bold">
-            🔄 Reset ke Default Bawaan
-          </button>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-[#F6F9F7] border border-slate-200 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-extrabold uppercase text-[#056839]">Muat Lewat Kode Master WhatsApp (100% Jalan di APK)</span>
+            <button type="button" id="btnCopyMasterCode" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-[11px] font-bold text-slate-700">
+              📋 Salin Kode Master
+            </button>
+          </div>
+          <div class="flex gap-2">
+            <input type="text" id="inpPasteMasterCode" placeholder="Tempel kode MASTER_KENCANA:... dari WhatsApp di sini..." class="form-input text-xs font-mono" />
+            <button type="button" id="btnApplyMasterCode" class="px-4 py-2 rounded-xl bg-[#056839] text-white text-xs font-bold shrink-0">
+              ✓ Muat Data
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -564,7 +564,7 @@
     function saveStorage() {
       localStorage.setItem("kencana_records_v3", JSON.stringify(records));
     }
-        function switchTab(name) {
+          function switchTab(name) {
       document.querySelectorAll(".tab-section").forEach(el => el.classList.add("hidden"));
       document.querySelectorAll(".tab-trigger").forEach(btn => btn.classList.remove("nav-pill-active"));
       const target = document.getElementById("tab-" + name);
@@ -878,7 +878,7 @@
           </tr>`;
       }).join("");
       tfoot.innerHTML = `<tr><td colspan="5" class="py-2.5 px-3 text-right uppercase text-xs">Total HK:</td><td class="py-2.5 px-3 text-right text-sm">${totalHK.toLocaleString("id-ID")} HK</td><td colspan="3"></td></tr>`;
-      }
+        }
           function renderMasterUI() {
       const prevMstPt = document.getElementById("mstSelectPtForAfd")?.value || "";
       const prevMstAfd = document.getElementById("mstSelectAfdForBlok")?.value || "";
@@ -913,51 +913,63 @@
     window.deleteMaterial = i => { masterData.materials.splice(i, 1); persistMasterData("Material dihapus"); renderMasterUI(); };
     window.deletePerson = (r, i) => { (r === "asisten" ? masterData.asistens : masterData.mandors).splice(i, 1); persistMasterData("Data dihapus"); renderMasterUI(); };
 
-        async function downloadMasterFile() {
-      const payload = JSON.stringify({
-        app: "REALISASI_RAWAT_KENCANA",
-        exportedAt: new Date().toISOString(),
-        masterData: masterData
-      }, null, 2);
-      const fileName = `MASTER_DATA_KENCANA_${new Date().toISOString().split("T")[0]}.json`;
-      const blob = new Blob([payload], { type: "application/json" });
-      const file = new File([blob], fileName, { type: "application/json" });
+    function buildMasterCode() {
+      const jsonStr = JSON.stringify(masterData);
+      const b64 = btoa(unescape(encodeURIComponent(jsonStr)));
+      return "MASTER_KENCANA:" + b64;
+    }
 
-      // 1. Jalur Utama APK Android: Buka Menu Share HP (Langsung ke WhatsApp / Files / Simpan ke Download)
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: "Master Data Realisasi Rawat",
-            text: "File Database Master REALISASI RAWAT — PT Kencana Agri"
-          });
-          showToast("File Master siap dikirim / disimpan!", "📤");
-          return;
-        } catch (err) {
-          if (err.name === "AbortError") return;
-        }
+    function shareMasterToWhatsApp() {
+      const code = buildMasterCode();
+      const msg = `*DATA MASTER — REALISASI RAWAT KENCANA*\nSalin seluruh pesan ini, buka aplikasi *REALISASI RAWAT* -> tab *Database & Spreadsheet* -> tempel di kolom *Kode Master WhatsApp* lalu tekan *Muat Data*:\n\n${code}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+    }
+
+    function copyMasterCode() {
+      const code = buildMasterCode();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(() => {
+          showToast("Kode Master disalin! Tinggal tempel & kirim ke WA.", "📋");
+        }).catch(() => fallbackCopyText(code));
+      } else {
+        fallbackCopyText(code);
       }
+    }
 
-      // 2. Jalur Cadangan Browser (Blob Object URL)
+    function fallbackCopyText(text) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      showToast("Kode Master disalin! Tempel & kirim ke WA.", "📋");
+    }
+
+    function applyMasterCodeFromInput() {
+      const raw = (document.getElementById("inpPasteMasterCode").value || "").trim();
+      if (!raw) return showToast("Tempel kode Master dari WhatsApp terlebih dahulu!", "⚠️");
       try {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(url), 5000);
-        showToast("File Master (.json) diunduh ke folder Download!", "💾");
+        const match = raw.match(/MASTER_KENCANA:([A-Za-z0-9+/=]+)/);
+        let parsed = null;
+        if (match && match[1]) {
+          const decoded = decodeURIComponent(escape(atob(match[1])));
+          parsed = JSON.parse(decoded);
+        } else {
+          const obj = JSON.parse(raw);
+          parsed = obj.masterData ? obj.masterData : obj;
+        }
+        if (!parsed || !parsed.orgs) return showToast("Kode Master tidak valid!", "❌");
+        masterData = parsed;
+        document.getElementById("inpPasteMasterCode").value = "";
+        persistMasterData("Data Master berhasil dimuat & dikunci jadi Default!");
+        renderMasterUI();
       } catch (e) {
-        // 3. Jalur Darurat: Salin Teks JSON ke Clipboard jika WebView memblokir file
-        if (navigator.clipboard) {
-          await navigator.clipboard.writeText(payload);
-          showToast("Data Master disalin ke Clipboard! Tempel & kirim ke WA.", "📋");
-        }
+        showToast("Gagal membaca kode! Pastikan seluruh pesan tersalin.", "❌");
       }
-        }
-      
+    }
 
     function handleUploadMasterFile(e) {
       const file = e.target.files && e.target.files[0];
@@ -1150,16 +1162,30 @@
         sheetConfig.autoSync = document.getElementById("autoSyncCheck").checked;
         localStorage.setItem("kencana_gsheet_cfg_v3", JSON.stringify(sheetConfig));
         updateDashboardKPI();
+        const badge = document.getElementById("liveSyncBadge");
+        badge.textContent = "⏳ Menghubungkan...";
         try {
           const res = await fetch(`${rawUrl}?t=${Date.now()}`, { method: "GET", redirect: "follow" });
           const j = await res.json();
           if (j && j.status === "ready") {
-            document.getElementById("liveSyncBadge").textContent = "● LIVE TERHUBUNG";
-            document.getElementById("liveSyncBadge").className = "px-2.5 py-1 rounded-full bg-emerald-100 text-[#056839] text-[11px] font-extrabold";
+            badge.textContent = "● LIVE TERHUBUNG";
+            badge.className = "px-2.5 py-1 rounded-full bg-emerald-100 text-[#056839] text-[11px] font-extrabold";
             showToast("TERHUBUNG LIVE ke Google Spreadsheets!", "✅");
             await pullLiveFromSheet(true);
-          } else showToast("URL terhubung, silakan coba Sync.", "⚠️");
-        } catch (err) { showToast("Gagal terhubung! Cek izin 'Anyone' di Apps Script.", "❌"); }
+            return;
+          }
+        } catch (err) {
+          try {
+            await fetch(`${rawUrl}?t=${Date.now()}`, { method: "GET", mode: "no-cors" });
+            badge.textContent = "● TERHUBUNG (MODE APK)";
+            badge.className = "px-2.5 py-1 rounded-full bg-emerald-100 text-[#056839] text-[11px] font-extrabold";
+            showToast("URL terpasang! Silakan tekan Sync Spreadsheet.", "✅");
+            return;
+          } catch (e2) {}
+        }
+        badge.textContent = "❌ Gagal Terhubung";
+        badge.className = "px-2.5 py-1 rounded-full bg-red-100 text-red-600 text-[11px] font-extrabold";
+        showToast("Gagal terhubung! Cek izin 'Anyone' di Apps Script.", "❌");
       });
 
       document.getElementById("btnPullFromSheet").addEventListener("click", () => pullLiveFromSheet(false));
@@ -1224,7 +1250,9 @@
       });
 
       document.getElementById("btnSaveCustomDefault").addEventListener("click", () => persistMasterData("Seluruh database dikunci sebagai DEFAULT permanen!"));
-      document.getElementById("btnDownloadMasterFile").addEventListener("click", downloadMasterFile);
+      document.getElementById("btnShareWaMaster").addEventListener("click", shareMasterToWhatsApp);
+      document.getElementById("btnCopyMasterCode").addEventListener("click", copyMasterCode);
+      document.getElementById("btnApplyMasterCode").addEventListener("click", applyMasterCodeFromInput);
       document.getElementById("fileUploadMaster").addEventListener("change", handleUploadMasterFile);
       document.getElementById("btnResetMaster").addEventListener("click", () => {
         masterData = cloneObj(DEFAULT_MASTER);
